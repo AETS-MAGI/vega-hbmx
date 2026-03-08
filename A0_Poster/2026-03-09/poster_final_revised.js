@@ -142,25 +142,22 @@ bullets(LX+0.1,ly+0.7,CW-0.3,3.4,[
 ],18); ly+=4.4;
 
 // ===== RIGHT COLUMN =====
-const R_TOP=5.0, R_BOTTOM=40.2, R_SRC_BOTTOM=46.1;
-const RS=(R_BOTTOM-R_TOP)/(R_SRC_BOTTOM-R_TOP);
-const rs=(v)=>Number((v*RS).toFixed(3));
-let ry=R_TOP;
+let ry=5.0;
 
 // 4. Challenges
-hdr(RX,ry,CW,"4","Engineering Challenges",ORANGE); ry+=rs(1.1);
-card(RX,ry,CW,rs(3.6));
-bullets(RX,ry,CW,rs(3.6),[
+hdr(RX,ry,CW,"4","Engineering Challenges",ORANGE); ry+=1.1;
+card(RX,ry,CW,3.6);
+bullets(RX,ry,CW,3.6,[
   "gfx900 excluded by official matrices and default build filters, yet residual code and artifacts still retain gfx900 handling.",
   {text:"`num_gpu` is easily misread as GPU count; our code trace confirms it means offloaded layers.",bold:true},
   "The same Vega GPU can succeed on ROCm/HIP and fail on Vulkan under the same model and prompt.",
   "Diagnosis must be layer-by-layer and evidence-driven, not reduced to \"legacy GPU bad\".",
-]); ry+=rs(3.8);
+]); ry+=3.8;
 
 // 5. Investigation Strategy
-hdr(RX,ry,CW,"5","Evidence-First Investigation Strategy",ORANGE); ry+=rs(1.1);
-card(RX,ry,CW,rs(5.6));
-s.addText("Investigation Layers",{x:RX+0.2,y:ry+rs(0.1),w:CW-0.4,h:rs(0.5),fontSize:26,fontFace:"Arial",color:ORANGE,bold:true});
+hdr(RX,ry,CW,"5","Evidence-First Investigation Strategy",ORANGE); ry+=1.1;
+card(RX,ry,CW,5.6);
+s.addText("Investigation Layers",{x:RX+0.2,y:ry+0.1,w:CW-0.4,h:0.5,fontSize:26,fontFace:"Arial",color:ORANGE,bold:true});
 const invH=[
   {text:"Layer",options:{fill:{color:ORANGE},color:"FFFFFF",bold:true,fontSize:20}},
   {text:"Intervention",options:{fill:{color:ORANGE},color:"FFFFFF",bold:true,fontSize:20}},
@@ -173,20 +170,20 @@ const invB=[
   [{text:"L4: Evidence\nCapture",options:{fontSize:20,color:GREEN,bold:true}},{text:"Structured work logs, journal traces, backend probes, rocm-smi, ollama ps",options:{fontSize:20,color:TXT}},{text:"Localize crashes and make claims reproducible",options:{fontSize:20,color:TXT}}],
 ];
 s.addTable([invH,...invB],{
-  x:RX+0.2,y:ry+rs(0.7),w:CW-0.4,border:{pt:1,color:BDR},
+  x:RX+0.2,y:ry+0.7,w:CW-0.4,border:{pt:1,color:BDR},
   colW:[(CW-0.4)*0.18,(CW-0.4)*0.45,(CW-0.4)*0.37],
-  rowH:[rs(0.45),rs(1.0),rs(1.0),rs(1.0),rs(1.0)],
+  rowH:[0.45,1.0,1.0,1.0,1.0],
 });
 s.addText("Approach prioritizes falsifiable diagnosis and reproducibility over optimistic one-off success.",{
-  x:RX+0.2,y:ry+rs(4.8),w:CW-0.4,h:rs(0.6),fontSize:22,fontFace:"Calibri",color:DIM,italic:true
-}); ry+=rs(5.8);
+  x:RX+0.2,y:ry+4.8,w:CW-0.4,h:0.6,fontSize:22,fontFace:"Calibri",color:DIM,italic:true
+}); ry+=5.8;
 
 // 6. Experimental Results (AUDIT: run_ids added, Vulkan condition explicit)
-hdr(RX,ry,CW,"6","Experimental Results",GREEN); ry+=rs(1.1);
+hdr(RX,ry,CW,"6","Experimental Results",GREEN); ry+=1.1;
 
 // Environment
-card(RX,ry,CW,rs(2.8));
-s.addText("Test Environment",{x:RX+0.2,y:ry+rs(0.1),w:CW-0.4,h:rs(0.5),fontSize:24,fontFace:"Arial",color:GREEN,bold:true});
+card(RX,ry,CW,2.8);
+s.addText("Test Environment",{x:RX+0.2,y:ry+0.1,w:CW-0.4,h:0.5,fontSize:24,fontFace:"Arial",color:GREEN,bold:true});
 const envH=[
   {text:"Component",options:{fill:{color:GREEN},color:"FFFFFF",bold:true,fontSize:20}},
   {text:"Specification",options:{fill:{color:GREEN},color:"FFFFFF",bold:true,fontSize:20}},
@@ -200,13 +197,13 @@ const envB=[
   [{text:"Note",options:{fontSize:20,color:DIM,bold:true}},{text:"Vulkan=0.17.4 vs ROCm=0.17.5: version difference is inherent to the dual-install; both tested as-shipped",options:{fontSize:18,color:DIM}}],
 ];
 s.addTable([envH,...envB],{
-  x:RX+0.2,y:ry+rs(0.65),w:CW-0.4,border:{pt:1,color:BDR},
-  colW:[(CW-0.4)*0.22,(CW-0.4)*0.78],rowH:[rs(0.4),rs(0.4),rs(0.4),rs(0.4),rs(0.4),rs(0.4),rs(0.35)],
-}); ry+=rs(3.6);
+  x:RX+0.2,y:ry+0.65,w:CW-0.4,border:{pt:1,color:BDR},
+  colW:[(CW-0.4)*0.22,(CW-0.4)*0.78],rowH:[0.4,0.4,0.4,0.4,0.4,0.4,0.35],
+}); ry+=3.6;
 
 // Matched results with run_ids
-card(RX,ry,CW,rs(5.5));
-s.addText("Matched-Condition Results (qwen3.5:2b, NUM_PREDICT=512)",{x:RX+0.2,y:ry+rs(0.1),w:CW-0.4,h:rs(0.5),fontSize:24,fontFace:"Arial",color:GREEN,bold:true});
+card(RX,ry,CW,5.5);
+s.addText("Matched-Condition Results (qwen3.5:2b, NUM_PREDICT=512)",{x:RX+0.2,y:ry+0.1,w:CW-0.4,h:0.5,fontSize:24,fontFace:"Arial",color:GREEN,bold:true});
 const vrH=[
   {text:"num_gpu",options:{fill:{color:GREEN},color:"FFFFFF",bold:true,fontSize:20}},
   {text:"ROCm (:11435)\nrun_20260307_012643",options:{fill:{color:GREEN},color:"FFFFFF",bold:true,fontSize:18}},
@@ -227,9 +224,9 @@ const vrB=[
    {text:"FAIL  (HTTP 500, SIGSEGV)",options:{fontSize:20,color:RED,bold:true}}],
 ];
 s.addTable([vrH,...vrB],{
-  x:RX+0.2,y:ry+rs(0.65),w:CW-0.4,border:{pt:1,color:BDR},
+  x:RX+0.2,y:ry+0.65,w:CW-0.4,border:{pt:1,color:BDR},
   colW:[(CW-0.4)*0.2,(CW-0.4)*0.4,(CW-0.4)*0.4],
-  rowH:[rs(0.6),rs(0.55),rs(0.55),rs(0.55),rs(0.55)],
+  rowH:[0.6,0.55,0.55,0.55,0.55],
 });
 // AUDIT: explicit condition statement + P1 additions
 s.addText([
@@ -238,17 +235,17 @@ s.addText([
   {text:"ROCm results are within this tested scope (single model, short fixed runs); broader workloads may differ. ",options:{fontSize:18,color:DIM}},
   {text:"Model dependency observed: tinyllama succeeded on Vulkan in earlier tests (run_20260307_003423, 20/20 OK); qwen3.5:2b triggers the SIGSEGV. ",options:{fontSize:18,color:TXT}},
   {text:"Also: num_gpu=0 runs may produce eval_count=512 with response_chars=0 — this is a model output quirk, not a crash.",options:{fontSize:18,color:DIM}},
-],{x:RX+0.2,y:ry+rs(3.5),w:CW-0.4,h:rs(1.5),fontFace:"Calibri",valign:"top"});
+],{x:RX+0.2,y:ry+3.5,w:CW-0.4,h:1.5,fontFace:"Calibri",valign:"top"});
 
 s.addText([
   {text:"Crash localization: ",options:{bold:true,color:RED,fontSize:18}},
   {text:"Vulkan SIGSEGV occurred in ggml_backend_sched_graph_compute_async → computeBatch, after model load completed and runner started. This is a compute-phase failure, not an initialization failure.",options:{fontSize:18,color:TXT}},
-],{x:RX+0.2,y:ry+rs(5.0),w:CW-0.4,h:rs(0.8),fontFace:"Calibri",valign:"top"});
-ry+=rs(6.0);
+],{x:RX+0.2,y:ry+5.0,w:CW-0.4,h:0.8,fontFace:"Calibri",valign:"top"});
+ry+=6.0;
 
 // Failure Diagnosis
-card(RX,ry,CW,rs(3.6));
-s.addText("Failure Diagnosis",{x:RX+0.2,y:ry+rs(0.1),w:CW-0.4,h:rs(0.5),fontSize:24,fontFace:"Arial",color:RED,bold:true});
+card(RX,ry,CW,3.6);
+s.addText("Failure Diagnosis",{x:RX+0.2,y:ry+0.1,w:CW-0.4,h:0.5,fontSize:24,fontFace:"Arial",color:RED,bold:true});
 const fdH=[
   {text:"Hypothesis",options:{fill:{color:"7B241C"},color:"FFFFFF",bold:true,fontSize:20}},
   {text:"Expected Evidence",options:{fill:{color:"7B241C"},color:"FFFFFF",bold:true,fontSize:20}},
@@ -260,36 +257,35 @@ const fdB=[
   [{text:"Vulkan compute-path\ninstability",options:{fontSize:20,color:ORANGE,bold:true}},{text:"Load OK; crash after runner\nstart in compute stack",options:{fontSize:20,color:TXT}},{text:"MATCH",options:{fontSize:22,color:RED,bold:true}}],
 ];
 s.addTable([fdH,...fdB],{
-  x:RX+0.2,y:ry+rs(0.65),w:CW-0.4,border:{pt:1,color:BDR},
+  x:RX+0.2,y:ry+0.65,w:CW-0.4,border:{pt:1,color:BDR},
   colW:[(CW-0.4)*0.22,(CW-0.4)*0.4,(CW-0.4)*0.38],
-  rowH:[rs(0.4),rs(0.65),rs(0.65),rs(0.65)],
-}); ry+=rs(3.8);
+  rowH:[0.4,0.65,0.65,0.65],
+}); ry+=3.8;
 
 // Why gfx900 works
-card(RX,ry,CW,rs(2.6));
-s.addText("Why gfx900 Still Works Sometimes",{x:RX+0.2,y:ry+rs(0.1),w:CW-0.4,h:rs(0.5),fontSize:24,fontFace:"Arial",color:BLUE,bold:true});
+card(RX,ry,CW,2.6);
+s.addText("Why gfx900 Still Works Sometimes",{x:RX+0.2,y:ry+0.1,w:CW-0.4,h:0.5,fontSize:24,fontFace:"Arial",color:BLUE,bold:true});
 s.addText([
   {text:'ROCm changelog says "no longer built by default" rather than "forbidden." ',options:{fontSize:20,color:TXT}},
   {text:"In the local install, gfx900 hsaco artifacts and libggml-hip.so strings were verified present. ",options:{fontSize:20,color:TXT}},
   {text:"\nInterpretation: ",options:{fontSize:20,color:TXT,breakLine:true}},
   {text:"unsupported = unguaranteed and untested, not necessarily impossible.",options:{fontSize:20,color:GREEN,bold:true}},
-],{x:RX+0.2,y:ry+rs(0.65),w:CW-0.4,h:rs(1.8),fontFace:"Calibri",valign:"top",margin:[0.05,0.15,0.05,0.15]});
-ry+=rs(2.8);
+],{x:RX+0.2,y:ry+0.65,w:CW-0.4,h:1.8,fontFace:"Calibri",valign:"top",margin:[0.05,0.15,0.05,0.15]});
+ry+=2.8;
 
 // Limitations & Future Work (P0-2 + P2-8)
-card(RX,ry,CW,rs(2.6));
-s.addText("Limitations & Future Work",{x:RX+0.2,y:ry+rs(0.1),w:CW-0.4,h:rs(0.45),fontSize:24,fontFace:"Arial",color:DIM,bold:true});
+card(RX,ry,CW,2.6);
+s.addText("Limitations & Future Work",{x:RX+0.2,y:ry+0.1,w:CW-0.4,h:0.45,fontSize:24,fontFace:"Arial",color:DIM,bold:true});
 s.addText([
   {text:"Limitations: ",options:{bold:true,color:RED,fontSize:18}},
   {text:"Matched comparison used short fixed runs (1 epoch, 512 tokens) with a single model (qwen3.5:2b). Vulkan and ROCm Ollama versions differ (0.17.4 vs 0.17.5). tinyllama behaved differently from qwen3.5 on Vulkan, indicating model-dependent failure conditions. Results should not be generalized beyond this tested scope without further verification.",options:{fontSize:18,color:TXT}},
   {text:"\n\nFuture work: ",options:{bold:true,color:BLUE,fontSize:18,breakLine:true}},
   {text:"Multi-epoch stress tests, additional models (llm-jp, phi-3), ROCm version comparison (6.x vs 7.x), and GGML_CUDA_NO_PEER_COPY experiments to isolate offload-path failure mechanisms. Reproducibility infrastructure (workaround matrix with 15 documented cases) is available in the repo for community use.",options:{fontSize:18,color:TXT}},
-],{x:RX+0.2,y:ry+rs(0.55),w:CW-0.4,h:rs(1.9),fontFace:"Calibri",valign:"top",margin:[0.05,0.15,0.05,0.15]});
-ry+=rs(2.8);
+],{x:RX+0.2,y:ry+0.55,w:CW-0.4,h:1.9,fontFace:"Calibri",valign:"top",margin:[0.05,0.15,0.05,0.15]});
+ry+=2.8;
 
 // ===== TAKEAWAY =====
-const TK_H=5.0, FOOT_Y=H-0.7, TK_GAP=0.45;
-const tkY=FOOT_Y-TK_GAP-TK_H;
+const tkY=Math.max(ly,ry)+0.3;
 s.addShape(pres.shapes.RECTANGLE,{x:M,y:tkY,w:W-2*M,h:5.0,fill:{color:CARD},shadow:mkSh()});
 hdr(M+0.3,tkY+0.2,W-2*M-0.6,"7","Takeaway & Key Messages",GREEN);
 
