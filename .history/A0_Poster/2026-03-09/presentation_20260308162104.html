@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Backend-Dependent Stability on Legacy HBM GPUs</title>
+<style>
+  body { margin: 0; padding: 0; font-family: 'Calibri', 'Arial', sans-serif; background-color: #FFFFFF; color: #212121; overflow: hidden; }
+  .slide-container { position: relative; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; background-color: #FFFFFF; }
+  .slide { display: none; width: 90%; max-width: 1400px; height: 85%; background: #F5F5F5; border-radius: 12px; box-shadow: 2px 2px 15px rgba(0,0,0,0.1); padding: 50px; box-sizing: border-box; flex-direction: column; }
+  .slide.active { display: flex; }
+  
+  .slide-title { display: flex; align-items: center; margin-bottom: 25px; }
+  .slide-num { width: 55px; height: 55px; border-radius: 50%; color: #FFFFFF; font-family: 'Arial', sans-serif; font-size: 26px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 15px; flex-shrink: 0; }
+  .slide-title-text { font-family: 'Arial Black', sans-serif; font-size: 34px; font-weight: bold; margin: 0; }
+  
+  .red { color: #B71C1C; } .bg-red { background-color: #B71C1C; }
+  .blue { color: #0D47A1; } .bg-blue { background-color: #0D47A1; }
+  .green { color: #1B5E20; } .bg-green { background-color: #1B5E20; }
+  .orange { color: #E65100; } .bg-orange { background-color: #E65100; }
+  .dim { color: #616161; }
+  
+  ul { font-size: 24px; line-height: 1.6; padding-left: 30px; }
+  li { margin-bottom: 15px; }
+  p { font-size: 22px; line-height: 1.5; }
+  
+  table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 20px; background: #FFFFFF; box-shadow: 1px 1px 5px rgba(0,0,0,0.05); }
+  th, td { border: 1px solid #BDBDBD; padding: 12px 15px; text-align: left; }
+  th { color: #FFFFFF; font-family: 'Arial', sans-serif; }
+  
+  .footer { position: absolute; bottom: 20px; right: 30px; font-size: 18px; color: #616161; font-family: 'Arial', sans-serif; }
+  
+  /* システム要件の出典明記用（プレゼン画面には表示されません） */
+  .hide-cite { display: none; }
+</style>
+</head>
+<body>
+  <div class="slide-container">
+    
+    <div class="slide active" style="background: #B71C1C; color: #FFFFFF; justify-content: center; align-items: center; text-align: center;">
+      <h1 style="font-family: 'Arial Black', sans-serif; font-size: 54px; margin-bottom: 10px;">Backend-Dependent Stability on Legacy HBM GPUS<span class="hide-cite">[cite: 1]</span></h1>
+      <h2 style="font-family: 'Calibri', sans-serif; font-size: 28px; color: #FFCDD2; font-style: italic; font-weight: normal; margin-bottom: 50px;">ROCm/HIP vs Vulkan an Vega/gfx900: residual paths, offload-layer semantics, and reproducible diagnosis<span class="hide-cite">[cite: 2]</span></h2>
+      <p style="font-size: 26px; margin-bottom: 15px; margin-top: 0;">Akira Ito | AETS (Akatsuki Enterprise Technology Solutions) | aets-giken@hiroshima-aktk.com<span class="hide-cite">[cite: 3]</span></p>
+      <p style="font-size: 22px; color: #FFCDD2; margin: 0;">IEICE GNW-68 Kyushu Sangyo University | March 9, 2026<span class="hide-cite">[cite: 4]</span></p>
+    </div>
+
+    <div class="slide">
+      <div class="slide-title">
+        <div class="slide-num bg-red">1</div>
+        <h2 class="slide-title-text red">Background & Motivation<span class="hide-cite">[cite: 5]</span></h2>
+      </div>
+      <ul>
+        <li>Official support matrices not listed gfx900 in ROCm 7.2, but real systems can still execute through residual code and artifact paths.<span class="hide-cite">[cite: 6]</span></li>
+        <li>For students and small labs, the key question is whether execution is possible, stable, and reproducible<span class="hide-cite">[cite: 7]</span></li>
+        <li>We built a matched dual-backend testbed on the same Vega device to separate support policy, backend choice, and runtime behavior.<span class="hide-cite">[cite: 8]</span></li>
+        <li style="font-weight: bold;">Goal: explain why "unsupported" and "unusable" are not the same statement.<span class="hide-cite">[cite: 9]</span></li>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <div class="slide-title">
+        <div class="slide-num bg-red">2</div>
+        <h2 class="slide-title-text red">Problem Statement<span class="hide-cite">[cite: 10]</span></h2>
+      </div>
+      <ul>
+        <li>Legacy Vega GPUs are often treated as categorically unsuitable for modern ROCm workloads<span class="hide-cite">[cite: 11]</span></li>
+        <li>Success or failure may be decided at different layers: distribution presets, build targets, init validation, backend macros, or runtime compute paths.<span class="hide-cite">[cite: 12]</span></li>
+        <li style="font-weight: bold;">We ask: is instability caused by Vega itself, or by a specific backend path under matched conditions?<span class="hide-cite">[cite: 13]</span></li>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <div class="slide-title">
+        <div class="slide-num bg-blue">3</div>
+        <h2 class="slide-title-text blue">Confirmed Facts from Investigation<span class="hide-cite">[cite: 14]</span></h2>
+      </div>
+      <h3 class="blue" style="font-size: 24px; margin-bottom: 10px;">A. gfx900 Gate Matrix (repo: work_log/investigations/gfx900_gate_matrix.md)<span class="hide-cite">[cite: 15]</span></h3>
+      <table>
+        <tr><th class="bg-blue">Layer</th><th class="bg-blue">Current handling of gfx900</th><th class="bg-blue">Blocks/Allows</th></tr>
+        <tr><td><strong>Official matrix (ROCm 7.2)</strong></td><td>gfx900 not fitted in GPU target int</td><td class="red"><strong>Blocks (official scope)</strong></td></tr>
+        <tr><td><strong>CMake filter jullarna</strong></td><td>Default reges escludes gfx500, manual ovienide possible va AMDGPU TARGETS</td><td class="orange"><strong>Blocks default Allows mama</strong></td></tr>
+        <tr><td><strong>rocBLAS artifacts</strong></td><td>Kernels.30-000-gfx900 haaco found in /us/lib/ollama/rochias/library/</td><td class="green"><strong>Allows</strong></td></tr>
+        <tr><td><strong>Runner init validation</strong></td><td>Deep init probe (GGML_CUDA_INIT 1 : gh900 recognized as valid agent</td><td class="green"><strong>Allones</strong></td></tr>
+        <tr><td><strong>Source machis thiph, common.cuh</strong></td><td>g900+GCNS classification tamed, dpła poth easts</td><td class="green"><strong>Allows</strong></td></tr>
+        <tr><td><strong>Runtime execution</strong></td><td>NOC/HIP: gpu values. OK. Vulkan: SIGSEGV whien num gu</td><td class="orange"><strong>Buchend Bependent</strong></td></tr>
+      </table><span class="hide-cite">[cite: 23]</span>
+    </div>
+
+    <div class="slide">
+      <div class="slide-title">
+        <div class="slide-num bg-blue">3</div>
+        <h2 class="slide-title-text blue">Confirmed Facts from Investigation (Cont.)<span class="hide-cite">[cite: 14]</span></h2>
+      </div>
+      <h3 class="blue" style="font-size: 24px; margin-bottom: 10px;">B. num gpu Semantics Trace (repo: work_log/investigations/numgpu_semantics_trace.md)<span class="hide-cite">[cite: 26]</span></h3>
+      <table>
+        <tr><th class="bg-blue">Stage</th><th class="bg-blue">Code location</th><th class="bg-blue">Meaning</th></tr>
+        <tr><td><strong>Python client</strong></td><td>allama-python/ types.py:109</td><td>Load-time option</td></tr>
+        <tr><td><strong>Oflamar CLI</strong></td><td>cmd/interactive g112</td><td class="orange"><strong>"number of layers to GPU"</strong></td></tr>
+        <tr><td><strong>Server assign</strong></td><td>m/server.go 992,1063</td><td>requested Liryem NumGPU</td></tr>
+        <tr><td><strong>Runner bridge</strong></td><td>lama/Bama.go:266</td><td>сратени.н.дри Tayers</td></tr>
+        <tr><td><strong>lama.cpp</strong></td><td>include/lama.h:289</td><td class="orange"><strong>"Tayers stored in VILAM"</strong></td></tr>
+      </table><span class="hide-cite">[cite: 27]</span>
+      <p style="margin-top: 30px;"><strong class="red">Conclusion:</strong> num gou is offloaded layer count, NOT GPU device count, num<span class="hide-cite">[cite: 34]</span> gpu 2 does not imply multi-GPU<span class="hide-cite">[cite: 36]</span></p>
+    </div>
+
+    <div class="slide">
+      <div class="slide-title">
+        <div class="slide-num bg-blue">3</div>
+        <h2 class="slide-title-text blue">Confirmed Facts from Investigation (Cont.)<span class="hide-cite">[cite: 14]</span></h2>
+      </div>
+      <h3 class="blue" style="font-size: 24px; margin-bottom: 10px;">C. Related Literature (cited, not reproduced in this repo)<span class="hide-cite">[cite: 35]</span></h3>
+      <ul style="font-size: 22px;">
+        <li>LLNL differential testing (arXiv:2410.09172): 600K auto-generated kernels showed FP32 divergence "9% between NVIDIA V100 and AMD M1250. Root causes vendor-specific math libraries, compiler flags, HIPIFY artifacts. Motivates our backend-aware validation approach<span class="hide-cite">[cite: 37]</span></li>
+        <li>gem5 Vega modeling (Umv. Wisconen-Madison): GPUFS mode runs real Linux kernel unmodified amokid driver.<span class="hide-cite">[cite: 38]</span> Validated against physical Vega 56 with avg 6% error. Establishes Vega as academically credible.<span class="hide-cite">[cite: 39]</span></li>
+        <li>NOCM SDMA workarounds (AMD docs LUMI reports): HSA_ENABLE_SOMA bypasses faulty DMA with Blit kernel fallback (80% bandwidth).<span class="hide-cite">[cite: 40]</span> HSA OVERRIDE GFX VERSION enables unsupported GPL execution the override used in our experiments. These are external references.<span class="hide-cite">[cite: 41]</span></li>
+        <li class="dim" style="font-weight:bold;">All claims in this poster are based solely on repo-internal evistence [Sections 3A, 38, 51<span class="hide-cite">[cite: 42]</span></li>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <div class="slide-title">
+        <div class="slide-num bg-orange">4</div>
+        <h2 class="slide-title-text orange">Engineering Challenges<span class="hide-cite">[cite: 43]</span></h2>
+      </div>
+      <ul>
+        <li>gfx900 excluded by official matrices and default build filters, yet residual code and artifacts still retain g900 handling<span class="hide-cite">[cite: 44]</span></li>
+        <li style="font-weight: bold;">num gpu' is easily misread as GPU count: our code trace confirms it means offloaded layers.<span class="hide-cite">[cite: 45]</span></li>
+        <li>The same Vega GPU can succeed on ROCm/HIP and fail on Vulkan under the same model and prompt.<span class="hide-cite">[cite: 46]</span></li>
+        <li>Diagnosis must be layer-by-layer and evidence-driven, not reduced to "legacy GPU bad".<span class="hide-cite">[cite: 47]</span></li>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <div class="slide-title">
+        <div class="slide-num bg-orange">5</div>
+        <h2 class="slide-title-text orange">Evidence-First Investigation Strategy<span class="hide-cite">[cite: 16]</span></h2>
+      </div>
+      <h3 class="orange" style="font-size: 24px; margin-bottom: 10px;">Investigation Layers<span class="hide-cite">[cite: 17]</span></h3>
+      <table>
+        <tr><th class="bg-orange">Lager</th><th class="bg-orange">Intervention</th><th class="bg-orange">Effect</th></tr>
+        <tr><td class="red"><strong>L1: Distribution /Build</strong></td><td>Inspect support matrix, presets, target filters, installed artifacts</td><td>Locate where gfa900 is blocked, allowed, or only partially retained</td></tr>
+        <tr><td class="orange"><strong>12: AP Semarmico</strong></td><td>Trace num gou through client server runner lama.cpp</td><td>Fix interpretation: offloaded layers, not GPU count</td></tr>
+        <tr><td class="blue"><strong>: Runtime Comparison</strong></td><td>Run matched ROCm (11435) and Vulkan (11434) tests</td><td>isolate backend-specific failure modes on identical hardware</td></tr>
+        <tr><td class="green"><strong>LA: Evidence Capture</strong></td><td>Structured work logs, journal traces, backend probes, rocm-smi, oilama ps</td><td>Localize crashes and make claims reproducible</td></tr>
+      </table><span class="hide-cite">[cite: 18]</span>
+      <p class="dim" style="font-style:italic; margin-top: 30px;">Approach prioritizes falsifiable diagnoses and reproducibility aver optimistic one-off success.<span class="hide-cite">[cite: 19]</span></p>
+    </div>
+
+    <div class="slide">
+      <div class="slide-title">
+        <div class="slide-num bg-green">6</div>
+        <h2 class="slide-title-text green">Experimental Results<span class="hide-cite">[cite: 20]</span></h2>
+      </div>
+      <h3 class="green" style="font-size: 24px; margin-bottom: 10px;">Test Environment<span class="hide-cite">[cite: 21]</span></h3>
+      <table>
+        <tr><th class="bg-green">Component</th><th class="bg-green">Specification</th></tr>
+        <tr><td><strong>GPU</strong></td><td>AMD Radeon RX Vega 56 (gfx900), 8 GB HBM2</td></tr>
+        <tr><td><strong>05/Kernel</strong></td><td>EndeavourOS, Kernel 6.18.16-1-ts</td></tr>
+        <tr><td><strong>ROCm path</strong></td><td>Ollama 0.17.5 vis: 11435, library ROCm, libggmi-hip.so</td></tr>
+        <tr><td><strong>Vulkan path</strong></td><td>Ollama 0.17.4 vis:11434, library Vulkan, same model/prompt</td></tr>
+        <tr><td><strong>Override</strong></td><td class="orange"><strong>HSA OVERRIDE GFX VERSION 3.0.0 (ROC service anty)</strong></td></tr>
+        <tr><td class="dim"><strong>Note</strong></td><td class="dim">Vulkan. 174 v ROCm0 17.5 version differmice is inherent to the dual-install; both tested as shipped</td></tr>
+      </table><span class="hide-cite">[cite: 22]</span>
+    </div>
+
+    <div class="slide">
+      <div class="slide-title">
+        <div class="slide-num bg-green">6</div>
+        <h2 class="slide-title-text green">Experimental Results (Cont.)<span class="hide-cite">[cite: 20]</span></h2>
+      </div>
+      <h3 class="green" style="font-size: 24px; margin-bottom: 10px;">Matched-Condition Results (qwen3.5:2b, NUM_PREDICT=512)<span class="hide-cite">[cite: 25]</span></h3>
+      <table>
+        <tr><th class="bg-green">num_gpu</th><th class="bg-green">ROCm (11435) 20260807 012643</th><th class="bg-green">Vullian (11434) тыл 20200307 013050</th></tr>
+        <tr><td><strong>(CPU only)</strong></td><td class="green"><strong>OK (46.7 , eval count 512)</strong></td><td class="green"><strong>OK</strong></td></tr>
+        <tr><td><strong>1</strong></td><td class="green"><strong>OK (48.7 eval count 512)</strong></td><td class="red"><strong>FAIL (HTTP 500, SIGSEGV)</strong></td></tr>
+        <tr><td><strong>2</strong></td><td class="green"><strong>OK (47.71 eval count 512)</strong></td><td class="red"><strong>FAIL (HTTP 500, SIGSEGV</strong></td></tr>
+        <tr><td><strong>-1 (all layers)</strong></td><td class="green"><strong>OK (44.31, eval count 512)</strong></td><td class="red"><strong>FAIL (HTTP 500, SIGSEGV)</strong></td></tr>
+      </table><span class="hide-cite">[cite: 24]</span>
+      <p style="font-size: 20px; margin-top: 25px;">
+        <strong class="dim">Note:</strong> Vulkan succeeded with num gpu (no GPIJ offload), Failures occurred only when num gpu>1 GPL compute path active) ROOm results arm within this rasted scope (single modul, short fed ram): Broatter workloads may differ.<span class="hide-cite">[cite: 28]</span>
+        Model dependency observed tinyilama succeeded on Vulkan in earlier tests (run_20260307 003423, 20/20 OK); qwen3 5:2b triggers the SIGSEGV.<span class="hide-cite">[cite: 29]</span><br>
+        <span class="dim">Also: num pu Pans may produce eval count 512 with response chan -this is a model output quick, not a crash.</span><span class="hide-cite">[cite: 30]</span>
+      </p>
+    </div>
+
+    <div class="slide">
+      <h2 class="slide-title-text red" style="margin-bottom: 25px;">Failure Diagnosis<span class="hide-cite">[cite: 48]</span></h2>
+      <p style="margin-bottom: 25px;"><strong class="red">Crash localization:</strong> Vulkan SIGSEGV occurred in gemi backend_sched_graph_compute_async computeßatch, after model load completed and runner started.<span class="hide-cite">[cite: 31]</span> This is a compute-phase fallure, not an initialization failure:<span class="hide-cite">[cite: 32]</span></p>
+      <table style="margin-bottom: 40px;">
+        <tr><th style="background-color: #7B241C;">Hypothesis</th><th style="background-color: #7B241C;">Expected Evidence</th><th style="background-color: #7B241C;">Observed</th></tr>
+        <tr><td>Vega in generally unusable</td><td>Both backends fall on same GPU</td><td class="green"><strong>Contradicted ROCm/HIP succeeded</strong></td></tr>
+        <tr><td>nam gpu means GPU count</td><td>Failure implies multi-GPU entry</td><td class="green"><strong>Contradicted code trace offioaded layers</strong></td></tr>
+        <tr><td class="orange"><strong>Vulan compute-path Instability</strong></td><td>Load DK crash after runner start in compute stack</td><td class="red"><strong>MATCH</strong></td></tr>
+      </table><span class="hide-cite">[cite: 33]</span>
+      
+      <h3 class="blue" style="font-size: 26px; margin-bottom: 10px;">Why gfx900 Still Works Sometimes<span class="hide-cite">[cite: 49]</span></h3>
+      <p>
+        ROCm changelog says "no longer built by default" rather than "forbidden."<span class="hide-cite">[cite: 50]</span>
+        in the local install, gfx900 hisaco artifacts and libggmi-hip.so strings were verified present.<span class="hide-cite">[cite: 51]</span><br><br>
+        Interpretation<span class="hide-cite">[cite: 52]</span> <strong class="green">unsupported unguaranteed and untested, not necessarily impassible</strong><span class="hide-cite">[cite: 53]</span>
+      </p>
+    </div>
+
+    <div class="slide">
+      <h2 class="slide-title-text dim" style="margin-bottom: 30px;">Limitations & Future Work<span class="hide-cite">[cite: 54]</span></h2>
+      <p style="margin-bottom: 30px;">
+        <strong class="red">Limitations:</strong> Matched comparison used short fixed runs (1 epoch, 512 tokens) with a single model (qwen3.5:2b).<span class="hide-cite">[cite: 55]</span> Vulkan and ROCm Ollama versions differ (0.17.4 vs 0:17.5) tiny lama behaved differently from qwen3.5 on Vulkan, indicating model-dependent failure conditions.<span class="hide-cite">[cite: 56]</span> Results should not be generalized beyond this tested scope without further verification.<span class="hide-cite">[cite: 57]</span>
+      </p>
+      <p>
+        <strong class="blue">Future work:</strong><span class="hide-cite">[cite: 58]</span> Multi-epoch stress tests, anditional models (lim-jp, phi-3), ROCm version comparison (6.x.vs 7.x), and GGML CUDA NO PEER COPY experiments to isolate offload-path failure mechanisms.<span class="hide-cite">[cite: 59]</span> Reproducibility infrastructure workaround matrix with 15 documented cases) is available in the repo for community use<span class="hide-cite">[cite: 60]</span>
+      </p>
+    </div>
+
+    <div class="slide">
+      <div class="slide-title">
+        <div class="slide-num bg-green">7</div>
+        <h2 class="slide-title-text green">Takeaway & Key Messages<span class="hide-cite">[cite: 61]</span></h2>
+      </div>
+      <div style="display: flex; justify-content: space-between; gap: 25px; margin-top: 20px;">
+        <div style="flex: 1; background: #EEEEEE; padding: 25px; border-radius: 8px; border-top: 8px solid #1B5E20; box-shadow: 1px 1px 5px rgba(0,0,0,0.05);">
+          <h3 class="green" style="font-size: 24px; margin-top: 0;">✅ Support Status Execution Reality<span class="hide-cite">[cite: 62]</span></h3>
+          <p style="font-size: 20px;">Official exclusion does not imply impossibility. Gate matrix shows 5 of 6 layers allow gfx500 execution.<span class="hide-cite">[cite: 63]</span> Residual code paths and shipped artifacts make partial execution possible.<span class="hide-cite">[cite: 64]</span></p>
+        </div>
+        <div style="flex: 1; background: #EEEEEE; padding: 25px; border-radius: 8px; border-top: 8px solid #0D47A1; box-shadow: 1px 1px 5px rgba(0,0,0,0.05);">
+          <h3 class="blue" style="font-size: 24px; margin-top: 0;">💡 Backend Choice Dominates<span class="hide-cite">[cite: 65]</span></h3>
+          <p style="font-size: 20px;">On the same Vega device with qwen3.5:26, ROCm/HIP passed all num_gpu conditions within tested scope.<span class="hide-cite">[cite: 66]</span> Vulkan failed when num gpu>1 (GPU offload active). Failure is backend-specific, not architecture-wide. Model dependency (tinyllarna vs qwen) exists<span class="hide-cite">[cite: 67]</span></p>
+        </div>
+        <div style="flex: 1; background: #EEEEEE; padding: 25px; border-radius: 8px; border-top: 8px solid #E65100; box-shadow: 1px 1px 5px rgba(0,0,0,0.05);">
+          <h3 class="orange" style="font-size: 24px; margin-top: 0;">🔬 Reproducibility Before Claims<span class="hide-cite">[cite: 68]</span></h3>
+          <p style="font-size: 20px;">All claims backed by specific run ids and code traces.<span class="hide-cite">[cite: 69]</span> Key runs run 20260307 012643 ... workaround matrix (15 cases) in repo.<span class="hide-cite">[cite: 70]</span></p>
+        </div>
+      </div>
+      <p class="dim" style="text-align: center; font-style: italic; margin-top: 50px; font-size: 26px;">Unsupported Impossible. | Legacy Poor. | Backend choice matters.<span class="hide-cite">[cite: 71]</span></p>
+    </div>
+
+    <div class="footer">Slide <span id="current">1</span> / 13 (Use Arrow Keys ← → to navigate)</div>
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const numDisplay = document.getElementById('current');
+    
+    function updateSlide() {
+      slides.forEach((s, i) => {
+        s.classList.remove('active');
+        if(i === currentSlide) s.classList.add('active');
+      });
+      if(numDisplay) numDisplay.textContent = currentSlide + 1;
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+        currentSlide = (currentSlide + 1) % slides.length;
+        updateSlide();
+        e.preventDefault();
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') {
+        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+        updateSlide();
+        e.preventDefault();
+      }
+    });
+  </script>
+</body>
+</html>
