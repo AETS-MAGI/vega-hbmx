@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Backend-Dependent Behavior on Legacy HBM GPUs (Advanced)</title>
+<style>
+  body { margin: 0; padding: 0; font-family: 'Calibri', 'Arial', sans-serif; background-color: #FFFFFF; color: #212121; overflow: hidden; }
+  .slide-container { position: relative; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; background-color: #FFFFFF; }
+  .slide { display: none; width: 90%; max-width: 1400px; height: 85%; background: #F5F5F5; border-radius: 12px; box-shadow: 2px 2px 15px rgba(0,0,0,0.1); padding: 50px; box-sizing: border-box; flex-direction: column; }
+  .slide.active { display: flex; }
+
+  .slide-title { display: flex; align-items: center; margin-bottom: 20px; }
+  .slide-num { width: 55px; height: 55px; border-radius: 50%; color: #FFFFFF; font-family: 'Arial', sans-serif; font-size: 26px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 15px; flex-shrink: 0; }
+  .slide-title-text { font-family: 'Arial Black', sans-serif; font-size: 34px; font-weight: bold; margin: 0; }
+
+  .red { color: #B71C1C; } .bg-red { background-color: #B71C1C; }
+  .blue { color: #0D47A1; } .bg-blue { background-color: #0D47A1; }
+  .green { color: #1B5E20; } .bg-green { background-color: #1B5E20; }
+  .orange { color: #E65100; } .bg-orange { background-color: #E65100; }
+  .dim { color: #616161; }
+
+  ul { font-size: 22px; line-height: 1.5; padding-left: 28px; }
+  li { margin-bottom: 10px; }
+  p { font-size: 20px; line-height: 1.4; }
+
+  table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 18px; background: #FFFFFF; box-shadow: 1px 1px 5px rgba(0,0,0,0.05); }
+  th, td { border: 1px solid #BDBDBD; padding: 9px 11px; text-align: left; vertical-align: top; }
+  th { color: #FFFFFF; font-family: 'Arial', sans-serif; }
+
+  .three-col { display: flex; justify-content: space-between; gap: 18px; margin-top: 10px; }
+  .card { flex: 1; background: #EEEEEE; padding: 16px; border-radius: 8px; box-shadow: 1px 1px 5px rgba(0,0,0,0.05); }
+
+  .takeaway { background: #E3F2FD; border-left: 5px solid #0D47A1; padding: 8px 14px; margin-top: auto; font-size: 17px; font-style: italic; color: #0D47A1; }
+  .caution  { background: #FFF3E0; border-left: 5px solid #E65100; padding: 8px 14px; margin-top: 10px; font-size: 16px; }
+  .plain-box { background: #EEF4FF; border-left: 5px solid #1565C0; border-radius: 8px; padding: 10px 14px; margin-top: 10px; }
+  .plain-title { font-size: 17px; font-weight: bold; color: #0D47A1; margin-bottom: 4px; }
+  .plain-list { margin: 0; padding-left: 20px; font-size: 16px; line-height: 1.45; }
+  .plain-list li { margin-bottom: 4px; }
+
+  .toolbar { position: absolute; top: 18px; right: 24px; z-index: 20; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.92); border: 1px solid #D0D0D0; border-radius: 999px; padding: 8px 12px; box-shadow: 1px 1px 8px rgba(0,0,0,0.08); }
+  .toolbar-label { font-size: 14px; color: #424242; font-family: 'Arial', sans-serif; }
+  .lang-toggle { display: inline-flex; gap: 6px; }
+  .lang-btn { border: 1px solid #BDBDBD; background: #FAFAFA; color: #424242; border-radius: 999px; padding: 6px 12px; font-size: 14px; cursor: pointer; font-family: 'Arial', sans-serif; }
+  .lang-btn.active { background: #0D47A1; color: #FFFFFF; border-color: #0D47A1; }
+
+  .footer { position: absolute; bottom: 20px; right: 30px; font-size: 18px; color: #616161; font-family: 'Arial', sans-serif; }
+</style>
+</head>
+<body>
+  <div class="slide-container">
+    <div class="toolbar">
+      <span class="toolbar-label" id="lang-label">Language</span>
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="lang-en" type="button">English</button>
+        <button class="lang-btn" id="lang-ja" type="button">日本語</button>
+      </div>
+    </div>
+
+    <!-- 0: Title -->
+    <div class="slide active" style="background: #B71C1C; color: #FFFFFF; justify-content: center; align-items: center; text-align: center;">
+      <h1 style="font-family: 'Arial Black', sans-serif; font-size: 52px; margin-bottom: 10px;">Backend-Dependent Behavior on Legacy HBM GPUs</h1>
+      <h2 style="font-family: 'Calibri', sans-serif; font-size: 27px; color: #FFCDD2; font-style: italic; font-weight: normal; margin-bottom: 45px;">Advanced Evidence Edition: ROCm/HIP vs Vulkan on Vega/gfx900 — Within a Single Tested Setup</h2>
+      <p style="font-size: 25px; margin-bottom: 15px; margin-top: 0;">Akira Ito | AETS (Akatsuki Enterprise Technology Solutions) | aets-giken@hiroshima-aktk.com</p>
+      <p style="font-size: 22px; color: #FFCDD2; margin: 0;">IEICE GNW-68 | Kyushu Sangyo University | March 9, 2026</p>
+    </div>
+
+    <!-- 1: Background -->
+    <div class="slide">
+      <div class="slide-title"><div class="slide-num bg-red">1</div><h2 class="slide-title-text red">Background & Motivation</h2></div>
+      <ul>
+        <li>In ROCm 7.2, gfx900 is not listed in the official support matrix; however, this local environment retains residual build/runtime paths and shipped artifacts.</li>
+        <li>For students and small labs, the key question is whether execution is possible, stable, and reproducible under specific configurations.</li>
+        <li>We built a matched dual-backend testbed on the same Vega device to separate support policy, backend choice, and runtime behavior.</li>
+        <li style="font-weight: bold;">Goal: examine whether "not officially supported" and "not executable in any configuration" are the same statement — within this tested setup.</li>
+      </ul>
+      <div class="takeaway">Scope is explicitly this environment + these runs. No general claim about Vega across all setups is made.</div>
+    </div>
+
+    <!-- 2: Problem Statement -->
+    <div class="slide">
+      <div class="slide-title"><div class="slide-num bg-red">2</div><h2 class="slide-title-text red">Problem Statement</h2></div>
+      <ul>
+        <li>Legacy Vega GPUs are often treated as categorically unsuitable for modern ROCm workloads.</li>
+        <li>Success or failure may be decided at different layers: distribution presets, build targets, init validation, backend macros, or runtime compute paths.</li>
+        <li style="font-weight: bold;">We ask: in these runs, is the observed failure caused by Vega hardware itself, or by a specific backend compute path under matched conditions?</li>
+      </ul>
+      <div class="takeaway">Backend path isolation — not hardware condemnation — is the diagnostic question.</div>
+    </div>
+
+    <!-- 3: Gate Matrix -->
+    <div class="slide">
+      <div class="slide-title"><div class="slide-num bg-blue">3</div><h2 class="slide-title-text blue">Evidence from Investigation: gfx900 Gate Matrix</h2></div>
+      <table>
+        <tr><th class="bg-blue">Layer</th><th class="bg-blue">Current handling of gfx900</th><th class="bg-blue">Blocks / Allows</th></tr>
+        <tr><td><strong>Official matrix (ROCm 7.2)</strong></td><td>gfx900 not listed in GPU target list</td><td class="red"><strong>Blocks (official scope)</strong></td></tr>
+        <tr><td><strong>CMake filter (ollama)</strong></td><td>CMakeLists.txt:127 default regex <code>^gfx(94[012]|101[02]|1030|110[012]|120[01])$</code> — gfx900 excluded; manual <code>AMDGPU_TARGETS=gfx900</code> override possible</td><td class="orange"><strong>Blocks default / Allows manual</strong></td></tr>
+        <tr><td><strong>rocBLAS artifacts</strong></td><td>Kernels.so-000-gfx900.hsaco found in /usr/lib/ollama/rocblas/library/</td><td class="green"><strong>Allows (this env)</strong></td></tr>
+        <tr><td><strong>Runner init validation</strong></td><td>Journal: "Device 0: AMD Radeon RX Vega, gfx900:xnack- (0x900), VMM: no, Wave Size: 64" — recognized as valid agent</td><td class="green"><strong>Allows (this env)</strong></td></tr>
+        <tr><td><strong>Source macros</strong></td><td>common.cuh:65 <code>GGML_CUDA_CC_VEGA=0x1000900</code>; <code>__gfx900__</code> dp4a path retained (software emulation via inline asm)</td><td class="green"><strong>Allows</strong></td></tr>
+        <tr><td><strong>Runtime execution</strong></td><td>In the matched runs, ROCm/HIP (override-assisted): all tested num_gpu values OK. Vulkan: SIGSEGV for num_gpu &gt;= 1.</td><td class="orange"><strong>Backend-dependent (tested scope)</strong></td></tr>
+      </table>
+      <p class="dim" style="font-size:16px; margin-top:8px;">Source: work_log/investigations/2026-03-07_gfx900_gate_matrix.md | ollama/CMakeLists.txt:127 | ggml-cuda/common.cuh:65</p>
+      <div class="takeaway">Five of six examined layers retained paths allowing execution in this environment. Official non-listing ≠ immediate impossibility — but scope is restricted to this setup.</div>
+    </div>
+
+    <!-- 4: CMake Filter -->
+    <div class="slide">
+      <div class="slide-title"><div class="slide-num bg-blue">4</div><h2 class="slide-title-text blue">CMake Default Filter: Exact Source Evidence</h2></div>
+      <p style="font-size:18px; margin-bottom:8px;"><strong>Source:</strong> <code>ollama/CMakeLists.txt:121-128</code></p>
+      <pre style="background:#1a1a2e; color:#e0e0e0; padding:16px; border-radius:8px; font-size:15px; line-height:1.6; overflow:auto;">check_language(HIP)
+if(CMAKE_HIP_COMPILER)
+    if(NOT AMDGPU_TARGETS)
+        find_package(hip REQUIRED)
+        list(FILTER AMDGPU_TARGETS INCLUDE REGEX
+            "^gfx(94[012]|101[02]|1030|110[012]|120[01])$")
+    endif()
+    if(AMDGPU_TARGETS)
+        add_subdirectory(.../ggml-hip)</pre>
+      <table style="margin-top:12px;">
+        <tr><th class="bg-blue">Regex group</th><th class="bg-blue">Targets included</th><th class="bg-blue">Architecture</th></tr>
+        <tr><td><code>94[012]</code></td><td>gfx940, gfx941, gfx942</td><td>CDNA3 (MI300)</td></tr>
+        <tr><td><code>101[02]</code></td><td>gfx1010, gfx1012</td><td>RDNA1 (RX 5000)</td></tr>
+        <tr><td><code>1030</code></td><td>gfx1030</td><td>RDNA2 (RX 6000)</td></tr>
+        <tr><td><code>110[012]</code></td><td>gfx1100, gfx1101, gfx1102</td><td>RDNA3 (RX 7000)</td></tr>
+        <tr><td><code>120[01]</code></td><td>gfx1200, gfx1201</td><td>RDNA4 (RX 9000)</td></tr>
+        <tr><td class="red"><strong>(absent)</strong></td><td class="red"><strong>gfx900 — NOT included</strong></td><td class="red"><strong>GCN5 / Vega56/64</strong></td></tr>
+      </table>
+      <div class="takeaway">gfx900 is excluded from ollama's default HIP build. The installed libggml-hip.so required an explicit AMDGPU_TARGETS override or pre-compiled artifact.</div>
+    </div>
+
+    <!-- 5: num_gpu Semantics -->
+    <div class="slide">
+      <div class="slide-title"><div class="slide-num bg-blue">5</div><h2 class="slide-title-text blue">Code Trace: num_gpu Semantics (Exact Source Lines)</h2></div>
+      <table>
+        <tr><th class="bg-blue">Stage</th><th class="bg-blue">Code location</th><th class="bg-blue">Exact content / Interpretation</th></tr>
+        <tr><td><strong>Python Client</strong></td><td>ollama/_types.py:104-110</td><td><code>class Options: num_gpu: Optional[int] = None</code> — raw int, no semantic annotation</td></tr>
+        <tr><td><strong>API call</strong></td><td>ollama/_client.py:281-305</td><td>Passed as <code>options=options</code> in <code>/api/generate</code> POST body</td></tr>
+        <tr><td><strong>Go type</strong></td><td>api/types.go:604</td><td><code>NumGPU int `json:"num_gpu,omitempty"`</code> in Runner struct</td></tr>
+        <tr><td><strong>Default value</strong></td><td>api/types.go:1075</td><td><code>NumGPU: -1, // -1 here indicates that NumGPU should be set dynamically</code></td></tr>
+        <tr><td><strong>CLI help text</strong></td><td>cmd/interactive.go:112</td><td><code>"/set parameter num_gpu &lt;int&gt;   The number of layers to send to the GPU"</code></td></tr>
+        <tr><td><strong>Server</strong></td><td>llm/server.go:992, 1063-1076</td><td><code>assignLayers(..., s.options.NumGPU, ...)</code>; requestedLayers upper-bounded by len(layers)</td></tr>
+        <tr><td><strong>Runner</strong></td><td>runner/llamarunner/runner.go:906-924</td><td><code>numGPU += len(layers.Layers)</code>; <code>NumGpuLayers: numGPU</code></td></tr>
+        <tr><td><strong>Bridge</strong></td><td>llama/llama.go:264-267</td><td><code>cparams.n_gpu_layers = C.int(params.NumGpuLayers)</code></td></tr>
+        <tr><td><strong>llama.cpp API</strong></td><td>include/llama.h:289</td><td><code>int32_t n_gpu_layers; // number of layers to store in VRAM, a negative value means all layers</code></td></tr>
+      </table>
+      <div class="takeaway">num_gpu = offloaded layer count, not GPU device count. Journal confirms: "offloaded 2/25 layers to GPU" when num_gpu=2. Do not treat num_gpu&gt;=2 as multi-GPU evidence.</div>
+    </div>
+
+    <!-- 6: HIP dp4a -->
+    <div class="slide">
+      <div class="slide-title"><div class="slide-num bg-orange">6</div><h2 class="slide-title-text orange">HIP Backend: gfx900 Architecture Constants & dp4a Emulation</h2></div>
+      <table style="margin-bottom:10px;">
+        <tr><th class="bg-orange">Constant / Macro</th><th class="bg-orange">Value</th><th class="bg-orange">Comment (ggml-cuda/common.cuh)</th></tr>
+        <tr><td><code>GGML_CUDA_CC_GCN4</code></td><td>0x1000803</td><td>Tonga/Fiji/Polaris — minimum for fast fp16 (line 64)</td></tr>
+        <tr><td><code><strong>GGML_CUDA_CC_VEGA</strong></code></td><td class="orange"><strong>0x1000900</strong></td><td><strong>Vega56/64 — minimum for fp16 dual issue (line 65)</strong></td></tr>
+        <tr><td><code>GGML_CUDA_CC_VEGA20</code></td><td>0x1000906</td><td>MI50/Radeon VII — minimum for dp4a hardware (line 66)</td></tr>
+        <tr><td><code>GGML_CUDA_CC_IS_GCN(cc)</code></td><td>OFFSET_AMD &lt; cc &lt; CDNA1</td><td>gfx900 falls in GCN range, NOT CDNA (line 86)</td></tr>
+      </table>
+      <p style="font-size:17px; margin-bottom:6px;"><strong>dp4a dispatch in <code>ggml_cuda_dp4a()</code> (common.cuh:666–704):</strong></p>
+      <table>
+        <tr><th class="bg-orange">Condition</th><th class="bg-orange">Implementation</th><th class="bg-orange">Cost</th></tr>
+        <tr><td>CDNA / RDNA2 / <code>__gfx906__</code></td><td><code>__builtin_amdgcn_sdot4(a, b, c, false)</code></td><td class="green">1 instruction (hardware)</td></tr>
+        <tr><td>RDNA3 / RDNA4</td><td><code>__builtin_amdgcn_sudot4(...)</code></td><td class="green">1 instruction (hardware)</td></tr>
+        <tr><td class="orange"><strong><code>RDNA1 || __gfx900__</code></strong></td><td class="orange"><strong>6-insn inline asm: v_mul_i32_i24 ×4 + v_add3_u32 ×2</strong></td><td class="red">Software emulation (line 672–685)</td></tr>
+      </table>
+      <p class="dim" style="font-size:16px; margin-top:8px;"><code>V_DOT2_F32_F16_AVAILABLE</code> (common.cuh:715) also excludes gfx900 — no hardware fp16 dot product instruction.</p>
+      <div class="takeaway">gfx900 executes in the HIP backend but uses software dp4a emulation — a documented architectural limitation, not a bug.</div>
+    </div>
+
+    <!-- 7: Engineering Challenges -->
+    <div class="slide">
+      <div class="slide-title"><div class="slide-num bg-orange">7</div><h2 class="slide-title-text orange">Engineering Challenges</h2></div>
+      <ul>
+        <li>gfx900 is not listed in the ROCm 7.2 official support matrix, yet residual build/runtime paths remain in this environment — distinguishing policy from capability requires layered analysis.</li>
+        <li><code>num_gpu</code> is often misread as device count, causing wrong failure attribution when num_gpu&gt;=2 is tested.</li>
+        <li>Under matched qwen3.5:2b conditions in these runs, the same Vega hardware shows different outcomes across backends — hardware alone does not determine the result.</li>
+        <li>ROCm results in this setup depend on <code>HSA_OVERRIDE_GFX_VERSION=9.0.0</code>; this is an override-assisted configuration, not a standard deployment.</li>
+        <li>Diagnosis requires layered evidence (source, logs, run artifacts), not single-run anecdotes.</li>
+      </ul>
+      <div class="takeaway">The three independent variables — support policy, backend choice, and override configuration — must be held separate in any causal claim.</div>
+    </div>
+
+    <!-- 8: Evidence-First Strategy -->
+    <div class="slide">
+      <div class="slide-title"><div class="slide-num bg-orange">8</div><h2 class="slide-title-text orange">Evidence-First Investigation Strategy</h2></div>
+      <table>
+        <tr><th class="bg-orange">Layer</th><th class="bg-orange">Intervention</th><th class="bg-orange">Effect</th></tr>
+        <tr><td class="red"><strong>L1: Distribution / Build</strong></td><td>Inspect support matrix, presets, target filters, installed artifacts</td><td>Locate where gfx900 is blocked/allowed at the build layer</td></tr>
+        <tr><td class="orange"><strong>L2: API Semantics</strong></td><td>Trace num_gpu from client → server → runner → llama.cpp</td><td>Establish correct meaning: offloaded layers, not device count</td></tr>
+        <tr><td class="blue"><strong>L3: Runtime Comparison</strong></td><td>Matched ROCm (:11435) vs Vulkan (:11434) — same hardware, same model, same workload</td><td>Isolate backend-specific failure in these runs</td></tr>
+        <tr><td class="green"><strong>L4: Evidence Capture</strong></td><td>result.json, journal, backend_probe, rocm-smi, ollama ps</td><td>Reproducible claims with run_id and file-path linkage</td></tr>
+      </table>
+      <p class="dim" style="font-style:italic; margin-top:10px;">Principle: falsifiable diagnosis over optimistic one-off success.</p>
+      <div class="takeaway">Each layer answers a distinct question. Collapsing them leads to misattribution.</div>
+    </div>
+
+    <!-- 9: Experimental Setup -->
+    <div class="slide">
+      <div class="slide-title"><div class="slide-num bg-green">9</div><h2 class="slide-title-text green">Experimental Setup</h2></div>
+      <table>
+        <tr><th class="bg-green">Component</th><th class="bg-green">Specification</th></tr>
+        <tr><td><strong>GPU</strong></td><td>AMD Radeon RX Vega 56 (gfx900), 8 GB HBM2</td></tr>
+        <tr><td><strong>OS / Kernel</strong></td><td>EndeavourOS, Kernel 6.12.74-1-lts</td></tr>
+        <tr><td><strong>ROCm endpoint</strong></td><td>Ollama 0.17.5 (03-07) / 0.17.6 (03-08) via :11435, libggml-hip.so</td></tr>
+        <tr><td><strong>Vulkan endpoint</strong></td><td>Ollama 0.17.4 via :11434, libggml-vulkan.so</td></tr>
+        <tr><td><strong>Model / workload</strong></td><td>qwen3.5:2b, NUM_PREDICT=512, num_gpu=0,1,2,-1</td></tr>
+        <tr><td><strong>ROCm override</strong></td><td class="orange"><strong>HSA_OVERRIDE_GFX_VERSION=9.0.0 (ROCm service only; Vulkan service: no override applied)</strong></td></tr>
+      </table>
+      <div class="caution"><strong>Override note:</strong> The ROCm result was obtained under an override-assisted service configuration (<code>HSA_OVERRIDE_GFX_VERSION=9.0.0</code>). This supports conditional executability in this setup — not official support restoration. The Vulkan service ran without any override.</div>
+      <div class="takeaway">Two services, same hardware. Matched one-epoch runs were repeated across two days; ROCm result is override-dependent, Vulkan result is not.</div>
+    </div>
+
+    <!-- 10: Matched Results -->
+    <div class="slide">
+      <div class="slide-title"><div class="slide-num bg-green">10</div><h2 class="slide-title-text green">Matched Results — Reproduced Across Two Days</h2></div>
+      <table>
+        <tr><th class="bg-green">num_gpu</th><th class="bg-green">ROCm (:11435) run_20260307_012643 <span style="font-weight:normal;font-size:14px;">[override-assisted]</span></th><th class="bg-green">Vulkan (:11434) run_20260307_013050 <span style="font-weight:normal;font-size:14px;">[no override]</span></th></tr>
+        <tr><td><strong>0</strong></td><td class="green"><strong>OK</strong> (46.689s, eval_count=512)</td><td class="green"><strong>OK</strong> (45.002s, eval_count=512)</td></tr>
+        <tr><td><strong>1</strong></td><td class="green"><strong>OK</strong> (48.742s)</td><td class="red"><strong>HTTP 500 + SIGSEGV</strong> (2.672s)</td></tr>
+        <tr><td><strong>2</strong></td><td class="green"><strong>OK</strong> (47.748s)</td><td class="red"><strong>HTTP 500 + SIGSEGV</strong> (7.640s)</td></tr>
+        <tr><td><strong>-1</strong></td><td class="green"><strong>OK</strong> (44.265s)</td><td class="red"><strong>HTTP 500 + SIGSEGV</strong> (9.816s)</td></tr>
+      </table>
+      <div class="plain-box">
+        <div class="plain-title">Easy reading guide (non-specialist)</div>
+        <ul class="plain-list">
+          <li><strong>num_gpu</strong> means how many "thinking blocks" are sent to GPU, not how many GPU cards exist.</li>
+          <li><strong>OK</strong> means the answer finished normally. <strong>HTTP 500 + SIGSEGV</strong> means the program crashed during calculation.</li>
+          <li>When <strong>num_gpu=0</strong>, both backends work. When <strong>num_gpu is 1 or more</strong>, only Vulkan crashes in this qwen test.</li>
+          <li><strong>Seconds (s)</strong> are total time; in error rows this is mostly "time until crash".</li>
+        </ul>
+      </div>
+      <p style="font-size:17px; margin-top:10px;"><strong>Matched rerun on 2026-03-08:</strong> ROCm run_20260308_201305 (0.17.6, override-assisted) again passed all tested values; Vulkan run_20260308_201641 again failed for num_gpu=1/2/-1 with nearly identical crash times (2.70 / 7.64 / 9.81s).</p>
+      <p style="font-size:17px; margin-top:6px;"><strong>Observation (in these matched qwen3.5:2b runs):</strong> Vulkan failure is conditional on num_gpu &gt;= 1, not universal. ROCm/HIP passed all tested values under override-assisted configuration on both days.</p>
+      <div class="takeaway">The ROCm/HIP vs Vulkan difference for qwen3.5:2b is no longer a one-off matched run; the same pattern was reproduced on 2026-03-07 and 2026-03-08.</div>
+    </div>
+
+    <!-- 11: Run-Level Data -->
+    <div class="slide">
+      <div class="slide-title"><div class="slide-num bg-green">11</div><h2 class="slide-title-text green">Run-Level Data Snapshot</h2></div>
+      <table>
+        <tr><th class="bg-green">Run</th><th class="bg-green">num_gpu</th><th class="bg-green">status</th><th class="bg-green">elapsed_sec</th><th class="bg-green">eval_duration(ns)</th><th class="bg-green">response_chars</th></tr>
+        <tr><td>run_20260307_012643 (ROCm)</td><td>0</td><td class="green"><strong>ok</strong></td><td>46.689</td><td>42016540155</td><td>0</td></tr>
+        <tr><td>run_20260307_012643 (ROCm)</td><td>1</td><td class="green"><strong>ok</strong></td><td>48.742</td><td>43853670072</td><td>1809</td></tr>
+        <tr><td>run_20260307_012643 (ROCm)</td><td>2</td><td class="green"><strong>ok</strong></td><td>47.748</td><td>42307474936</td><td>1951</td></tr>
+        <tr><td>run_20260307_012643 (ROCm)</td><td>-1</td><td class="green"><strong>ok</strong></td><td>44.265</td><td>42084598410</td><td>1849</td></tr>
+        <tr><td>run_20260307_013050 (Vulkan)</td><td>0</td><td class="green"><strong>ok</strong></td><td>45.002</td><td>41778665097</td><td>0</td></tr>
+        <tr><td>run_20260307_013050 (Vulkan)</td><td>1/2/-1</td><td class="red"><strong>error</strong></td><td>2.672 / 7.640 / 9.816</td><td>—</td><td>—</td></tr>
+        <tr><td>run_20260308_201305 (ROCm)</td><td>0/1/2/-1</td><td class="green"><strong>all ok</strong></td><td>47.98 / 49.18 / 48.30 / 45.17</td><td>512 each</td><td>normal completion</td></tr>
+        <tr><td>run_20260308_201641 (Vulkan)</td><td>0</td><td class="green"><strong>ok</strong></td><td>45.53</td><td>512</td><td>normal completion</td></tr>
+        <tr><td>run_20260308_201641 (Vulkan)</td><td>1/2/-1</td><td class="red"><strong>error</strong></td><td>2.70 / 7.64 / 9.81</td><td>—</td><td>—</td></tr>
+        <tr><td>run_20260308_201924 (Vulkan)</td><td>0 × 5 epochs</td><td class="green"><strong>5/5 ok</strong></td><td>50.03 / 42.46 / 43.18 / 42.67 / 43.07</td><td>512 each</td><td>no crash</td></tr>
+      </table>
+      <div class="plain-box">
+        <div class="plain-title">What each column tells us (simple words)</div>
+        <ul class="plain-list">
+          <li><strong>Run</strong>: one experiment batch ID (like a notebook page number).</li>
+          <li><strong>num_gpu</strong>: how many model layers are moved to GPU.</li>
+          <li><strong>status</strong>: success or failure.</li>
+          <li><strong>elapsed_sec</strong>: wall-clock seconds until finish (or until crash).</li>
+          <li><strong>eval_duration(ns)</strong>: model calculation time only; bigger number means slower compute.</li>
+          <li><strong>response_chars</strong>: output text length. Zero does not always mean crash.</li>
+        </ul>
+      </div>
+      <p class="dim" style="font-size:17px; margin-top:8px;">Data source: vega_work_log/*/result.json | 16 matched-record rows extracted from the full log set.</p>
+      <div class="takeaway">Raw numbers now include one matched rerun and a 5-epoch Vulkan num_gpu=0 stability check. Error elapsed time reflects time-to-crash, not inference time.</div>
+    </div>
+
+    <!-- 12: Vulkan Failure Timeline -->
+    <div class="slide">
+      <div class="slide-title"><div class="slide-num bg-green">12</div><h2 class="slide-title-text green">Vulkan Failure Timeline (Journal Evidence)</h2></div>
+      <table>
+        <tr><th class="bg-green">Timestamp (JST)</th><th class="bg-green">Event</th><th class="bg-green">Meaning</th></tr>
+        <tr><td>01:31:37</td><td>load_backend: libggml-vulkan.so loaded; "int dot: 0 | matrix cores: none"</td><td>Backend init completed; hardware feature caps confirmed</td></tr>
+        <tr><td>01:31:38</td><td>offloaded 1/25 layers to GPU (Vulkan0); compute graph Vulkan0: 257.1 MiB</td><td>Model load and GPU allocation completed normally</td></tr>
+        <tr><td>01:31:39</td><td>llama runner started in 1.72 seconds</td><td>Runner startup succeeded</td></tr>
+        <tr><td>01:31:39</td><td>SIGSEGV: segmentation violation (PC=0x7efbc5b801b5, addr=0x3a8000)</td><td>Runner process crash — first inference batch, not during load</td></tr>
+        <tr><td>01:31:39</td><td>ggml_backend_sched_graph_compute_async → computeBatch(runner.go:716)</td><td>Crash in compute graph scheduling path, via cgo</td></tr>
+        <tr><td>01:31:39</td><td>server.go: post predict … EOF</td><td>API side sees runner termination as EOF → HTTP 500</td></tr>
+        <tr><td>01:31:47 / 01:31:57</td><td>Same sequence repeats for num_gpu=2 and -1</td><td>Consistent pattern within these runs for all GPU-offload cases</td></tr>
+      </table>
+      <p class="dim" style="font-size:16px; margin-top:8px;">Source: vega_work_log/run_20260307_013050/ollama_journal_since_start.txt</p>
+      <div class="takeaway">Crash occurs at first compute, not at load — consistent with a compute-path issue, not an allocation or init issue.</div>
+    </div>
+
+    <!-- 13: Full Stack Trace -->
+    <div class="slide">
+      <div class="slide-title"><div class="slide-num bg-red">13</div><h2 class="slide-title-text red">Vulkan Crash: Full Stack Trace (Journal, 01:31:39 JST)</h2></div>
+      <p style="font-size:17px; margin-bottom:8px;"><strong>From:</strong> <code>vega_work_log/run_20260307_013050/ollama_journal_since_start.txt</code> — immediately after runner reported ready</p>
+      <pre style="background:#1a1a2e; color:#e0e0e0; padding:14px; border-radius:8px; font-size:13.5px; line-height:1.55; overflow:auto;">SIGSEGV: segmentation violation
+PC=0x7efbc5b801b5 m=41 sigcode=1 addr=0x3a8000
+signal arrived during cgo execution
+
+goroutine 853 [syscall]:
+runtime.cgocall(0x55e54a0e2710, 0xc0000bdaa0)
+    runtime/cgocall.go:167
+github.com/ollama/ollama/ml/backend/ggml._Cfunc_ggml_backend_sched_graph_compute_async(...)
+    _cgo_gotypes.go:979
+github.com/ollama/ollama/ml/backend/ggml.(*Context).ComputeWithNotify(...)
+    ml/backend/ggml/ggml.go:825 +0x1b2
+github.com/ollama/ollama/runner/ollamarunner.(*Server).computeBatch(...)
+    runner/ollamarunner/runner.go:716 +0x862
+github.com/ollama/ollama/runner/ollamarunner.(*Server).run.gowrap1()
+    runner/ollamarunner/runner.go:459</pre>
+      <p style="font-size:17px; margin-top:8px;"><strong class="red">Crash point:</strong> C function <code>ggml_backend_sched_graph_compute_async</code> called via cgo. Go runtime receives SIGSEGV and terminates the runner. The exact Vulkan API call within that C function is not resolved from this trace alone.</p>
+      <div class="takeaway">Stack trace is factual. Root cause within ggml_backend_sched_graph_compute_async (C/Vulkan side) remains unresolved — this is a stated limitation.</div>
+    </div>
+
+    <!-- 14: Targeted follow-up tests -->
+    <div class="slide">
+      <div class="slide-title"><div class="slide-num bg-green">14</div><h2 class="slide-title-text green">Targeted Follow-Up Tests: Model Dependence & Crash Timing</h2></div>
+      <table>
+        <tr><th class="bg-green">Test</th><th class="bg-green">Run / Condition</th><th class="bg-green">Observed result</th><th class="bg-green">Interpretation</th></tr>
+        <tr><td><strong>Model swap</strong></td><td>run_20260308_212345, Vulkan, <code>MODEL=phi4-mini:latest</code>, <code>NUM_GPU=0,1</code></td><td><code>num_gpu=0</code>: ok (18.82s, 318 tok); <code>num_gpu=1</code>: <span class="green"><strong>ok</strong></span> (31.55s, 512 tok)</td><td class="blue"><strong>Offload crash is not universal on gfx900 Vulkan; it is model/workload-dependent.</strong></td></tr>
+        <tr><td><strong>Token-count control</strong></td><td>run_20260308_212254, Vulkan, qwen3.5:2b, <code>NUM_PREDICT=128</code>, <code>NUM_GPU=1</code></td><td><span class="red"><strong>error</strong></span> at 2.858s (vs mean 2.653s at <code>NUM_PREDICT=512</code>)</td><td class="blue"><strong>Crash timing is largely independent of requested output length.</strong></td></tr>
+        <tr><td><strong>Timing statistics</strong></td><td>3 qwen3.5:2b Vulkan runs, <code>num_gpu&gt;=1</code></td><td><code>num_gpu=1</code>: 2.653s ±0.059s; <code>2</code>: 7.630s ±0.014s; <code>-1</code>: 9.819s ±0.016s</td><td class="blue"><strong>Failure timing is highly deterministic, not obviously a random race.</strong></td></tr>
+      </table>
+      <p class="dim" style="font-size:16px; margin-top:8px;">Source: run_20260308_212345, run_20260308_212254, and analysis_summary.md derived from 15 runs / 119 records in vega_work_log/.</p>
+      <div class="takeaway">Refined claim: qwen3.5:2b Q8_0 reproducibly crashes on Vulkan offload in this setup, but phi4-mini does not, and the crash timing is largely token-count independent. The failure is backend-sensitive and model-dependent.</div>
+    </div>
+
+    <!-- 15: Vulkan AMD_GCN -->
+    <div class="slide">
+      <div class="slide-title"><div class="slide-num bg-orange">15</div><h2 class="slide-title-text orange">Vulkan: gfx900 AMD_GCN Classification & Feature Impact</h2></div>
+      <table style="margin-bottom:10px;">
+        <tr><th class="bg-orange">Code location</th><th class="bg-orange">Content</th><th class="bg-orange">Impact on gfx900</th></tr>
+        <tr><td><code>ggml-vulkan.cpp:250-252</code></td><td><code>enum vk_device_architecture { OTHER, AMD_GCN, AMD_RDNA1, AMD_RDNA2, AMD_RDNA3 }</code></td><td>gfx900 → AMD_GCN branch</td></tr>
+        <tr><td><code>ggml-vulkan.cpp:296-297</code></td><td><code>if (maxSubgroupSize==64 &amp;&amp; minSubgroupSize==64) return AMD_GCN;</code></td><td>GCN wave64-only → classified AMD_GCN</td></tr>
+        <tr><td><code>ggml-vulkan.cpp:3964</code></td><td><code>use_subgroups = subgroup_arithmetic &amp;&amp; arch != AMD_GCN</code></td><td class="red">Subgroup arithmetic <strong>disabled</strong> for gfx900</td></tr>
+        <tr><td><code>ggml-vulkan.cpp:3241-3243</code></td><td>AMD_GCN + open-source driver → altered warptile: <code>{256,64,64,32,16,16,2,2,2,1,16}</code></td><td>Different matrix multiply tile parameters from RDNA</td></tr>
+        <tr><td><code>ggml-vulkan.cpp:3953-3957</code></td><td>AMD_GCN: <code>rm_stdq=2, rm_kq=4, rm_stdq_int=4</code></td><td>Different row-reduce parameters</td></tr>
+      </table>
+      <p style="font-size:17px; margin-bottom:6px;"><strong>Journal evidence (01:31:37):</strong></p>
+      <pre style="background:#1a1a2e; color:#e0e0e0; padding:10px; border-radius:6px; font-size:14px;">ggml_vulkan: 0 = AMD Radeon RX Vega (RADV VEGA10) (radv) |
+  uma: 0 | fp16: 1 | bf16: 0 | warp size: 64 |
+  shared memory: 65536 | int dot: 0 | matrix cores: none</pre>
+      <p class="dim" style="font-size:15px;"><code>int dot: 0</code> = VK_KHR_shader_integer_dot_product not hardware-accelerated. <code>matrix cores: none</code> = no cooperative matrix. Both are consistent with source-level AMD_GCN code paths.</p>
+      <div class="takeaway">Vulkan correctly identifies gfx900 as AMD_GCN and applies GCN-specific code paths. Whether those paths are crash-safe for this GPU is what these runs expose.</div>
+    </div>
+
+    <!-- 16: Deep Code Tracking -->
+    <div class="slide">
+      <div class="slide-title"><div class="slide-num bg-blue">16</div><h2 class="slide-title-text blue">Deep Code Tracking Summary (11-Point Trace)</h2></div>
+      <table>
+        <tr><th class="bg-blue">Point</th><th class="bg-blue">File / Line</th><th class="bg-blue">What it establishes</th></tr>
+        <tr><td>1–2</td><td>ollama/_types.py:104-110, _client.py:281-305</td><td>num_gpu is a load-time option forwarded as-is to /api/generate; no GPU-count semantics in client</td></tr>
+        <tr><td>3–4</td><td>ollama/api/types.go:600-608, 1071-1076</td><td>NumGPU belongs to model-load options; default -1 means dynamic policy, not "use all GPUs"</td></tr>
+        <tr><td>5</td><td>ollama/cmd/interactive.go:112</td><td>CLI defines num_gpu explicitly as "the number of layers to send to the GPU"</td></tr>
+        <tr><td>6–7</td><td>ollama/llm/server.go:992, 1063-1076</td><td>NumGPU is passed as requestedLayers; capped at len(layers) — confirms layer semantics</td></tr>
+        <tr><td>8</td><td>runner/llamarunner/runner.go:906-924</td><td>NumGpuLayers accumulated from layer counts per device — not device count</td></tr>
+        <tr><td>9–11</td><td>llama/llama.go:264-267, include/llama.h:289</td><td>n_gpu_layers: "number of layers to store in VRAM; negative value means all layers"</td></tr>
+      </table>
+      <div class="takeaway">Nine independent source points converge on the same conclusion: num_gpu controls layer offload count, not GPU device selection.</div>
+    </div>
+
+    <!-- 17: Failure Diagnosis -->
+    <div class="slide">
+      <div class="slide-title"><div class="slide-num bg-red">17</div><h2 class="slide-title-text red">Failure Diagnosis</h2></div>
+      <table style="margin-bottom: 14px;">
+        <tr><th style="background-color: #7B241C;">Hypothesis</th><th style="background-color: #7B241C;">Expected evidence</th><th style="background-color: #7B241C;">Observed (in these runs)</th></tr>
+        <tr><td>Vega is generally unusable</td><td>Both backends fail on same GPU</td><td class="green"><strong>Contradicted: ROCm/HIP succeeded in these runs</strong></td></tr>
+        <tr><td>num_gpu means GPU count</td><td>Failure implies multi-GPU entry</td><td class="green"><strong>Contradicted: code trace establishes layer-count semantics</strong></td></tr>
+        <tr><td class="orange"><strong>Model-/workload-dependent Vulkan compute-path issue on AMD_GCN</strong></td><td>qwen3.5:2b fails at first compute batch via cgo, while phi4-mini completes at num_gpu=1</td><td class="red"><strong>Consistent with observed evidence</strong></td></tr>
+      </table>
+      <h3 class="blue" style="font-size:22px; margin-bottom:8px;">Three-Tier Verdict (Based on Collected Evidence)</h3>
+      <table>
+        <tr><th class="bg-blue">Tier</th><th class="bg-blue">Statement</th></tr>
+        <tr><td class="red"><strong>1. Official support</strong></td><td>gfx900 is not officially supported in ROCm 7.2 or ollama's default build targets.</td></tr>
+        <tr><td class="orange"><strong>2. Conditional executability</strong></td><td>In this environment, with HSA_OVERRIDE_GFX_VERSION=9.0.0 and pre-existing artifacts, ROCm/HIP ran successfully across all tested num_gpu values on two matched-run days.</td></tr>
+        <tr><td class="blue"><strong>3. Backend-dependent stability</strong></td><td>Under matched qwen3.5:2b conditions across two days, Vulkan SIGSEGV'd for num_gpu&gt;=1 while ROCm/HIP did not; Vulkan remained stable at num_gpu=0, including a 5-epoch run. A phi4-mini follow-up completed at num_gpu=1, indicating model dependence.</td></tr>
+      </table>
+      <div class="takeaway">The three tiers are independent claims. Tier 2 does not contradict Tier 1; Tier 3 is now supported by two matched qwen runs, a 5-epoch Vulkan num_gpu=0 control, a phi4-mini counterexample, and deterministic crash-timing statistics.</div>
+    </div>
+
+    <!-- 18: Reproducibility Package -->
+    <div class="slide">
+      <div class="slide-title"><div class="slide-num bg-orange">18</div><h2 class="slide-title-text orange">Reproducibility Package</h2></div>
+      <table>
+        <tr><th class="bg-orange">Artifact</th><th class="bg-orange">Path</th><th class="bg-orange">Role</th></tr>
+        <tr><td>Primary metrics</td><td>vega_work_log/run_*/result.json</td><td>Status, latency, error_type per num_gpu case</td></tr>
+        <tr><td>Crash phase logs</td><td>vega_work_log/run_*/ollama_journal_since_start.txt</td><td>Full stack trace and EOF timing</td></tr>
+        <tr><td>Backend identity</td><td>vega_work_log/run_*/backend_probe.txt</td><td>Confirms ROCm vs Vulkan service path, device recognition</td></tr>
+        <tr><td>Aggregate analysis</td><td>analyze_runs.py + analysis_summary.md</td><td>Full-log aggregation over 15 runs / 119 records; crash timing statistics and pivots</td></tr>
+        <tr><td>Code semantics trace</td><td>work_log/investigations/2026-03-07_numgpu_semantics_trace.md</td><td>Line-level evidence for num_gpu semantics</td></tr>
+        <tr><td>Gate analysis</td><td>work_log/investigations/2026-03-07_gfx900_gate_matrix.md</td><td>Layered block/allow model for gfx900</td></tr>
+      </table>
+      <p style="font-size:17px; margin-top:10px;"><strong>Replay command:</strong> <code>OLLAMA_HOST=http://127.0.0.1:11435|11434 EPOCHS=1 NUM_PREDICT=512 NUM_GPU=0,1,2,-1 python vega-loop_qwen_rocm.py</code></p>
+      <p style="font-size:16px; margin-top:6px;"><strong>Stability check:</strong> <code>OLLAMA_HOST=http://127.0.0.1:11434 EPOCHS=5 NUM_GPU=0 NUM_PREDICT=512 python vega-loop_qwen.py</code></p>
+      <div class="takeaway">Every claim in this deck is linked to a run_id + file path. The matched rerun, the Vulkan num_gpu=0 control, the targeted phi4-mini / NUM_PREDICT follow-ups, and the aggregate analysis are all reproducible from the current files.</div>
+    </div>
+
+    <!-- 19: Limitations -->
+    <div class="slide">
+      <div class="slide-title"><div class="slide-num bg-red">19</div><h2 class="slide-title-text red">Limitations & Future Work</h2></div>
+      <p style="margin-bottom: 10px;">
+        <strong class="red">Limitations:</strong>
+      </p>
+      <ul style="font-size:20px;">
+        <li>Matched comparison is still centered on qwen3.5:2b. However, the one-epoch matched run was reproduced on two days, Vulkan num_gpu=0 was additionally stable for 5 epochs, and phi4-mini did not reproduce the num_gpu=1 crash.</li>
+        <li>Ollama versions differ between endpoints (0.17.4 Vulkan vs 0.17.5/0.17.6 ROCm) — a potential confound remains.</li>
+        <li>ROCm result depends on <code>HSA_OVERRIDE_GFX_VERSION=9.0.0</code>; outcome without the override is not tested here, and the override-off check was deferred because it requires service restart and recovery handling.</li>
+        <li>Root cause within <code>ggml_backend_sched_graph_compute_async</code> (C/Vulkan side) is not resolved from the Go stack trace alone.</li>
+        <li>The new phi4-mini result indicates that gfx900 Vulkan stability is model- or workload-dependent; the exact trigger in qwen3.5:2b Q8_0 remains unresolved.</li>
+      </ul>
+      <p style="margin-top:10px;">
+        <strong class="blue">Future work:</strong> Additional models and quantization formats; matched Ollama version pair; same-version override-off vs override-on comparison; deeper Vulkan trace (RADV validation layers); broader multi-epoch stress under GPU-offload settings.
+      </p>
+      <div class="takeaway">The new rerun removes the strongest one-off criticism, but the center of gravity has shifted: the key unresolved variable is now model/workload specificity, alongside version mismatch and override dependence.</div>
+    </div>
+
+    <!-- 20: Takeaway -->
+    <div class="slide">
+      <div class="slide-title"><div class="slide-num bg-green">20</div><h2 class="slide-title-text green">Takeaway & Key Messages</h2></div>
+      <div class="three-col">
+        <div class="card" style="border-top: 8px solid #B71C1C;">
+          <h3 class="red" style="font-size: 20px; margin-top: 0;">Not officially supported</h3>
+          <p style="font-size: 17px;">gfx900 is absent from the ROCm 7.2 support matrix and ollama's default HIP build targets. This is a factual statement about vendor policy, not execution capability.</p>
+        </div>
+        <div class="card" style="border-top: 8px solid #E65100;">
+          <h3 class="orange" style="font-size: 20px; margin-top: 0;">Conditionally executable</h3>
+          <p style="font-size: 17px;">In this environment, under override-assisted configuration, ROCm/HIP ran across all tested num_gpu values on both matched-run days. Five of six examined gate layers retained executable paths.</p>
+        </div>
+        <div class="card" style="border-top: 8px solid #0D47A1;">
+          <h3 class="blue" style="font-size: 20px; margin-top: 0;">Backend-dependent stability</h3>
+          <p style="font-size: 17px;">For qwen3.5:2b across two matched runs, Vulkan SIGSEGV'd for num_gpu&gt;=1 while ROCm/HIP did not; Vulkan stayed stable at num_gpu=0 for 5/5 epochs. A phi4-mini follow-up passed at num_gpu=1, so the failure is not universal to gfx900 Vulkan.</p>
+        </div>
+      </div>
+      <p class="dim" style="text-align: center; font-style: italic; margin-top: 18px; font-size: 20px;">Based on the collected evidence: "not officially supported" and "not executable in any configuration" are distinct statements. | The qwen3.5 ROCm/Vulkan difference reproduced across two days with deterministic crash timing, but phi4-mini shows the Vulkan offload failure is model-specific rather than universal.</p>
+    </div>
+
+    <div class="footer"><span id="footer-label">Slide</span> <span id="current">1</span> / <span id="total">?</span> <span id="footer-hint">(Use Arrow Keys ← → to navigate)</span></div>
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const numDisplay = document.getElementById('current');
+    const totalDisplay = document.getElementById('total');
+    const footerLabel = document.getElementById('footer-label');
+    const footerHint = document.getElementById('footer-hint');
+    const langLabel = document.getElementById('lang-label');
+    const langEnBtn = document.getElementById('lang-en');
+    const langJaBtn = document.getElementById('lang-ja');
+    const englishSlides = Array.from(slides).map((slide) => slide.innerHTML);
+    const japaneseSlides = [
+`      <h1 style="font-family: 'Arial Black', sans-serif; font-size: 52px; margin-bottom: 10px;">旧世代HBM GPUにおけるバックエンド依存挙動</h1>
+      <h2 style="font-family: 'Calibri', sans-serif; font-size: 27px; color: #FFCDD2; font-style: italic; font-weight: normal; margin-bottom: 45px;">高度エビデンス版：Vega/gfx900 における ROCm/HIP vs Vulkan — 単一検証環境内での比較</h2>
+      <p style="font-size: 25px; margin-bottom: 15px; margin-top: 0;">Akira Ito | AETS (Akatsuki Enterprise Technology Solutions) | aets-giken@hiroshima-aktk.com</p>
+      <p style="font-size: 22px; color: #FFCDD2; margin: 0;">IEICE GNW-68 | 九州産業大学 | 2026年3月9日</p>`,
+`      <div class="slide-title"><div class="slide-num bg-red">1</div><h2 class="slide-title-text red">背景と動機</h2></div>
+      <ul>
+        <li>ROCm 7.2 の公式サポート表では gfx900 は非掲載だが、このローカル環境には残存する build/runtime 経路と配布アーティファクトが存在する。</li>
+        <li>学生や小規模ラボにとって重要なのは、特定条件下で「実行可能か」「安定か」「再現可能か」である。</li>
+        <li>同一 Vega デバイス上に dual-backend の比較系を構築し、サポート方針・バックエンド選択・実行時挙動を切り分けた。</li>
+        <li style="font-weight: bold;">目的：この検証環境の範囲で、「公式非対応」と「どんな構成でも実行不能」が同義かを検証する。</li>
+      </ul>
+      <div class="takeaway">対象範囲は明示的に「この環境」と「これらの run」に限定している。Vega 全般への一般化はしない。</div>`,
+`      <div class="slide-title"><div class="slide-num bg-red">2</div><h2 class="slide-title-text red">問題設定</h2></div>
+      <ul>
+        <li>旧世代 Vega GPU は、しばしば「現代的な ROCm ワークロードには不向き」と一括りにされがちである。</li>
+        <li>成功・失敗は、配布設定、build target、初期化検証、backend macro、runtime compute path など、異なる層で決まる可能性がある。</li>
+        <li style="font-weight: bold;">問い：今回観測された失敗は、Vega ハードウェア自体の問題なのか、それとも同一条件下の特定 backend compute path に起因するのか。</li>
+      </ul>
+      <div class="takeaway">診断の焦点はハードウェア断罪ではなく、backend path の切り分けにある。</div>`,
+`      <div class="slide-title"><div class="slide-num bg-blue">3</div><h2 class="slide-title-text blue">調査エビデンス：gfx900 ゲート行列</h2></div>
+      <table>
+        <tr><th class="bg-blue">層</th><th class="bg-blue">gfx900 の現状</th><th class="bg-blue">遮断 / 許容</th></tr>
+        <tr><td><strong>公式表 (ROCm 7.2)</strong></td><td>GPU target list に gfx900 は載っていない</td><td class="red"><strong>遮断（公式範囲）</strong></td></tr>
+        <tr><td><strong>CMake filter (ollama)</strong></td><td>CMakeLists.txt:127 の既定 regex <code>^gfx(94[012]|101[02]|1030|110[012]|120[01])$</code> から gfx900 は除外。<code>AMDGPU_TARGETS=gfx900</code> なら手動 override 可</td><td class="orange"><strong>既定では遮断 / 手動で許容</strong></td></tr>
+        <tr><td><strong>rocBLAS artifacts</strong></td><td>/usr/lib/ollama/rocblas/library/ に Kernels.so-000-gfx900.hsaco を確認</td><td class="green"><strong>許容（この環境）</strong></td></tr>
+        <tr><td><strong>Runner 初期化検証</strong></td><td>Journal: "Device 0: AMD Radeon RX Vega, gfx900:xnack- (0x900), VMM: no, Wave Size: 64" — valid agent として認識</td><td class="green"><strong>許容（この環境）</strong></td></tr>
+        <tr><td><strong>Source macro</strong></td><td>common.cuh:65 <code>GGML_CUDA_CC_VEGA=0x1000900</code>。<code>__gfx900__</code> の dp4a path も残存（inline asm による software emulation）</td><td class="green"><strong>許容</strong></td></tr>
+        <tr><td><strong>Runtime execution</strong></td><td>matched run では ROCm/HIP（override-assisted）が全 num_gpu で成功。Vulkan は num_gpu &gt;= 1 で SIGSEGV。</td><td class="orange"><strong>backend 依存（今回の範囲）</strong></td></tr>
+      </table>
+      <p class="dim" style="font-size:16px; margin-top:8px;">出典: work_log/investigations/2026-03-07_gfx900_gate_matrix.md | ollama/CMakeLists.txt:127 | ggml-cuda/common.cuh:65</p>
+      <div class="takeaway">調べた6層のうち5層では、この環境で gfx900 実行を許す経路が残っていた。公式非掲載は即時不可能を意味しないが、主張範囲はこの環境に限定される。</div>`,
+`      <div class="slide-title"><div class="slide-num bg-blue">4</div><h2 class="slide-title-text blue">CMake 既定フィルタ：ソースの原文エビデンス</h2></div>
+      <p style="font-size:18px; margin-bottom:8px;"><strong>出典:</strong> <code>ollama/CMakeLists.txt:121-128</code></p>
+      <pre style="background:#1a1a2e; color:#e0e0e0; padding:16px; border-radius:8px; font-size:15px; line-height:1.6; overflow:auto;">check_language(HIP)
+if(CMAKE_HIP_COMPILER)
+    if(NOT AMDGPU_TARGETS)
+        find_package(hip REQUIRED)
+        list(FILTER AMDGPU_TARGETS INCLUDE REGEX
+            "^gfx(94[012]|101[02]|1030|110[012]|120[01])$")
+    endif()
+    if(AMDGPU_TARGETS)
+        add_subdirectory(.../ggml-hip)</pre>
+      <table style="margin-top:12px;">
+        <tr><th class="bg-blue">Regex 群</th><th class="bg-blue">含まれる target</th><th class="bg-blue">世代</th></tr>
+        <tr><td><code>94[012]</code></td><td>gfx940, gfx941, gfx942</td><td>CDNA3 (MI300)</td></tr>
+        <tr><td><code>101[02]</code></td><td>gfx1010, gfx1012</td><td>RDNA1 (RX 5000)</td></tr>
+        <tr><td><code>1030</code></td><td>gfx1030</td><td>RDNA2 (RX 6000)</td></tr>
+        <tr><td><code>110[012]</code></td><td>gfx1100, gfx1101, gfx1102</td><td>RDNA3 (RX 7000)</td></tr>
+        <tr><td><code>120[01]</code></td><td>gfx1200, gfx1201</td><td>RDNA4 (RX 9000)</td></tr>
+        <tr><td class="red"><strong>（欠落）</strong></td><td class="red"><strong>gfx900 — 含まれない</strong></td><td class="red"><strong>GCN5 / Vega56/64</strong></td></tr>
+      </table>
+      <div class="takeaway">gfx900 は ollama の既定 HIP build から外れている。現行の libggml-hip.so は、明示的な AMDGPU_TARGETS override か事前ビルド済み artifact を前提にしている。</div>`,
+`      <div class="slide-title"><div class="slide-num bg-blue">5</div><h2 class="slide-title-text blue">Code Trace: num_gpu の意味（厳密な行番号）</h2></div>
+      <table>
+        <tr><th class="bg-blue">段階</th><th class="bg-blue">コード位置</th><th class="bg-blue">内容 / 解釈</th></tr>
+        <tr><td><strong>Python client</strong></td><td>ollama/_types.py:104-110</td><td><code>class Options: num_gpu: Optional[int] = None</code> — 生の int であり、意味注釈はない</td></tr>
+        <tr><td><strong>API call</strong></td><td>ollama/_client.py:281-305</td><td><code>/api/generate</code> の POST body に <code>options=options</code> として転送</td></tr>
+        <tr><td><strong>Go type</strong></td><td>api/types.go:604</td><td><code>NumGPU int \`json:"num_gpu,omitempty"\`</code> in Runner struct</td></tr>
+        <tr><td><strong>既定値</strong></td><td>api/types.go:1075</td><td><code>NumGPU: -1, // -1 here indicates that NumGPU should be set dynamically</code></td></tr>
+        <tr><td><strong>CLI help</strong></td><td>cmd/interactive.go:112</td><td><code>"/set parameter num_gpu &lt;int&gt;   The number of layers to send to the GPU"</code></td></tr>
+        <tr><td><strong>Server</strong></td><td>llm/server.go:992, 1063-1076</td><td><code>assignLayers(..., s.options.NumGPU, ...)</code>; requestedLayers は len(layers) を上限に制限</td></tr>
+        <tr><td><strong>Runner</strong></td><td>runner/llamarunner/runner.go:906-924</td><td><code>numGPU += len(layers.Layers)</code>; <code>NumGpuLayers: numGPU</code></td></tr>
+        <tr><td><strong>Bridge</strong></td><td>llama/llama.go:264-267</td><td><code>cparams.n_gpu_layers = C.int(params.NumGpuLayers)</code></td></tr>
+        <tr><td><strong>llama.cpp API</strong></td><td>include/llama.h:289</td><td><code>int32_t n_gpu_layers; // number of layers to store in VRAM, a negative value means all layers</code></td></tr>
+      </table>
+      <div class="takeaway">num_gpu は GPU 枚数ではなく、GPU に offload する層数である。Journal の "offloaded 2/25 layers to GPU" もこの解釈と一致する。</div>`,
+`      <div class="slide-title"><div class="slide-num bg-orange">6</div><h2 class="slide-title-text orange">HIP backend：gfx900 定数と dp4a エミュレーション</h2></div>
+      <table style="margin-bottom:10px;">
+        <tr><th class="bg-orange">定数 / macro</th><th class="bg-orange">値</th><th class="bg-orange">コメント (ggml-cuda/common.cuh)</th></tr>
+        <tr><td><code>GGML_CUDA_CC_GCN4</code></td><td>0x1000803</td><td>Tonga/Fiji/Polaris — fast fp16 の最低条件（line 64）</td></tr>
+        <tr><td><code><strong>GGML_CUDA_CC_VEGA</strong></code></td><td class="orange"><strong>0x1000900</strong></td><td><strong>Vega56/64 — fp16 dual issue の最低条件（line 65）</strong></td></tr>
+        <tr><td><code>GGML_CUDA_CC_VEGA20</code></td><td>0x1000906</td><td>MI50/Radeon VII — dp4a hardware の最低条件（line 66）</td></tr>
+        <tr><td><code>GGML_CUDA_CC_IS_GCN(cc)</code></td><td>OFFSET_AMD &lt; cc &lt; CDNA1</td><td>gfx900 は GCN 範囲に入り、CDNA ではない（line 86）</td></tr>
+      </table>
+      <p style="font-size:17px; margin-bottom:6px;"><strong><code>ggml_cuda_dp4a()</code> の分岐 (common.cuh:666–704):</strong></p>
+      <table>
+        <tr><th class="bg-orange">条件</th><th class="bg-orange">実装</th><th class="bg-orange">コスト</th></tr>
+        <tr><td>CDNA / RDNA2 / <code>__gfx906__</code></td><td><code>__builtin_amdgcn_sdot4(a, b, c, false)</code></td><td class="green">1命令（hardware）</td></tr>
+        <tr><td>RDNA3 / RDNA4</td><td><code>__builtin_amdgcn_sudot4(...)</code></td><td class="green">1命令（hardware）</td></tr>
+        <tr><td class="orange"><strong><code>RDNA1 || __gfx900__</code></strong></td><td class="orange"><strong>6命令の inline asm：v_mul_i32_i24 ×4 + v_add3_u32 ×2</strong></td><td class="red">software emulation</td></tr>
+      </table>
+      <p class="dim" style="font-size:16px; margin-top:8px;"><code>V_DOT2_F32_F16_AVAILABLE</code> (common.cuh:715) からも gfx900 は除外され、hardware fp16 dot product は使えない。</p>
+      <div class="takeaway">gfx900 は HIP backend で実行できるが、dp4a は software emulation であり、これはバグではなく文書化されたアーキテクチャ制約である。</div>`,
+`      <div class="slide-title"><div class="slide-num bg-orange">7</div><h2 class="slide-title-text orange">工学的な論点</h2></div>
+      <ul>
+        <li>gfx900 は ROCm 7.2 の公式表では非掲載だが、この環境には residual build/runtime path が残っており、方針と能力を分離して考える必要がある。</li>
+        <li><code>num_gpu</code> は device count と誤解されやすく、num_gpu&gt;=2 の結果を誤帰属しやすい。</li>
+        <li>今回の matched qwen3.5:2b 条件では、同じ Vega ハードウェアでも backend によって結果が異なり、ハード単体では結果を決められない。</li>
+        <li>ROCm 側の結果は <code>HSA_OVERRIDE_GFX_VERSION=9.0.0</code> に依存する override-assisted 構成であり、標準構成ではない。</li>
+        <li>診断には source・log・run artifact の層別エビデンスが必要であり、単発成功談では不十分である。</li>
+      </ul>
+      <div class="takeaway">support policy、backend choice、override configuration は独立変数として分けて主張しなければならない。</div>`,
+`      <div class="slide-title"><div class="slide-num bg-orange">8</div><h2 class="slide-title-text orange">エビデンス先行の調査戦略</h2></div>
+      <table>
+        <tr><th class="bg-orange">層</th><th class="bg-orange">介入</th><th class="bg-orange">効果</th></tr>
+        <tr><td class="red"><strong>L1: Distribution / Build</strong></td><td>support matrix、preset、target filter、artifact を確認</td><td>build 層で gfx900 がどこで遮断/許容されるか特定</td></tr>
+        <tr><td class="orange"><strong>L2: API Semantics</strong></td><td>client → server → runner → llama.cpp まで num_gpu を追跡</td><td>意味を確定：device count ではなく offloaded layers</td></tr>
+        <tr><td class="blue"><strong>L3: Runtime Comparison</strong></td><td>Matched ROCm (:11435) vs Vulkan (:11434) — 同ハード・同モデル・同 workload</td><td>今回の範囲で backend 特異的失敗を切り分け</td></tr>
+        <tr><td class="green"><strong>L4: Evidence Capture</strong></td><td>result.json, journal, backend_probe, rocm-smi, ollama ps</td><td>run_id と file path に紐づく再現可能な主張を構築</td></tr>
+      </table>
+      <p class="dim" style="font-style:italic; margin-top:10px;">原則：楽観的な単発成功より、反証可能な診断を優先する。</p>
+      <div class="takeaway">各層は別の問いに答える。これを混同すると誤帰属が起きる。</div>`,
+`      <div class="slide-title"><div class="slide-num bg-green">9</div><h2 class="slide-title-text green">実験設定</h2></div>
+      <table>
+        <tr><th class="bg-green">要素</th><th class="bg-green">仕様</th></tr>
+        <tr><td><strong>GPU</strong></td><td>AMD Radeon RX Vega 56 (gfx900), 8 GB HBM2</td></tr>
+        <tr><td><strong>OS / Kernel</strong></td><td>EndeavourOS, Kernel 6.12.74-1-lts</td></tr>
+        <tr><td><strong>ROCm endpoint</strong></td><td>Ollama 0.17.5 (03-07) / 0.17.6 (03-08) via :11435, libggml-hip.so</td></tr>
+        <tr><td><strong>Vulkan endpoint</strong></td><td>Ollama 0.17.4 via :11434, libggml-vulkan.so</td></tr>
+        <tr><td><strong>Model / workload</strong></td><td>qwen3.5:2b, NUM_PREDICT=512, num_gpu=0,1,2,-1</td></tr>
+        <tr><td><strong>ROCm override</strong></td><td class="orange"><strong>HSA_OVERRIDE_GFX_VERSION=9.0.0（ROCm service のみ。Vulkan には適用なし）</strong></td></tr>
+      </table>
+      <div class="caution"><strong>override 注記:</strong> ROCm 側結果は <code>HSA_OVERRIDE_GFX_VERSION=9.0.0</code> を用いた override-assisted service configuration に基づく。これは「この環境で条件付き実行できた」ことを示すのであり、公式サポート復活を意味しない。</div>
+      <div class="takeaway">同一ハードウェア上の2サービスを比較。matched one-epoch run は 2 日間で反復した。ROCm は override 依存、Vulkan は override 非使用。</div>`,
+`      <div class="slide-title"><div class="slide-num bg-green">10</div><h2 class="slide-title-text green">Matched Results — 2日間で再現</h2></div>
+      <table>
+        <tr><th class="bg-green">num_gpu</th><th class="bg-green">ROCm (:11435) run_20260307_012643 <span style="font-weight:normal;font-size:14px;">[override-assisted]</span></th><th class="bg-green">Vulkan (:11434) run_20260307_013050 <span style="font-weight:normal;font-size:14px;">[no override]</span></th></tr>
+        <tr><td><strong>0</strong></td><td class="green"><strong>OK</strong> (46.689s, eval_count=512)</td><td class="green"><strong>OK</strong> (45.002s, eval_count=512)</td></tr>
+        <tr><td><strong>1</strong></td><td class="green"><strong>OK</strong> (48.742s)</td><td class="red"><strong>HTTP 500 + SIGSEGV</strong> (2.672s)</td></tr>
+        <tr><td><strong>2</strong></td><td class="green"><strong>OK</strong> (47.748s)</td><td class="red"><strong>HTTP 500 + SIGSEGV</strong> (7.640s)</td></tr>
+        <tr><td><strong>-1</strong></td><td class="green"><strong>OK</strong> (44.265s)</td><td class="red"><strong>HTTP 500 + SIGSEGV</strong> (9.816s)</td></tr>
+      </table>
+      <div class="plain-box">
+        <div class="plain-title">やさしい読み方（非専門向け）</div>
+        <ul class="plain-list">
+          <li><strong>num_gpu</strong> は「GPUに送る考える層の数」で、GPUカードの枚数ではない。</li>
+          <li><strong>OK</strong> は最後まで完走。<strong>HTTP 500 + SIGSEGV</strong> は計算中にプログラムが落ちたことを示す。</li>
+          <li><strong>num_gpu=0</strong> では両方成功。<strong>1以上</strong>では、この qwen 条件で Vulkan 側だけ落ちる。</li>
+          <li><strong>秒(s)</strong> は全体時間。エラー行の秒は主に「落ちるまでの時間」。</li>
+        </ul>
+      </div>
+      <p style="font-size:17px; margin-top:10px;"><strong>2026-03-08 の再試行:</strong> ROCm run_20260308_201305（0.17.6, override-assisted）は再び全条件成功。Vulkan run_20260308_201641 も num_gpu=1/2/-1 で再度失敗し、crash timing もほぼ同一（2.70 / 7.64 / 9.81s）。</p>
+      <p style="font-size:17px; margin-top:6px;"><strong>観測:</strong> matched qwen3.5:2b 条件では、Vulkan の失敗は num_gpu &gt;= 1 に限定され、普遍的ではない。ROCm/HIP は 2 日とも全条件成功した。</p>
+      <div class="takeaway">qwen3.5:2b における ROCm/HIP vs Vulkan 差は、もはや単発ではなく、2026-03-07 と 2026-03-08 の両日で再現した。</div>`,
+`      <div class="slide-title"><div class="slide-num bg-green">11</div><h2 class="slide-title-text green">Run-Level Data Snapshot</h2></div>
+      <table>
+        <tr><th class="bg-green">Run</th><th class="bg-green">num_gpu</th><th class="bg-green">status</th><th class="bg-green">elapsed_sec</th><th class="bg-green">eval_duration(ns)</th><th class="bg-green">response_chars</th></tr>
+        <tr><td>run_20260307_012643 (ROCm)</td><td>0</td><td class="green"><strong>ok</strong></td><td>46.689</td><td>42016540155</td><td>0</td></tr>
+        <tr><td>run_20260307_012643 (ROCm)</td><td>1</td><td class="green"><strong>ok</strong></td><td>48.742</td><td>43853670072</td><td>1809</td></tr>
+        <tr><td>run_20260307_012643 (ROCm)</td><td>2</td><td class="green"><strong>ok</strong></td><td>47.748</td><td>42307474936</td><td>1951</td></tr>
+        <tr><td>run_20260307_012643 (ROCm)</td><td>-1</td><td class="green"><strong>ok</strong></td><td>44.265</td><td>42084598410</td><td>1849</td></tr>
+        <tr><td>run_20260307_013050 (Vulkan)</td><td>0</td><td class="green"><strong>ok</strong></td><td>45.002</td><td>41778665097</td><td>0</td></tr>
+        <tr><td>run_20260307_013050 (Vulkan)</td><td>1/2/-1</td><td class="red"><strong>error</strong></td><td>2.672 / 7.640 / 9.816</td><td>—</td><td>—</td></tr>
+        <tr><td>run_20260308_201305 (ROCm)</td><td>0/1/2/-1</td><td class="green"><strong>all ok</strong></td><td>47.98 / 49.18 / 48.30 / 45.17</td><td>512 each</td><td>normal completion</td></tr>
+        <tr><td>run_20260308_201641 (Vulkan)</td><td>0</td><td class="green"><strong>ok</strong></td><td>45.53</td><td>512</td><td>normal completion</td></tr>
+        <tr><td>run_20260308_201641 (Vulkan)</td><td>1/2/-1</td><td class="red"><strong>error</strong></td><td>2.70 / 7.64 / 9.81</td><td>—</td><td>—</td></tr>
+        <tr><td>run_20260308_201924 (Vulkan)</td><td>0 × 5 epochs</td><td class="green"><strong>5/5 ok</strong></td><td>50.03 / 42.46 / 43.18 / 42.67 / 43.07</td><td>512 each</td><td>no crash</td></tr>
+      </table>
+      <div class="plain-box">
+        <div class="plain-title">列の意味（やさしい説明）</div>
+        <ul class="plain-list">
+          <li><strong>Run</strong>：実験セットのID（ノートのページ番号のようなもの）。</li>
+          <li><strong>num_gpu</strong>：モデルの何層をGPUに渡したか。</li>
+          <li><strong>status</strong>：成功か失敗か。</li>
+          <li><strong>elapsed_sec</strong>：終わるまで（または落ちるまで）の実時間。</li>
+          <li><strong>eval_duration(ns)</strong>：モデル計算だけの時間。大きいほど計算が遅い。</li>
+          <li><strong>response_chars</strong>：出力文字数。0でも必ずしもクラッシュとは限らない。</li>
+        </ul>
+      </div>
+      <p class="dim" style="font-size:17px; margin-top:8px;">出典: vega_work_log/*/result.json | 全ログから抽出した 16 件の matched-record row</p>
+      <div class="takeaway">ここには matched rerun と 5-epoch の Vulkan num_gpu=0 control を含めている。error 時の elapsed は推論時間ではなく time-to-crash を表す。</div>`,
+`      <div class="slide-title"><div class="slide-num bg-green">12</div><h2 class="slide-title-text green">Vulkan Failure Timeline（Journal エビデンス）</h2></div>
+      <table>
+        <tr><th class="bg-green">時刻 (JST)</th><th class="bg-green">イベント</th><th class="bg-green">意味</th></tr>
+        <tr><td>01:31:37</td><td>load_backend: libggml-vulkan.so loaded; "int dot: 0 | matrix cores: none"</td><td>backend 初期化は完了。ハード機能上限も確認</td></tr>
+        <tr><td>01:31:38</td><td>offloaded 1/25 layers to GPU (Vulkan0); compute graph Vulkan0: 257.1 MiB</td><td>モデル load と GPU 割り当ては正常完了</td></tr>
+        <tr><td>01:31:39</td><td>llama runner started in 1.72 seconds</td><td>runner 起動も成功</td></tr>
+        <tr><td>01:31:39</td><td>SIGSEGV: segmentation violation (PC=0x7efbc5b801b5, addr=0x3a8000)</td><td>runner process がクラッシュ — load 中ではなく最初の inference batch</td></tr>
+        <tr><td>01:31:39</td><td>ggml_backend_sched_graph_compute_async → computeBatch(runner.go:716)</td><td>compute graph scheduling path（cgo 経由）での crash</td></tr>
+        <tr><td>01:31:39</td><td>server.go: post predict … EOF</td><td>API 側には EOF として見え、HTTP 500 になる</td></tr>
+        <tr><td>01:31:47 / 01:31:57</td><td>num_gpu=2, -1 でも同じ系列が再現</td><td>GPU offload 条件で一貫した failure pattern</td></tr>
+      </table>
+      <p class="dim" style="font-size:16px; margin-top:8px;">出典: vega_work_log/run_20260307_013050/ollama_journal_since_start.txt</p>
+      <div class="takeaway">クラッシュは load 時ではなく first compute 時点で発生しており、allocation や init よりも compute-path の問題と整合する。</div>`,
+`      <div class="slide-title"><div class="slide-num bg-red">13</div><h2 class="slide-title-text red">Vulkan Crash: 完全スタックトレース（Journal, 01:31:39 JST）</h2></div>
+      <p style="font-size:17px; margin-bottom:8px;"><strong>出典:</strong> <code>vega_work_log/run_20260307_013050/ollama_journal_since_start.txt</code> — runner ready 直後</p>
+      <pre style="background:#1a1a2e; color:#e0e0e0; padding:14px; border-radius:8px; font-size:13.5px; line-height:1.55; overflow:auto;">SIGSEGV: segmentation violation
+PC=0x7efbc5b801b5 m=41 sigcode=1 addr=0x3a8000
+signal arrived during cgo execution
+
+goroutine 853 [syscall]:
+runtime.cgocall(0x55e54a0e2710, 0xc0000bdaa0)
+    runtime/cgocall.go:167
+github.com/ollama/ollama/ml/backend/ggml._Cfunc_ggml_backend_sched_graph_compute_async(...)
+    _cgo_gotypes.go:979
+github.com/ollama/ollama/ml/backend/ggml.(*Context).ComputeWithNotify(...)
+    ml/backend/ggml/ggml.go:825 +0x1b2
+github.com/ollama/ollama/runner/ollamarunner.(*Server).computeBatch(...)
+    runner/ollamarunner/runner.go:716 +0x862
+github.com/ollama/ollama/runner/ollamarunner.(*Server).run.gowrap1()
+    runner/ollamarunner/runner.go:459</pre>
+      <p style="font-size:17px; margin-top:8px;"><strong class="red">Crash point:</strong> C 関数 <code>ggml_backend_sched_graph_compute_async</code> を cgo 経由で呼んだ位置で SIGSEGV。Go runtime は runner を終了させる。どの Vulkan API 呼び出しで落ちたかまではこの trace 単体では分からない。</p>
+      <div class="takeaway">この stack trace 自体は事実記録である。根本原因は C/Vulkan 側に残っており、今回の limitation として明示する。</div>`,
+`      <div class="slide-title"><div class="slide-num bg-green">14</div><h2 class="slide-title-text green">追加追試：モデル依存性と crash timing</h2></div>
+      <table>
+        <tr><th class="bg-green">試験</th><th class="bg-green">Run / 条件</th><th class="bg-green">観測結果</th><th class="bg-green">解釈</th></tr>
+        <tr><td><strong>モデル差し替え</strong></td><td>run_20260308_212345, Vulkan, <code>MODEL=phi4-mini:latest</code>, <code>NUM_GPU=0,1</code></td><td><code>num_gpu=0</code>: ok (18.82s, 318 tok); <code>num_gpu=1</code>: <span class="green"><strong>ok</strong></span> (31.55s, 512 tok)</td><td class="blue"><strong>gfx900 Vulkan における offload crash は普遍的ではなく、model/workload 依存である。</strong></td></tr>
+        <tr><td><strong>トークン数制御</strong></td><td>run_20260308_212254, Vulkan, qwen3.5:2b, <code>NUM_PREDICT=128</code>, <code>NUM_GPU=1</code></td><td><span class="red"><strong>error</strong></span> at 2.858s（<code>NUM_PREDICT=512</code> の mean 2.653s に近い）</td><td class="blue"><strong>crash timing は要求出力長にほぼ依存しない。</strong></td></tr>
+        <tr><td><strong>Timing 統計</strong></td><td>qwen3.5:2b Vulkan run 3本, <code>num_gpu&gt;=1</code></td><td><code>num_gpu=1</code>: 2.653s ±0.059s; <code>2</code>: 7.630s ±0.014s; <code>-1</code>: 9.819s ±0.016s</td><td class="blue"><strong>失敗 timing は非常に決定論的で、単純なランダム race には見えない。</strong></td></tr>
+      </table>
+      <p class="dim" style="font-size:16px; margin-top:8px;">出典: run_20260308_212345, run_20260308_212254, および vega_work_log/ 15 run / 119 record から集約した analysis_summary.md</p>
+      <div class="takeaway">主張を更新：この環境では qwen3.5:2b Q8_0 は Vulkan offload で再現的に落ちるが、phi4-mini は落ちない。failure は backend-sensitive であり、同時に model-dependent でもある。</div>`,
+`      <div class="slide-title"><div class="slide-num bg-orange">15</div><h2 class="slide-title-text orange">Vulkan：gfx900 の AMD_GCN 分類と機能制約</h2></div>
+      <table style="margin-bottom:10px;">
+        <tr><th class="bg-orange">コード位置</th><th class="bg-orange">内容</th><th class="bg-orange">gfx900 への影響</th></tr>
+        <tr><td><code>ggml-vulkan.cpp:250-252</code></td><td><code>enum vk_device_architecture { OTHER, AMD_GCN, AMD_RDNA1, AMD_RDNA2, AMD_RDNA3 }</code></td><td>gfx900 は AMD_GCN branch</td></tr>
+        <tr><td><code>ggml-vulkan.cpp:296-297</code></td><td><code>if (maxSubgroupSize==64 &amp;&amp; minSubgroupSize==64) return AMD_GCN;</code></td><td>wave64-only のため AMD_GCN に分類</td></tr>
+        <tr><td><code>ggml-vulkan.cpp:3964</code></td><td><code>use_subgroups = subgroup_arithmetic &amp;&amp; arch != AMD_GCN</code></td><td class="red">subgroup arithmetic が <strong>無効化</strong></td></tr>
+        <tr><td><code>ggml-vulkan.cpp:3241-3243</code></td><td>AMD_GCN + open-source driver → warptile を <code>{256,64,64,32,16,16,2,2,2,1,16}</code> に変更</td><td>RDNA 系とは異なる matrix multiply tile</td></tr>
+        <tr><td><code>ggml-vulkan.cpp:3953-3957</code></td><td>AMD_GCN: <code>rm_stdq=2, rm_kq=4, rm_stdq_int=4</code></td><td>row-reduce パラメータも別設定</td></tr>
+      </table>
+      <p style="font-size:17px; margin-bottom:6px;"><strong>Journal 実測値 (01:31:37):</strong></p>
+      <pre style="background:#1a1a2e; color:#e0e0e0; padding:10px; border-radius:6px; font-size:14px;">ggml_vulkan: 0 = AMD Radeon RX Vega (RADV VEGA10) (radv) |
+  uma: 0 | fp16: 1 | bf16: 0 | warp size: 64 |
+  shared memory: 65536 | int dot: 0 | matrix cores: none</pre>
+      <p class="dim" style="font-size:15px;"><code>int dot: 0</code> は VK_KHR_shader_integer_dot_product の hardware acceleration 不在、<code>matrix cores: none</code> は cooperative matrix 不在を示し、source-level の AMD_GCN path と整合する。</p>
+      <div class="takeaway">Vulkan は gfx900 を正しく AMD_GCN と分類し、その専用 path を適用している。問題は、その path が今回の GPU/モデル条件で crash-safe かどうかにある。</div>`,
+`      <div class="slide-title"><div class="slide-num bg-blue">16</div><h2 class="slide-title-text blue">Deep Code Tracking Summary（11点トレース）</h2></div>
+      <table>
+        <tr><th class="bg-blue">Point</th><th class="bg-blue">File / Line</th><th class="bg-blue">確立されること</th></tr>
+        <tr><td>1–2</td><td>ollama/_types.py:104-110, _client.py:281-305</td><td>num_gpu は load-time option としてそのまま /api/generate に渡され、client 側に GPU-count 意味はない</td></tr>
+        <tr><td>3–4</td><td>ollama/api/types.go:600-608, 1071-1076</td><td>NumGPU は model-load options に属し、既定 -1 は dynamic policy を意味する</td></tr>
+        <tr><td>5</td><td>ollama/cmd/interactive.go:112</td><td>CLI は num_gpu を明確に "the number of layers to send to the GPU" と定義している</td></tr>
+        <tr><td>6–7</td><td>ollama/llm/server.go:992, 1063-1076</td><td>NumGPU は requestedLayers として処理され、len(layers) で上限が掛かる</td></tr>
+        <tr><td>8</td><td>runner/llamarunner/runner.go:906-924</td><td>NumGpuLayers は layer count の合計であり、device count ではない</td></tr>
+        <tr><td>9–11</td><td>llama/llama.go:264-267, include/llama.h:289</td><td>n_gpu_layers は "VRAM に置く層数"。負値は all layers を意味する</td></tr>
+      </table>
+      <div class="takeaway">独立した複数のソース点が、num_gpu は GPU device selection ではなく layer offload count であることに収束している。</div>`,
+`      <div class="slide-title"><div class="slide-num bg-red">17</div><h2 class="slide-title-text red">失敗診断</h2></div>
+      <table style="margin-bottom: 14px;">
+        <tr><th style="background-color: #7B241C;">仮説</th><th style="background-color: #7B241C;">期待される証拠</th><th style="background-color: #7B241C;">今回の観測</th></tr>
+        <tr><td>Vega は全般に unusable</td><td>同一 GPU 上で両 backend が失敗する</td><td class="green"><strong>反証：ROCm/HIP は成功した</strong></td></tr>
+        <tr><td>num_gpu は GPU 枚数を意味する</td><td>失敗は multi-GPU entry の副作用になる</td><td class="green"><strong>反証：code trace は layer-count semantics を示す</strong></td></tr>
+        <tr><td class="orange"><strong>AMD_GCN 上の model-/workload-dependent Vulkan compute-path 問題</strong></td><td>qwen3.5:2b は first compute batch で失敗し、phi4-mini は num_gpu=1 で完了する</td><td class="red"><strong>観測と整合</strong></td></tr>
+      </table>
+      <h3 class="blue" style="font-size:22px; margin-bottom:8px;">3層の判定（収集エビデンスに基づく）</h3>
+      <table>
+        <tr><th class="bg-blue">Tier</th><th class="bg-blue">内容</th></tr>
+        <tr><td class="red"><strong>1. Official support</strong></td><td>gfx900 は ROCm 7.2 と ollama の既定 build target では公式サポート外である。</td></tr>
+        <tr><td class="orange"><strong>2. Conditional executability</strong></td><td>この環境では、HSA_OVERRIDE_GFX_VERSION=9.0.0 と pre-existing artifact の下で、ROCm/HIP が2日間の matched-run 全条件を成功した。</td></tr>
+        <tr><td class="blue"><strong>3. Backend-dependent stability</strong></td><td>matched qwen3.5:2b 条件では 2 日とも Vulkan が num_gpu&gt;=1 で SIGSEGV、ROCm/HIP は非該当。Vulkan num_gpu=0 は 5 epoch 安定で、phi4-mini は num_gpu=1 で完了し、model dependence を示した。</td></tr>
+      </table>
+      <div class="takeaway">この 3 層は独立した主張である。Tier 2 は Tier 1 を否定しない。Tier 3 は matched qwen run 2 本、Vulkan num_gpu=0 control、phi4-mini 反例、deterministic crash timing 統計で支えられている。</div>`,
+`      <div class="slide-title"><div class="slide-num bg-orange">18</div><h2 class="slide-title-text orange">再現可能性パッケージ</h2></div>
+      <table>
+        <tr><th class="bg-orange">Artifact</th><th class="bg-orange">Path</th><th class="bg-orange">役割</th></tr>
+        <tr><td>主要 metrics</td><td>vega_work_log/run_*/result.json</td><td>num_gpu ごとの status, latency, error_type</td></tr>
+        <tr><td>Crash phase logs</td><td>vega_work_log/run_*/ollama_journal_since_start.txt</td><td>完全 stack trace と EOF timing</td></tr>
+        <tr><td>Backend identity</td><td>vega_work_log/run_*/backend_probe.txt</td><td>ROCm / Vulkan service path と device recognition を確認</td></tr>
+        <tr><td>Aggregate analysis</td><td>analyze_runs.py + analysis_summary.md</td><td>15 runs / 119 records の全ログ集約。crash timing 統計と pivot を出力</td></tr>
+        <tr><td>Code semantics trace</td><td>work_log/investigations/2026-03-07_numgpu_semantics_trace.md</td><td>num_gpu semantics の行番号エビデンス</td></tr>
+        <tr><td>Gate analysis</td><td>work_log/investigations/2026-03-07_gfx900_gate_matrix.md</td><td>gfx900 の block/allow を層別に整理</td></tr>
+      </table>
+      <p style="font-size:17px; margin-top:10px;"><strong>Replay command:</strong> <code>OLLAMA_HOST=http://127.0.0.1:11435|11434 EPOCHS=1 NUM_PREDICT=512 NUM_GPU=0,1,2,-1 python vega-loop_qwen_rocm.py</code></p>
+      <p style="font-size:16px; margin-top:6px;"><strong>Stability check:</strong> <code>OLLAMA_HOST=http://127.0.0.1:11434 EPOCHS=5 NUM_GPU=0 NUM_PREDICT=512 python vega-loop_qwen.py</code></p>
+      <div class="takeaway">この deck の主張はすべて run_id と file path に結び付けられている。matched rerun、Vulkan num_gpu=0 control、phi4-mini / NUM_PREDICT follow-up、aggregate analysis のいずれも再実行可能である。</div>`,
+`      <div class="slide-title"><div class="slide-num bg-red">19</div><h2 class="slide-title-text red">制約と今後の課題</h2></div>
+      <p style="margin-bottom: 10px;"><strong class="red">Limitations:</strong></p>
+      <ul style="font-size:20px;">
+        <li>matched comparison の中心は依然 qwen3.5:2b である。ただし one-epoch matched run は 2 日で再現し、Vulkan num_gpu=0 は 5 epoch 安定、phi4-mini では num_gpu=1 crash が再現しなかった。</li>
+        <li>endpoint 間で Ollama version が異なる（Vulkan 0.17.4 vs ROCm 0.17.5/0.17.6）ため、confound は残る。</li>
+        <li>ROCm 側結果は <code>HSA_OVERRIDE_GFX_VERSION=9.0.0</code> に依存し、override-off の確認は service restart と recovery handling が必要なため今回は見送った。</li>
+        <li><code>ggml_backend_sched_graph_compute_async</code> の C/Vulkan 側での根本原因は、Go stack trace だけでは分からない。</li>
+        <li>phi4-mini の結果により、gfx900 Vulkan 安定性は model/workload 依存と分かったが、qwen3.5:2b Q8_0 で何が trigger かは未解決である。</li>
+      </ul>
+      <p style="margin-top:10px;"><strong class="blue">Future work:</strong> モデルと量子化形式の追加、version を揃えた matched pair、same-version での override-on / off 比較、RADV validation layers を含む deeper Vulkan trace、GPU-offload 条件での multi-epoch stress。</p>
+      <div class="takeaway">今回の rerun で one-off 批判はかなり弱くなったが、中心的な未解決変数は model/workload specificity に移った。加えて version mismatch と override dependence も残る。</div>`,
+`      <div class="slide-title"><div class="slide-num bg-green">20</div><h2 class="slide-title-text green">要点まとめ</h2></div>
+      <div class="three-col">
+        <div class="card" style="border-top: 8px solid #B71C1C;">
+          <h3 class="red" style="font-size: 20px; margin-top: 0;">公式には非対応</h3>
+          <p style="font-size: 17px;">gfx900 は ROCm 7.2 support matrix と ollama の既定 HIP build target から外れている。これは vendor policy の事実であり、実行能力そのものを直接意味しない。</p>
+        </div>
+        <div class="card" style="border-top: 8px solid #E65100;">
+          <h3 class="orange" style="font-size: 20px; margin-top: 0;">条件付きで実行可能</h3>
+          <p style="font-size: 17px;">この環境では override-assisted configuration の下で、ROCm/HIP は 2 日間の matched run 全 num_gpu 条件を通した。調べた6層のうち5層に実行経路が残っていた。</p>
+        </div>
+        <div class="card" style="border-top: 8px solid #0D47A1;">
+          <h3 class="blue" style="font-size: 20px; margin-top: 0;">backend 依存、かつ model 依存</h3>
+          <p style="font-size: 17px;">qwen3.5:2b では 2 回の matched run で Vulkan num_gpu&gt;=1 が SIGSEGV、ROCm/HIP は非該当。Vulkan num_gpu=0 は 5/5 安定し、phi4-mini は num_gpu=1 で通ったため、この failure は gfx900 Vulkan 全般に普遍的ではない。</p>
+        </div>
+      </div>
+      <p class="dim" style="text-align: center; font-style: italic; margin-top: 18px; font-size: 20px;">収集エビデンスに基づく結論："公式非対応" と "どの構成でも実行不能" は別の命題である。 | qwen3.5 の ROCm/Vulkan 差は 2 日で再現し crash timing も決定論的だったが、phi4-mini は Vulkan offload failure が普遍的でないことを示した。</p>`
+    ];
+    let currentLang = 'en';
+
+    if (totalDisplay) totalDisplay.textContent = slides.length;
+
+    function updateLanguageUI() {
+      langEnBtn.classList.toggle('active', currentLang === 'en');
+      langJaBtn.classList.toggle('active', currentLang === 'ja');
+      if (langLabel) langLabel.textContent = currentLang === 'ja' ? '表示言語' : 'Language';
+      if (footerLabel) footerLabel.textContent = currentLang === 'ja' ? 'スライド' : 'Slide';
+      if (footerHint) footerHint.textContent = currentLang === 'ja' ? '（← → キーで移動）' : '(Use Arrow Keys ← → to navigate)';
+      document.documentElement.lang = currentLang === 'ja' ? 'ja' : 'en';
+    }
+
+    function applyLanguage(lang) {
+      currentLang = lang;
+      slides.forEach((slide, index) => {
+        slide.innerHTML = currentLang === 'ja' ? japaneseSlides[index] : englishSlides[index];
+      });
+      updateLanguageUI();
+      updateSlide();
+    }
+
+    function updateSlide() {
+      slides.forEach((s, i) => {
+        s.classList.remove('active');
+        if (i === currentSlide) s.classList.add('active');
+      });
+      if (numDisplay) numDisplay.textContent = currentSlide + 1;
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+        currentSlide = (currentSlide + 1) % slides.length;
+        updateSlide();
+        e.preventDefault();
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') {
+        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+        updateSlide();
+        e.preventDefault();
+      }
+    });
+
+    langEnBtn.addEventListener('click', () => applyLanguage('en'));
+    langJaBtn.addEventListener('click', () => applyLanguage('ja'));
+    updateLanguageUI();
+  </script>
+</body>
+</html>
