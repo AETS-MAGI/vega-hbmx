@@ -1,0 +1,48 @@
+# Linux Kernel Architecture Overview
+
+The Linux kernel is a complex, modular operating system core responsible for managing hardware resources, providing services to user space, and orchestrating system operations. Below is a comprehensive breakdown of its major architectural components:
+
+---
+
+## 1. Overall Kernel Architecture
+
+The Linux kernel is organized into several subsystems, each with its own memory region, file system, and interface:
+
+| Component          | Purpose                              | Size        |
+|--------------------|--------------------------------------|-------------|
+| **Kernel**         | Core system functions               | Small       |
+| **User Space**     | Applications, libraries, etc.       | Large       |
+| **Device Drivers** | Hardware interfaces                 | Variable    |
+
+- **Kernel** contains the core system functions: process scheduling, memory management, process synchronization, etc.
+- **User Space** includes user-space programs and libraries; separated for security.
+- **Device Drivers** act as intermediaries between the kernel and hardware devices.
+
+---
+
+## 2. Scheduler
+
+The kernel scheduler manages CPU allocation among processes.
+
+### Types of Schedulers
+- **Preemptive Scheduling**  
+  The kernel can interrupt a running process to allocate resources dynamically. Examples: Real-Time Schedulers like `CFS` (Completely Fair Scheduler), `CFQ` (Completely Fair QoS).
+
+- **Synchronous Scheduling**  
+  The kernel maintains an ordered list of processes, waiting for one to run before starting another.
+
+### Key Algorithms
+- **Round Robin (RR):** Fairness-based scheduling.
+- **Priority Scheduling:** Based on process priority.
+- **Deadline-based Scheduling:** Uses deadline and latency metrics.
+- **Fair Queuing (FQ):** Ensures fairness in CPU resource allocation.
+
+### Key Features
+- Context switching between processes.
+- Priority inversion avoidance.
+- Load balancing across CPU cores.
+- Real-time scheduling for time-critical tasks.
+
+---
+
+##

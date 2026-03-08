@@ -1,0 +1,9 @@
+The **Linux Kernel** is a monolithic operating system that manages various aspects such as scheduling tasks for execution on CPUs (the Scheduler), managing hardware resources like RAM (Memory Management) and devices through interfaces called Device Drivers.
+
+* The Linux kernel uses the Completely Fair Scheduling algorithm to distribute CPU time amongst processes, with each process assigned an equal share of its own computing slice.
+* Memory management within a system is handled by several components. Firstly, memory mapping allows user space programs access to files or hardware via virtual addresses (the Virtual File System - VFS). Secondly, Linux uses page tables and the Translation Lookaside Buffer for efficient translation between physical RAM locations in a computer's Random Access Memory (RAM) versus those mapped into processes' address spaces.
+* Interrupts are signals sent by devices that demand attention from CPUs. When an interrupt occurs while executing code or processing data within one of these contexts, Linux interrupts handling routines will be run instead to process the incoming information without waiting for CPU idle time.
+
+Device drivers provide a software interface (the Device Driver Layer) which enables communication between hardware peripherals and userspace programs through file system-like abstractions. Drivers are typically loaded dynamically at boot-time into memory via modules (.ko files), allowing them not only access but also control over physical devices like network cards or soundcards, USB ports etc.
+
+Overall the Linux kernel architecture consists of a variety of subsystems working together to manage hardware resources while providing useful services and functionalities for applications running on top. This modular design enables flexibility in terms of adding support for new peripherals without interfering with existing device driver implementations.

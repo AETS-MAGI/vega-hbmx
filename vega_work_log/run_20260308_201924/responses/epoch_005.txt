@@ -1,0 +1,46 @@
+The Linux kernel serves as the core operating system foundation, managing hardware resources and providing a platform for running user-space applications. Below is a breakdown of its critical architectural components, focusing on how they work together to enable system performance, stability, and flexibility.
+
+---
+
+### 1. Overall Architecture
+
+The Linux kernel consists of several key modules that orchestrate system operations:
+
+- **Kernel Modules**: Loaded via `insmod`, enabling drivers and subsystems.
+- **Loadable Kernel Modules (LKMs)**: Allow dynamic loading of drivers and user-space applications.
+- **System Call Interface**: The primary mechanism for user-space applications to access kernel functions.
+- **Kernel Modules and LKMs**: Enable extensibility and modularity.
+- **User Space & Application Layer**: Run on top of the kernel for system tasks.
+
+The kernel supports the following major layers:
+
+- **User Space**: Processes applications and user data.
+- **Kernel Space**: System functions, including hardware interaction and system management.
+
+---
+
+### 2. Scheduler
+
+The **scheduler** determines which process runs next using scheduling algorithms.
+
+- **Real-time (RT)**: Hard-real-time tasks (e.g., interrupts, network packets).
+- **Batch (BK)**: Standard real-time task scheduling.
+- **Idle (IDLE)**: Low-priority tasks.
+- **Background (BG)**: Long-running background tasks.
+- **Foreground (FONF)**: Real-time foreground tasks.
+
+Scheduler states:
+- **WFI (Wait)**: Kernel thread waiting for CPU.
+- **WFI (Wait)**: Kernel thread waiting for resource.
+- **WFI (Wakeup)**: Kernel thread notified of wakeup.
+
+The scheduler ensures fair CPU allocation and timely handling of system events.
+
+---
+
+### 3. Memory Management
+
+The kernel uses a **Virtual Memory (VM)** system to manage:
+
+- **Page Cache**: Stores frequently accessed data for I/O efficiency.
+- **Slab Allocator**: Fast allocation of memory

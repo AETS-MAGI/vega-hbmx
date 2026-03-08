@@ -185,18 +185,18 @@ if(CMAKE_HIP_COMPILER)
         <tr><th class="bg-green">Component</th><th class="bg-green">Specification</th></tr>
         <tr><td><strong>GPU</strong></td><td>AMD Radeon RX Vega 56 (gfx900), 8 GB HBM2</td></tr>
         <tr><td><strong>OS / Kernel</strong></td><td>EndeavourOS, Kernel 6.12.74-1-lts</td></tr>
-        <tr><td><strong>ROCm endpoint</strong></td><td>Ollama 0.17.5 via :11435, libggml-hip.so</td></tr>
+        <tr><td><strong>ROCm endpoint</strong></td><td>Ollama 0.17.5 (03-07) / 0.17.6 (03-08) via :11435, libggml-hip.so</td></tr>
         <tr><td><strong>Vulkan endpoint</strong></td><td>Ollama 0.17.4 via :11434, libggml-vulkan.so</td></tr>
         <tr><td><strong>Model / workload</strong></td><td>qwen3.5:2b, NUM_PREDICT=512, num_gpu=0,1,2,-1</td></tr>
         <tr><td><strong>ROCm override</strong></td><td class="orange"><strong>HSA_OVERRIDE_GFX_VERSION=9.0.0 (ROCm service only; Vulkan service: no override applied)</strong></td></tr>
       </table>
       <div class="caution"><strong>Override note:</strong> The ROCm result was obtained under an override-assisted service configuration (<code>HSA_OVERRIDE_GFX_VERSION=9.0.0</code>). This supports conditional executability in this setup — not official support restoration. The Vulkan service ran without any override.</div>
-      <div class="takeaway">Two services, same hardware, one-epoch run. ROCm result is override-dependent; Vulkan result is not.</div>
+      <div class="takeaway">Two services, same hardware. Matched one-epoch runs were repeated across two days; ROCm result is override-dependent, Vulkan result is not.</div>
     </div>
 
     <!-- 10: Matched Results -->
     <div class="slide">
-      <div class="slide-title"><div class="slide-num bg-green">10</div><h2 class="slide-title-text green">Matched Results — In These Runs (High-Level)</h2></div>
+      <div class="slide-title"><div class="slide-num bg-green">10</div><h2 class="slide-title-text green">Matched Results — Reproduced Across Two Days</h2></div>
       <table>
         <tr><th class="bg-green">num_gpu</th><th class="bg-green">ROCm (:11435) run_20260307_012643 <span style="font-weight:normal;font-size:14px;">[override-assisted]</span></th><th class="bg-green">Vulkan (:11434) run_20260307_013050 <span style="font-weight:normal;font-size:14px;">[no override]</span></th></tr>
         <tr><td><strong>0</strong></td><td class="green"><strong>OK</strong> (46.689s, eval_count=512)</td><td class="green"><strong>OK</strong> (45.002s, eval_count=512)</td></tr>
@@ -204,8 +204,9 @@ if(CMAKE_HIP_COMPILER)
         <tr><td><strong>2</strong></td><td class="green"><strong>OK</strong> (47.748s)</td><td class="red"><strong>HTTP 500 + SIGSEGV</strong> (7.640s)</td></tr>
         <tr><td><strong>-1</strong></td><td class="green"><strong>OK</strong> (44.265s)</td><td class="red"><strong>HTTP 500 + SIGSEGV</strong> (9.816s)</td></tr>
       </table>
-      <p style="font-size:18px; margin-top:10px;"><strong>Observation (in these runs):</strong> Vulkan failure is conditional on num_gpu &gt;= 1, not universal. ROCm/HIP passed all tested values under override-assisted configuration.</p>
-      <div class="takeaway">Backend-dependent outcome confirmed within this single epoch, single model, matched run. Generalization beyond this scope requires additional runs.</div>
+      <p style="font-size:17px; margin-top:10px;"><strong>Matched rerun on 2026-03-08:</strong> ROCm run_20260308_201305 (0.17.6, override-assisted) again passed all tested values; Vulkan run_20260308_201641 again failed for num_gpu=1/2/-1 with nearly identical crash times (2.70 / 7.64 / 9.81s).</p>
+      <p style="font-size:17px; margin-top:6px;"><strong>Observation (in these runs):</strong> Vulkan failure is conditional on num_gpu &gt;= 1, not universal. ROCm/HIP passed all tested values under override-assisted configuration on both days.</p>
+      <div class="takeaway">The ROCm/HIP vs Vulkan difference is no longer a one-off matched run; the same pattern was reproduced on 2026-03-07 and 2026-03-08.</div>
     </div>
 
     <!-- 11: Run-Level Data -->
@@ -219,9 +220,13 @@ if(CMAKE_HIP_COMPILER)
         <tr><td>run_20260307_012643 (ROCm)</td><td>-1</td><td class="green"><strong>ok</strong></td><td>44.265</td><td>42084598410</td><td>1849</td></tr>
         <tr><td>run_20260307_013050 (Vulkan)</td><td>0</td><td class="green"><strong>ok</strong></td><td>45.002</td><td>41778665097</td><td>0</td></tr>
         <tr><td>run_20260307_013050 (Vulkan)</td><td>1/2/-1</td><td class="red"><strong>error</strong></td><td>2.672 / 7.640 / 9.816</td><td>—</td><td>—</td></tr>
+        <tr><td>run_20260308_201305 (ROCm)</td><td>0/1/2/-1</td><td class="green"><strong>all ok</strong></td><td>47.98 / 49.18 / 48.30 / 45.17</td><td>512 each</td><td>normal completion</td></tr>
+        <tr><td>run_20260308_201641 (Vulkan)</td><td>0</td><td class="green"><strong>ok</strong></td><td>45.53</td><td>512</td><td>normal completion</td></tr>
+        <tr><td>run_20260308_201641 (Vulkan)</td><td>1/2/-1</td><td class="red"><strong>error</strong></td><td>2.70 / 7.64 / 9.81</td><td>—</td><td>—</td></tr>
+        <tr><td>run_20260308_201924 (Vulkan)</td><td>0 × 5 epochs</td><td class="green"><strong>5/5 ok</strong></td><td>50.03 / 42.46 / 43.18 / 42.67 / 43.07</td><td>512 each</td><td>no crash</td></tr>
       </table>
       <p class="dim" style="font-size:17px; margin-top:8px;">Data source: vega_work_log/*/result.json</p>
-      <div class="takeaway">Raw numbers per run_id. One epoch each. Error elapsed time reflects time-to-crash, not inference time.</div>
+      <div class="takeaway">Raw numbers now include one matched rerun and a 5-epoch Vulkan num_gpu=0 stability check. Error elapsed time reflects time-to-crash, not inference time.</div>
     </div>
 
     <!-- 12: Vulkan Failure Timeline -->
@@ -311,10 +316,10 @@ github.com/ollama/ollama/runner/ollamarunner.(*Server).run.gowrap1()
       <table>
         <tr><th class="bg-blue">Tier</th><th class="bg-blue">Statement</th></tr>
         <tr><td class="red"><strong>1. Official support</strong></td><td>gfx900 is not officially supported in ROCm 7.2 or ollama's default build targets.</td></tr>
-        <tr><td class="orange"><strong>2. Conditional executability</strong></td><td>In this environment, with HSA_OVERRIDE_GFX_VERSION=9.0.0 and pre-existing artifacts, ROCm/HIP ran successfully across all tested num_gpu values in these runs.</td></tr>
-        <tr><td class="blue"><strong>3. Backend-dependent stability</strong></td><td>Under matched conditions in these runs, Vulkan SIGSEGV'd for num_gpu&gt;=1 while ROCm/HIP did not — the same hardware showed different compute-path outcomes.</td></tr>
+        <tr><td class="orange"><strong>2. Conditional executability</strong></td><td>In this environment, with HSA_OVERRIDE_GFX_VERSION=9.0.0 and pre-existing artifacts, ROCm/HIP ran successfully across all tested num_gpu values on two matched-run days.</td></tr>
+        <tr><td class="blue"><strong>3. Backend-dependent stability</strong></td><td>Under matched conditions across two days, Vulkan SIGSEGV'd for num_gpu&gt;=1 while ROCm/HIP did not; Vulkan remained stable at num_gpu=0, including a 5-epoch run.</td></tr>
       </table>
-      <div class="takeaway">The three tiers are independent claims. Tier 2 does not contradict Tier 1; Tier 3 does not generalize beyond the tested runs.</div>
+      <div class="takeaway">The three tiers are independent claims. Tier 2 does not contradict Tier 1; Tier 3 is now supported by two matched runs plus a 5-epoch Vulkan num_gpu=0 control.</div>
     </div>
 
     <!-- 17: Reproducibility Package -->
@@ -329,7 +334,8 @@ github.com/ollama/ollama/runner/ollamarunner.(*Server).run.gowrap1()
         <tr><td>Gate analysis</td><td>work_log/investigations/2026-03-07_gfx900_gate_matrix.md</td><td>Layered block/allow model for gfx900</td></tr>
       </table>
       <p style="font-size:17px; margin-top:10px;"><strong>Replay command:</strong> <code>OLLAMA_HOST=http://127.0.0.1:11435|11434 EPOCHS=1 NUM_PREDICT=512 NUM_GPU=0,1,2,-1 python vega-loop_qwen_rocm.py</code></p>
-      <div class="takeaway">Every claim in this deck is linked to a run_id + file path. Replaying with the same service configuration should reproduce the observed behavior.</div>
+      <p style="font-size:16px; margin-top:6px;"><strong>Stability check:</strong> <code>OLLAMA_HOST=http://127.0.0.1:11434 EPOCHS=5 NUM_GPU=0 NUM_PREDICT=512 python vega-loop_qwen.py</code></p>
+      <div class="takeaway">Every claim in this deck is linked to a run_id + file path. The matched rerun and the Vulkan num_gpu=0 control can both be replayed from the current scripts.</div>
     </div>
 
     <!-- 18: Limitations -->
@@ -339,16 +345,16 @@ github.com/ollama/ollama/runner/ollamarunner.(*Server).run.gowrap1()
         <strong class="red">Limitations:</strong>
       </p>
       <ul style="font-size:20px;">
-        <li>One epoch, single model (qwen3.5:2b). Behavior under multi-epoch stress or other models is unknown.</li>
-        <li>Ollama versions differ between endpoints (0.17.4 Vulkan vs 0.17.5 ROCm) — a potential confound.</li>
+        <li>Matched comparison is still single-model (qwen3.5:2b). However, the one-epoch matched run was reproduced on two days, and Vulkan num_gpu=0 was additionally stable for 5 epochs.</li>
+        <li>Ollama versions differ between endpoints (0.17.4 Vulkan vs 0.17.5/0.17.6 ROCm) — a potential confound remains.</li>
         <li>ROCm result depends on <code>HSA_OVERRIDE_GFX_VERSION=9.0.0</code>; outcome without the override is not tested here.</li>
         <li>Root cause within <code>ggml_backend_sched_graph_compute_async</code> (C/Vulkan side) is not resolved from the Go stack trace alone.</li>
         <li>tinyllama showed different Vulkan behavior — gfx900 Vulkan stability may be model- or workload-dependent.</li>
       </ul>
       <p style="margin-top:10px;">
-        <strong class="blue">Future work:</strong> Multi-epoch stress runs; matched Ollama version pair; same-version override-off vs override-on comparison; deeper Vulkan trace (RADV validation layers); additional models (llm-jp, phi-3).
+        <strong class="blue">Future work:</strong> Additional models; matched Ollama version pair; same-version override-off vs override-on comparison; deeper Vulkan trace (RADV validation layers); broader multi-epoch stress under GPU-offload settings.
       </p>
-      <div class="takeaway">Claims are scoped to the tested setup. The listed confounds are the next variables to control.</div>
+      <div class="takeaway">The new rerun removes the strongest one-off criticism, but model scope, version mismatch, and override dependence remain the main confounds.</div>
     </div>
 
     <!-- 19: Takeaway -->
@@ -361,14 +367,14 @@ github.com/ollama/ollama/runner/ollamarunner.(*Server).run.gowrap1()
         </div>
         <div class="card" style="border-top: 8px solid #E65100;">
           <h3 class="orange" style="font-size: 20px; margin-top: 0;">Conditionally executable</h3>
-          <p style="font-size: 17px;">In this environment, under override-assisted configuration, ROCm/HIP ran across all tested num_gpu values in these runs. Five of six examined gate layers retained executable paths.</p>
+          <p style="font-size: 17px;">In this environment, under override-assisted configuration, ROCm/HIP ran across all tested num_gpu values on both matched-run days. Five of six examined gate layers retained executable paths.</p>
         </div>
         <div class="card" style="border-top: 8px solid #0D47A1;">
           <h3 class="blue" style="font-size: 20px; margin-top: 0;">Backend-dependent stability</h3>
-          <p style="font-size: 17px;">On identical hardware and workload in these runs, Vulkan SIGSEGV'd for num_gpu&gt;=1 while ROCm/HIP did not. Backend choice — not hardware — determined the observed outcome.</p>
+          <p style="font-size: 17px;">On identical hardware and workload across two matched runs, Vulkan SIGSEGV'd for num_gpu&gt;=1 while ROCm/HIP did not; Vulkan stayed stable at num_gpu=0 for 5/5 epochs. Backend choice — not hardware alone — determined the observed outcome.</p>
         </div>
       </div>
-      <p class="dim" style="text-align: center; font-style: italic; margin-top: 18px; font-size: 20px;">Based on the collected evidence: "not officially supported" and "not executable in any configuration" are distinct statements. | Backend path matters under matched conditions.</p>
+      <p class="dim" style="text-align: center; font-style: italic; margin-top: 18px; font-size: 20px;">Based on the collected evidence: "not officially supported" and "not executable in any configuration" are distinct statements. | The ROCm/Vulkan difference reproduced across two days, and Vulkan remained stable only in the non-offloaded control.</p>
     </div>
 
     <div class="footer">Slide <span id="current">1</span> / <span id="total">?</span> (Use Arrow Keys ← → to navigate)</div>

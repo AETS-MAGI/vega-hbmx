@@ -1,0 +1,44 @@
+The Linux kernel is a core component of the Unix-like operating system, serving as a low-level, hardware-independent layer that manages system resources and provides the foundation for higher-level software. Its architecture consists of five key subsystems that work together to ensure system stability, performance, and reliability.
+
+---
+
+## 1. Scheduler
+
+The scheduler is responsible for managing CPU time and scheduling processes based on scheduling policies and system priorities.
+
+**Key Functions:**
+- **Process Scheduling:** Decides which process gets CPU time in response to interrupts or I/O events.
+- **CPU Time Allocation:** Uses workqueues and round-robin algorithms.
+- **Preemption:** Interrupts can preempt sleep or idle processes.
+
+**Core Structures:**
+- `struct task_struct`
+- `cpu_set_t`
+- `sched_lock` for scheduler lock management.
+
+**Scheduling Modes:**
+- Time-sharing (round-robin)
+- Preemptive scheduling
+- Priority scheduling
+- Batch scheduling
+- Load balancing
+- CPU affinity and memory affinity
+
+**Common Scheduling Algorithms:**
+- Round-Robin
+- Priority Queues (FIFO, Shortest Job First)
+- Multilevel Queues (MLQ)
+- CFS (Completely Fair Scheduler)
+
+---
+
+## 2. Memory Management
+
+Memory management in the Linux kernel is handled by the `memmanager` subsystem, which ensures safe, efficient, and fault-free usage of memory.
+
+**Key Components:**
+- **Memory Management Unit (MMU):** Handles memory paging, virtual-to-physical mapping, and memory protection.
+- **Page Table:** Each page (typically 4KB) has its own virtual address space; the kernel manages physical-to-virtual mappings.
+- **Zone-Based Memory Allocation:** Memory is allocated in zones:
+  - Kernel memory: for OS core
+  - User

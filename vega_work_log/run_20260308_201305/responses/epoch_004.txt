@@ -1,0 +1,39 @@
+The Linux kernel is a complex, modular, multi-threaded operating system kernel. Its architecture enables flexibility, scalability, and performance across diverse systems—from embedded microcontrollers to large-scale clusters. Below is an overview of its core components: scheduler, memory management, Virtual File System (VFS), interrupts, and device drivers.
+
+---
+
+### 1. Scheduler
+
+The **scheduler** is responsible for time-slicing CPU execution among multiple processes. Linux uses a variety of scheduling algorithms depending on the context:
+
+- **Time Scheduling**:
+  - **Round Robin** – Each process runs for its quota; then moves to the next.
+  - **Priority Scheduling** – High-priority tasks get CPU when available.
+  - **Rate Limiting** – Limits resource consumption to prevent abuse and ensure fairness.
+
+- **Kernel Modules**:
+  - Use `sched_module` to register modules with the scheduler (e.g., load balancing, throttling).
+
+- **Scheduler Types**:
+  - **Real-time Scheduling**: Preemptive or non-preemptive, prioritizing critical tasks with hard deadlines.
+  - **Non-Preemptive** – CPU remains with process until it exits.
+  - **Preemptive** – Kernel interrupts can force a task to yield (e.g., sleep, block I/O).
+
+---
+
+### 2. Memory Management
+
+Linux handles memory via the **kernel memory subsystem**:
+
+#### Memory Allocation and Control:
+- The **kernel's address space** is divided into segments, each managed by `memcg`.
+- The **swap area** allows pages to be migrated to disk when RAM is exhausted.
+- **Memory Management Units (MMU)** handle virtual-to-physical translation for processes.
+
+#### Memory Protection and Scheduling:
+- Processes are bound to memory regions using `page_table` pointers.
+- Kernel pages are allocated via `mem_alloc` function, returning a pointer or `NULL`.
+- Memory is protected from user-mode crashes through kernel fault handling.
+
+#### Key Components:
+-

@@ -1,0 +1,32 @@
+{
+  "timestamp": "2026-03-08T21:22:54.566289",
+  "hostname": "abyss-hbmx",
+  "platform": "Linux-6.18.16-1-lts-x86_64-with-glibc2.43",
+  "python_version": "3.14.3",
+  "backend_target": "rocm",
+  "model": "qwen3.5:2b",
+  "epochs": 1,
+  "num_predict": 128,
+  "num_gpu": 1,
+  "num_gpu_values": [
+    1
+  ],
+  "num_gpu_raw": "1",
+  "ollama_host": "http://127.0.0.1:11434",
+  "ollama_url": "http://127.0.0.1:11434/api/generate",
+  "prompt_preview": "Explain the architecture of the Linux kernel including scheduler, memory management, VFS, interrupts, and device drivers",
+  "cwd": "/home/limonene/ROCm-project/vega-investigate",
+  "script_path": "/home/limonene/ROCm-project/vega-investigate/vega-loop_qwen_rocm.py",
+  "run_started_at": "2026-03-08T21:22:54.566279",
+  "environment": {
+    "HSA_OVERRIDE_GFX_VERSION": null,
+    "HSA_ENABLE_SDMA": null,
+    "HSA_ENABLE_INTERRUPT": null,
+    "HIP_VISIBLE_DEVICES": null,
+    "ROCR_VISIBLE_DEVICES": null,
+    "ROCM_PATH": "/opt/rocm",
+    "OLLAMA_HOST": "http://127.0.0.1:11434",
+    "OLLAMA_LLM_LIBRARY": null,
+    "OLLAMA_NUM_GPU": null
+  }
+}

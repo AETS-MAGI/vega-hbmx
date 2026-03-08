@@ -1,0 +1,42 @@
+The Linux kernel is the core component of the Linux operating system and manages the system-level functionality. Its architecture is organized into modular subsystems that work together to manage hardware, memory, file systems, and the overall system runtime.
+
+## 1. Kernel Architecture Overview
+
+The Linux kernel consists of several major subsystems that communicate via a unified calling convention:
+
+- **Linux Kernel**: Main program responsible for running the system.
+- **Modules**: Loadable kernel extensions (`.ko` files) that enhance functionality or fix issues.
+- **Libraries**: Standard and dynamic libraries for system-level operations.
+
+Key areas covered in Linux kernel architecture include:
+- Scheduler
+- Memory Management
+- Virtual File System (VFS)
+- Interrupt Management
+- Device Drivers
+- I/O, Security, and Networking
+
+## 2. Scheduler
+
+The scheduler is responsible for managing CPU time and resource allocation. Linux supports several algorithms:
+
+### Scheduler Types:
+- **CFS (Completely Fair Scheduler)**: Dynamic load-balancing based on CPU time and priority.
+- **Burst (Preemptive)**: Preemption-based, allowing task switching to optimize system responsiveness.
+- **Real-time**: Hard-coded priority handling for time-sensitive tasks.
+
+### Key Components:
+- **Tasks**: Logical entities for execution.
+- **Schedulers**: Task switching strategies.
+- **Process Control**: Context switching, process resumption, and load balancing.
+
+The CFS scheduler uses `cfs_rq` (completely fair run queue) to balance CPU load. Real-time scheduling uses `rt_rq` (real-time run queue).
+
+## 3. Memory Management
+
+Memory management in Linux is handled by the kernel to efficiently manage resources and support concurrent processes.
+
+### Components:
+- **Page Tables**: Map virtual memory pages to physical memory addresses.
+- **Swap**: Handles temporary memory storage.
+- **Zone**: Div

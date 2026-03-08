@@ -1,0 +1,32 @@
+The Linux kernel is the core software that manages and coordinates the operation of an operating system on a computer system. It is organized into several interrelated subsystems that support resource management, process execution, file system operations, hardware interaction, and more. Below is a comprehensive explanation of its major architectural components.
+
+---
+
+### 1. **Process Scheduler (Scheduler)**
+The scheduler manages CPU time and ensures fair use of the processor among multiple processes. Key concepts include:
+
+- **Threading Models**: Linux supports preemptive scheduling models that allow dynamic assignment of CPU time.
+- **Process Priority & Scheduling Algorithms**: Real-time priority levels and load-balancing algorithms such as round-robin, FCFS, and QoS-based scheduling.
+- **Task Queues**: Processes are assigned to queues (e.g., `task_queue`, `nice`), with higher priority tasks scheduled first.
+- **Scheduler Types**:
+  - **SCHED_FIFO / SCHED_RR** for real-time tasks.
+  - **SCHED_OTHER (CFS)** for normal users.
+
+---
+
+### 2. **Memory Management**
+Memory is organized and managed using a sophisticated hierarchy to ensure efficiency and reliability:
+
+- **Kernel Memory Layout**: Kernel data is segmented into memory regions such as kernel stack, heap, and page tables.
+- **Page Tables & Address Space Mapping**: Each process's memory is mapped to physical pages via the Virtual Memory Manager (VMM).
+- **Memory Allocator**: The `malloc` system call allocates contiguous virtual memory; Linux supports multiple allocation strategies like Slab allocator for low-level resources.
+- **Memory Protection**: Processes have distinct permissions, allowing safe access control.
+
+---
+
+### 3. **Virtual File System (VFS)**
+The VFS provides a unified interface to access hardware and software modules independently:
+
+- **File Operations**: Read, write, open, close, etc., are handled by file system drivers, not directly by the kernel itself.
+- **Name Spaces & Inode Tracking**: Each directory has unique namespaces and inode structures stored in memory for efficient lookups.
+- **Mounting

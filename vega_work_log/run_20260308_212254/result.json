@@ -1,0 +1,41 @@
+{
+  "run_id": "run_20260308_212254",
+  "started_at": "2026-03-08T21:22:54.566279",
+  "backend_target": "rocm",
+  "model": "qwen3.5:2b",
+  "epochs": 1,
+  "total_epochs": 1,
+  "num_predict": 128,
+  "num_gpu": 1,
+  "num_gpu_values": [
+    1
+  ],
+  "num_gpu_raw": "1",
+  "ollama_host": "http://127.0.0.1:11434",
+  "records": [
+    {
+      "epoch": 1,
+      "case_epoch": 1,
+      "started_at": "2026-03-08T21:22:55.156154",
+      "num_gpu": 1,
+      "rocm_smi_before_file": "rocm_smi_epoch_001_before.txt",
+      "rocm_smi_after_file": "rocm_smi_epoch_001_after.txt",
+      "ollama_ps_before_file": "ollama_ps_epoch_001_before.txt",
+      "ollama_ps_after_file": "ollama_ps_epoch_001_after.txt",
+      "status": "error",
+      "elapsed_sec": 2.858,
+      "error_type": "http_error",
+      "error": "HTTP 500 from Ollama: model runner has unexpectedly stopped, this may be due to resource limitations or an internal error, check ollama server logs for details",
+      "http_status": 500,
+      "response_error": "model runner has unexpectedly stopped, this may be due to resource limitations or an internal error, check ollama server logs for details",
+      "response_text_snippet": "{\"error\":\"model runner has unexpectedly stopped, this may be due to resource limitations or an internal error, check ollama server logs for details\"}"
+    }
+  ],
+  "summary_by_num_gpu": {
+    "1": {
+      "ok": 0,
+      "error": 1
+    }
+  },
+  "finished_at": "2026-03-08T21:22:58.384878"
+}

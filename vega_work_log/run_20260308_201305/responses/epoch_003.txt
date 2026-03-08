@@ -1,0 +1,50 @@
+## Linux Kernel Architecture Overview
+
+The Linux kernel serves as the operating system's foundation, managing hardware resources, providing core services, and executing user-space applications. It follows a layered modular design with each subsystem optimized for performance, maintainability, and scalability. Here's an architectural breakdown:
+
+---
+
+### 1. Scheduler (Process Management)
+
+**Function:** Manages CPU time allocation among runnable tasks based on priority, scheduling policies, and hardware capabilities.
+
+- **Types of Schedulers:**
+  - `preempt_RT` — preemptive scheduler with context switches via kernel events.
+  - `nohup_rt` — non-preemptive (used in older kernels).
+  
+**Key Components:**
+- `sched.h`: Contains scheduling data structures and algorithms.
+- `task_struct`: Represents running processes; contains task state, scheduling info, and resources.
+
+```c
+struct task_struct {
+    pid_t pid;
+    struct user_ns *ns;
+    unsigned long cpu_rq;
+    // ... task-specific data
+};
+```
+
+**Scheduler Types:**
+- Preemptible: Allows preemptive switching with interrupts (common in modern systems).
+- Non-preemptible: Fixed CPU ownership (e.g., in older `nohup` kernels).
+
+**Functions:**
+```c
+// Context switch function example
+void *schedule(void);
+int sleep_on(pid_t pid, int flags);
+```
+
+---
+
+### 2. Memory Management
+
+**Function:** Handles physical address mapping and memory allocation/deallocation using virtual-to-physical translation.
+
+**Key Subsystems:**
+
+| Subsystem | Role | Key Data Structure |
+|-----------|------|--------------------|
+| Kernel Virtual Address (KVA) | Maps kernel space | `kmalloc`, `vmalloc` |
+| Physical Memory Mapping (`/dev/mem`)

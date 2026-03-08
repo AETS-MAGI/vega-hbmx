@@ -1,0 +1,65 @@
+== date ==
+2026-03-08T20:13:05+09:00
+
+== ollama env ==
+OLLAMA_HOST=http://127.0.0.1:11435
+ROCM_PATH=/opt/rocm
+
+== rocm-smi quick ==
+WARNING: AMD GPU device(s) is/are in a low-power state. Check power control/runtime_status
+
+
+
+============================ ROCm System Management Interface ============================
+============================== Version of System Component ===============================
+Driver version: 6.18.16-1-lts
+==========================================================================================
+====================================== Product Info ======================================
+GPU[0]		: Card Series: 		AMD Radeon RX Vega
+GPU[0]		: Card Model: 		0x687f
+GPU[0]		: Card Vendor: 		Advanced Micro Devices, Inc. [AMD/ATI]
+GPU[0]		: Card SKU: 		D0500100
+GPU[0]		: Subsystem ID: 	0x6b76
+GPU[0]		: Device Rev: 		0xc1
+GPU[0]		: Node ID: 		1
+GPU[0]		: GUID: 		39034
+GPU[0]		: GFX Version: 		gfx900
+==========================================================================================
+================================== End of ROCm SMI Log ===================================
+
+== ollama ps ==
+NAME    ID    SIZE    PROCESSOR    CONTEXT    UNTIL 
+
+== process grep ollama ==
+limonene    1415    1406  0  3月07 ?      00:00:12 /usr/bin/ollama serve
+limonene    1416    1406  0  3月07 ?      00:06:20 /usr/local/bin/ollama serve
+
+== systemctl user units (ollama*) ==
+  UNIT                LOAD   ACTIVE SUB     DESCRIPTION
+  ollama-rocm.service loaded active running Ollama (ROCm backend) - parallel service
+  ollama.service      loaded active running Ollama (user service, Vega 56 via Vulkan)
+
+Legend: LOAD   → Reflects whether the unit definition was properly loaded.
+        ACTIVE → The high-level unit activation state, i.e. generalization of SUB.
+        SUB    → The low-level unit activation state, values depend on unit type.
+
+2 loaded units listed. Pass --all to see loaded but inactive units, too.
+To show all installed unit files use 'systemctl list-unit-files'.
+
+== listen sockets (11434/11435) ==
+LISTEN 0      4096                    127.0.0.1:11435      0.0.0.0:*    users:(("ollama",pid=1415,fd=3))           
+LISTEN 0      4096                    127.0.0.1:11434      0.0.0.0:*    users:(("ollama",pid=1416,fd=3))           
+
+== journalctl (recent) ==
+ 3月 08 20:09:14 abyss-hbmx ollama-rocm-serve[1415]: [GIN] 2026/03/08 - 20:09:14 | 200 |      51.528µs |       127.0.0.1 | GET      "/api/version"
+ 3月 08 20:09:14 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 20:09:14 | 200 |      51.418µs |       127.0.0.1 | GET      "/api/version"
+ 3月 08 20:09:16 abyss-hbmx ollama-rocm-serve[1415]: [GIN] 2026/03/08 - 20:09:16 | 200 |     139.497µs |       127.0.0.1 | GET      "/api/ps"
+ 3月 08 20:09:16 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 20:09:16 | 200 |      38.374µs |       127.0.0.1 | GET      "/api/ps"
+ 3月 08 20:13:05 abyss-hbmx ollama-rocm-serve[1415]: [GIN] 2026/03/08 - 20:13:05 | 200 |      42.972µs |       127.0.0.1 | HEAD     "/"
+ 3月 08 20:13:05 abyss-hbmx ollama-rocm-serve[1415]: [GIN] 2026/03/08 - 20:13:05 | 200 |      12.323µs |       127.0.0.1 | GET      "/api/ps"
+ 3月 08 20:13:05 abyss-hbmx ollama-rocm-serve[1415]: [GIN] 2026/03/08 - 20:13:05 | 200 |      47.291µs |       127.0.0.1 | GET      "/api/version"
+ 3月 08 20:13:05 abyss-hbmx ollama-rocm-serve[1415]: [GIN] 2026/03/08 - 20:13:05 | 200 |      34.857µs |       127.0.0.1 | HEAD     "/"
+ 3月 08 20:13:05 abyss-hbmx ollama-rocm-serve[1415]: [GIN] 2026/03/08 - 20:13:05 | 200 |      21.791µs |       127.0.0.1 | GET      "/api/ps"
+
+== run started at ==
+2026-03-08T20:13:05.427390

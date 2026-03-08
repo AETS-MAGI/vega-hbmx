@@ -1,0 +1,606 @@
+ 3月 08 21:22:54 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 21:22:54 | 200 |       36.76µs |       127.0.0.1 | HEAD     "/"
+ 3月 08 21:22:54 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 21:22:54 | 200 |      19.798µs |       127.0.0.1 | GET      "/api/ps"
+ 3月 08 21:22:54 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 21:22:54 | 200 |      45.136µs |       127.0.0.1 | GET      "/api/version"
+ 3月 08 21:22:55 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 21:22:55 | 200 |      27.663µs |       127.0.0.1 | HEAD     "/"
+ 3月 08 21:22:55 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 21:22:55 | 200 |      19.437µs |       127.0.0.1 | GET      "/api/ps"
+ 3月 08 21:22:55 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 21:22:55 | 200 |      43.162µs |       127.0.0.1 | HEAD     "/"
+ 3月 08 21:22:55 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 21:22:55 | 200 |      18.375µs |       127.0.0.1 | GET      "/api/ps"
+ 3月 08 21:22:55 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:22:55.824+09:00 level=INFO source=server.go:431 msg="starting runner" cmd="/usr/local/bin/ollama runner --ollama-engine --port 36689"
+ 3月 08 21:22:56 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:22:56.140+09:00 level=INFO source=server.go:247 msg="enabling flash attention"
+ 3月 08 21:22:56 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:22:56.141+09:00 level=INFO source=server.go:431 msg="starting runner" cmd="/usr/local/bin/ollama runner --ollama-engine --model /home/limonene/.ollama/models/blobs/sha256-b709d81508a078a686961de6ca07a953b895d9b286c46e17f00fb267f4f2d297 --port 34011"
+ 3月 08 21:22:56 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:22:56.141+09:00 level=INFO source=sched.go:491 msg="system memory" total="62.7 GiB" free="58.1 GiB" free_swap="8.8 GiB"
+ 3月 08 21:22:56 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:22:56.141+09:00 level=INFO source=sched.go:498 msg="gpu memory" id=00000000-4400-0000-0000-000000000000 library=Vulkan available="7.0 GiB" free="7.5 GiB" minimum="457.0 MiB" overhead="0 B"
+ 3月 08 21:22:56 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:22:56.141+09:00 level=INFO source=server.go:757 msg="loading model" "model layers"=25 requested=1
+ 3月 08 21:22:56 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:22:56.159+09:00 level=INFO source=runner.go:1411 msg="starting ollama engine"
+ 3月 08 21:22:56 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:22:56.159+09:00 level=INFO source=runner.go:1446 msg="Server listening on 127.0.0.1:34011"
+ 3月 08 21:22:56 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:22:56.163+09:00 level=INFO source=runner.go:1284 msg=load request="{Operation:fit LoraPath:[] Parallel:1 BatchSize:512 FlashAttention:Enabled KvSize:4096 KvCacheType: NumThreads:16 GPULayers:1[ID:00000000-4400-0000-0000-000000000000 Layers:1(23..23)] MultiUserCache:false ProjectorPath: MainGPU:0 UseMmap:false}"
+ 3月 08 21:22:56 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:22:56.243+09:00 level=INFO source=ggml.go:136 msg="" architecture=qwen35 file_type=Q8_0 name="" description="" num_tensors=728 num_key_values=52
+ 3月 08 21:22:56 abyss-hbmx ollama-vega-vulkan[1416]: load_backend: loaded CPU backend from /usr/local/lib/ollama/libggml-cpu-haswell.so
+ 3月 08 21:22:56 abyss-hbmx ollama-vega-vulkan[1416]: ggml_vulkan: Found 1 Vulkan devices:
+ 3月 08 21:22:56 abyss-hbmx ollama-vega-vulkan[1416]: ggml_vulkan: 0 = AMD Radeon RX Vega (RADV VEGA10) (radv) | uma: 0 | fp16: 1 | bf16: 0 | warp size: 64 | shared memory: 65536 | int dot: 0 | matrix cores: none
+ 3月 08 21:22:56 abyss-hbmx ollama-vega-vulkan[1416]: load_backend: loaded Vulkan backend from /usr/local/lib/ollama/vulkan/libggml-vulkan.so
+ 3月 08 21:22:56 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:22:56.264+09:00 level=INFO source=ggml.go:104 msg=system CPU.0.SSE3=1 CPU.0.SSSE3=1 CPU.0.AVX=1 CPU.0.AVX2=1 CPU.0.F16C=1 CPU.0.FMA=1 CPU.0.BMI2=1 CPU.0.LLAMAFILE=1 CPU.1.LLAMAFILE=1 compiler=cgo(gcc)
+ 3月 08 21:22:56 abyss-hbmx ollama-vega-vulkan[1416]: ggml_backend_vk_get_device_memory called: uuid 00000000-4400-0000-0000-000000000000
+ 3月 08 21:22:56 abyss-hbmx ollama-vega-vulkan[1416]: ggml_backend_vk_get_device_memory called: luid 0x0000000000000000
+ 3月 08 21:22:56 abyss-hbmx ollama-vega-vulkan[1416]: ggml_hip_get_device_memory searching for device 0000:44:00.0
+ 3月 08 21:22:56 abyss-hbmx ollama-vega-vulkan[1416]: ggml_backend_vk_get_device_memory device 0000:44:00.0 utilizing AMD specific memory reporting free: 8000069632 total: 8573157376
+ 3月 08 21:22:56 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:22:56.672+09:00 level=INFO source=runner.go:1284 msg=load request="{Operation:alloc LoraPath:[] Parallel:1 BatchSize:512 FlashAttention:Enabled KvSize:4096 KvCacheType: NumThreads:16 GPULayers:1[ID:00000000-4400-0000-0000-000000000000 Layers:1(23..23)] MultiUserCache:false ProjectorPath: MainGPU:0 UseMmap:false}"
+ 3月 08 21:22:56 abyss-hbmx ollama-vega-vulkan[1416]: ggml_backend_vk_get_device_memory called: uuid 00000000-4400-0000-0000-000000000000
+ 3月 08 21:22:56 abyss-hbmx ollama-vega-vulkan[1416]: ggml_backend_vk_get_device_memory called: luid 0x0000000000000000
+ 3月 08 21:22:56 abyss-hbmx ollama-vega-vulkan[1416]: ggml_hip_get_device_memory searching for device 0000:44:00.0
+ 3月 08 21:22:56 abyss-hbmx ollama-vega-vulkan[1416]: ggml_backend_vk_get_device_memory device 0000:44:00.0 utilizing AMD specific memory reporting free: 8000069632 total: 8573157376
+ 3月 08 21:22:57 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:22:57.411+09:00 level=INFO source=runner.go:1284 msg=load request="{Operation:commit LoraPath:[] Parallel:1 BatchSize:512 FlashAttention:Enabled KvSize:4096 KvCacheType: NumThreads:16 GPULayers:1[ID:00000000-4400-0000-0000-000000000000 Layers:1(23..23)] MultiUserCache:false ProjectorPath: MainGPU:0 UseMmap:false}"
+ 3月 08 21:22:57 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:22:57.411+09:00 level=INFO source=device.go:240 msg="model weights" device=Vulkan0 size="53.1 MiB"
+ 3月 08 21:22:57 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:22:57.411+09:00 level=INFO source=device.go:245 msg="model weights" device=CPU size="3.0 GiB"
+ 3月 08 21:22:57 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:22:57.411+09:00 level=INFO source=ggml.go:482 msg="offloading 1 repeating layers to GPU"
+ 3月 08 21:22:57 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:22:57.411+09:00 level=INFO source=ggml.go:486 msg="offloading output layer to CPU"
+ 3月 08 21:22:57 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:22:57.411+09:00 level=INFO source=ggml.go:494 msg="offloaded 1/25 layers to GPU"
+ 3月 08 21:22:57 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:22:57.411+09:00 level=INFO source=device.go:251 msg="kv cache" device=Vulkan0 size="8.0 MiB"
+ 3月 08 21:22:57 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:22:57.411+09:00 level=INFO source=device.go:256 msg="kv cache" device=CPU size="521.6 MiB"
+ 3月 08 21:22:57 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:22:57.411+09:00 level=INFO source=device.go:262 msg="compute graph" device=Vulkan0 size="257.1 MiB"
+ 3月 08 21:22:57 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:22:57.411+09:00 level=INFO source=device.go:267 msg="compute graph" device=CPU size="308.6 MiB"
+ 3月 08 21:22:57 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:22:57.411+09:00 level=INFO source=device.go:272 msg="total memory" size="4.1 GiB"
+ 3月 08 21:22:57 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:22:57.411+09:00 level=INFO source=sched.go:566 msg="loaded runners" count=1
+ 3月 08 21:22:57 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:22:57.411+09:00 level=INFO source=server.go:1350 msg="waiting for llama runner to start responding"
+ 3月 08 21:22:57 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:22:57.412+09:00 level=INFO source=server.go:1384 msg="waiting for server to become available" status="llm server loading model"
+ 3月 08 21:22:57 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:22:57.914+09:00 level=INFO source=server.go:1388 msg="llama runner started in 1.77 seconds"
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: SIGSEGV: segmentation violation
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: PC=0x7f7c302fd1b5 m=26 sigcode=1 addr=0x3a8000
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: signal arrived during cgo execution
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 919 gp=0xc000b12540 m=26 mp=0xc000a92008 [syscall]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.cgocall(0x56226b849710, 0xc0000bfaa0)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/cgocall.go:167 +0x4b fp=0xc0000bfa78 sp=0xc0000bfa40 pc=0x56226a8fba6b
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: github.com/ollama/ollama/ml/backend/ggml._Cfunc_ggml_backend_sched_graph_compute_async(0x7f7c040036b0, 0x7f7a980017a0)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         _cgo_gotypes.go:979 +0x4a fp=0xc0000bfaa0 sp=0xc0000bfa78 pc=0x56226ade6b0a
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: github.com/ollama/ollama/ml/backend/ggml.(*Context).ComputeWithNotify.func2(...)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         github.com/ollama/ollama/ml/backend/ggml/ggml.go:825
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: github.com/ollama/ollama/ml/backend/ggml.(*Context).ComputeWithNotify(0xc0049c40c0, 0xc0005a6000?, {0xc0017bc880, 0x1, 0x2?})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         github.com/ollama/ollama/ml/backend/ggml/ggml.go:825 +0x1b2 fp=0xc0000bfb78 sp=0xc0000bfaa0 pc=0x56226adf5492
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: github.com/ollama/ollama/runner/ollamarunner.(*Server).computeBatch(0xc00026d0e0, {0x0, {0x56226c1a0790, 0xc0049c40c0}, {0x56226c1adbf0, 0xc004a22060}, {0xc000148400, 0x21, 0x40}, {{0x56226c1adbf0, ...}, ...}, ...})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         github.com/ollama/ollama/runner/ollamarunner/runner.go:716 +0x862 fp=0xc0000bfef0 sp=0xc0000bfb78 pc=0x56226af20282
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: github.com/ollama/ollama/runner/ollamarunner.(*Server).run.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         github.com/ollama/ollama/runner/ollamarunner/runner.go:459 +0x58 fp=0xc0000bffe0 sp=0xc0000bfef0 pc=0x56226af1df78
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc0000bffe8 sp=0xc0000bffe0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by github.com/ollama/ollama/runner/ollamarunner.(*Server).run in goroutine 14
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         github.com/ollama/ollama/runner/ollamarunner/runner.go:459 +0x2cd
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 1 gp=0xc000002380 m=nil [IO wait]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc000f79778 sp=0xc000f79758 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.netpollblock(0xc0003477c8?, 0x6a8984a6?, 0x22?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/netpoll.go:575 +0xf7 fp=0xc000f797b0 sp=0xc000f79778 pc=0x56226a8c4097
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: internal/poll.runtime_pollWait(0x7f7c7b0cc6d0, 0x72)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/netpoll.go:351 +0x85 fp=0xc000f797d0 sp=0xc000f797b0 pc=0x56226a8fe105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: internal/poll.(*pollDesc).wait(0xc000156c80?, 0x900000036?, 0x0)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         internal/poll/fd_poll_runtime.go:84 +0x27 fp=0xc000f797f8 sp=0xc000f797d0 pc=0x56226a986487
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: internal/poll.(*pollDesc).waitRead(...)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         internal/poll/fd_poll_runtime.go:89
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: internal/poll.(*FD).Accept(0xc000156c80)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         internal/poll/fd_unix.go:620 +0x295 fp=0xc000f798a0 sp=0xc000f797f8 pc=0x56226a98b855
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: net.(*netFD).accept(0xc000156c80)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         net/fd_unix.go:172 +0x29 fp=0xc000f79958 sp=0xc000f798a0 pc=0x56226a9fed49
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: net.(*TCPListener).accept(0xc0002d1540)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         net/tcpsock_posix.go:159 +0x1b fp=0xc000f799a8 sp=0xc000f79958 pc=0x56226aa14c5b
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: net.(*TCPListener).Accept(0xc0002d1540)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         net/tcpsock.go:380 +0x30 fp=0xc000f799d8 sp=0xc000f799a8 pc=0x56226aa13b10
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: net/http.(*onceCloseListener).Accept(0xc000172480?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         <autogenerated>:1 +0x24 fp=0xc000f799f0 sp=0xc000f799d8 pc=0x56226ac2b9c4
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: net/http.(*Server).Serve(0xc000375600, {0x56226c191980, 0xc0002d1540})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         net/http/server.go:3424 +0x30c fp=0xc000f79b20 sp=0xc000f799f0 pc=0x56226ac0328c
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: github.com/ollama/ollama/runner/ollamarunner.Execute({0xc0000340a0, 0x4, 0x4})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         github.com/ollama/ollama/runner/ollamarunner/runner.go:1447 +0x94e fp=0xc000f79cf0 sp=0xc000f79b20 pc=0x56226af2720e
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: github.com/ollama/ollama/runner.Execute({0xc000034080?, 0x0?, 0x0?})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         github.com/ollama/ollama/runner/runner.go:18 +0x10e fp=0xc000f79d30 sp=0xc000f79cf0 pc=0x56226afc676e
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: github.com/ollama/ollama/cmd.NewCLI.func3(0xc000375300?, {0x56226bbaf236?, 0x4?, 0x56226bbaf23a?})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         github.com/ollama/ollama/cmd/cmd.go:2270 +0x45 fp=0xc000f79d58 sp=0xc000f79d30 pc=0x56226b7d9c25
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: github.com/spf13/cobra.(*Command).execute(0xc000177b08, {0xc0001527d0, 0x5, 0x5})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         github.com/spf13/cobra@v1.7.0/command.go:940 +0x85c fp=0xc000f79e78 sp=0xc000f79d58 pc=0x56226aa78cdc
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: github.com/spf13/cobra.(*Command).ExecuteC(0xc00014c908)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         github.com/spf13/cobra@v1.7.0/command.go:1068 +0x3a5 fp=0xc000f79f30 sp=0xc000f79e78 pc=0x56226aa79525
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: github.com/spf13/cobra.(*Command).Execute(...)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         github.com/spf13/cobra@v1.7.0/command.go:992
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: github.com/spf13/cobra.(*Command).ExecuteContext(...)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         github.com/spf13/cobra@v1.7.0/command.go:985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: main.main()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         github.com/ollama/ollama/main.go:12 +0x4d fp=0xc000f79f50 sp=0xc000f79f30 pc=0x56226b7dc0cd
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.main()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:283 +0x29d fp=0xc000f79fe0 sp=0xc000f79f50 pc=0x56226a8cb71d
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc000f79fe8 sp=0xc000f79fe0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 2 gp=0xc000002e00 m=nil [force gc (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc0000aafa8 sp=0xc0000aaf88 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goparkunlock(...)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:441
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.forcegchelper()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:348 +0xb8 fp=0xc0000aafe0 sp=0xc0000aafa8 pc=0x56226a8cba58
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc0000aafe8 sp=0xc0000aafe0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.init.7 in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:336 +0x1a
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 3 gp=0xc000003340 m=nil [GC sweep wait]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x1?, 0x0?, 0x0?, 0x0?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc0000ab780 sp=0xc0000ab760 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goparkunlock(...)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:441
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.bgsweep(0xc00003c080)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgcsweep.go:316 +0xdf fp=0xc0000ab7c8 sp=0xc0000ab780 pc=0x56226a8b61ff
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcenable.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:204 +0x25 fp=0xc0000ab7e0 sp=0xc0000ab7c8 pc=0x56226a8aa5e5
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc0000ab7e8 sp=0xc0000ab7e0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcenable in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:204 +0x66
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 4 gp=0xc000003500 m=nil [GC scavenge wait]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x3f2224?, 0x34fe2e?, 0x0?, 0x0?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc0000abf78 sp=0xc0000abf58 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goparkunlock(...)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:441
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.(*scavengerState).park(0x56226cbc85a0)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgcscavenge.go:425 +0x49 fp=0xc0000abfa8 sp=0xc0000abf78 pc=0x56226a8b3c49
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.bgscavenge(0xc00003c080)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgcscavenge.go:658 +0x59 fp=0xc0000abfc8 sp=0xc0000abfa8 pc=0x56226a8b41d9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcenable.gowrap2()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:205 +0x25 fp=0xc0000abfe0 sp=0xc0000abfc8 pc=0x56226a8aa585
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc0000abfe8 sp=0xc0000abfe0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcenable in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:205 +0xa5
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 5 gp=0xc000003dc0 m=nil [finalizer wait]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x1b8?, 0x56226c16c1c0?, 0x1?, 0x23?, 0x56226a904e74?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc0000aa630 sp=0xc0000aa610 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.runfinq()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mfinal.go:196 +0x107 fp=0xc0000aa7e0 sp=0xc0000aa630 pc=0x56226a8a95a7
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc0000aa7e8 sp=0xc0000aa7e0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.createfing in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mfinal.go:166 +0x3d
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 6 gp=0xc0001f68c0 m=nil [chan receive]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0xc000269900?, 0xc004a44048?, 0x60?, 0xc7?, 0x56226a9e58a8?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc0000ac718 sp=0xc0000ac6f8 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.chanrecv(0xc0000e2310, 0x0, 0x1)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/chan.go:664 +0x445 fp=0xc0000ac790 sp=0xc0000ac718 pc=0x56226a89b085
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.chanrecv1(0x0?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/chan.go:506 +0x12 fp=0xc0000ac7b8 sp=0xc0000ac790 pc=0x56226a89ac12
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.unique_runtime_registerUniqueMapCleanup.func2(...)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1796
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.unique_runtime_registerUniqueMapCleanup.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1799 +0x2f fp=0xc0000ac7e0 sp=0xc0000ac7b8 pc=0x56226a8ad78f
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc0000ac7e8 sp=0xc0000ac7e0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by unique.runtime_registerUniqueMapCleanup in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1794 +0x85
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 7 gp=0xc0001f6c40 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc0000acf38 sp=0xc0000acf18 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc0000acfc8 sp=0xc0000acf38 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc0000acfe0 sp=0xc0000acfc8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc0000acfe8 sp=0xc0000acfe0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 8 gp=0xc0001f6e00 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc0000ad738 sp=0xc0000ad718 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc0000ad7c8 sp=0xc0000ad738 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc0000ad7e0 sp=0xc0000ad7c8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc0000ad7e8 sp=0xc0000ad7e0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 9 gp=0xc0001f6fc0 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc0000adf38 sp=0xc0000adf18 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc0000adfc8 sp=0xc0000adf38 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc0000adfe0 sp=0xc0000adfc8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc0000adfe8 sp=0xc0000adfe0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 10 gp=0xc0001f7180 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc0000a6738 sp=0xc0000a6718 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc0000a67c8 sp=0xc0000a6738 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc0000a67e0 sp=0xc0000a67c8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc0000a67e8 sp=0xc0000a67e0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 18 gp=0xc000102380 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc000118738 sp=0xc000118718 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc0001187c8 sp=0xc000118738 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc0001187e0 sp=0xc0001187c8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc0001187e8 sp=0xc0001187e0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 19 gp=0xc000102540 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc000118f38 sp=0xc000118f18 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc000118fc8 sp=0xc000118f38 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc000118fe0 sp=0xc000118fc8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc000118fe8 sp=0xc000118fe0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 20 gp=0xc000102700 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc000119738 sp=0xc000119718 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc0001197c8 sp=0xc000119738 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc0001197e0 sp=0xc0001197c8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc0001197e8 sp=0xc0001197e0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 21 gp=0xc0001028c0 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc000119f38 sp=0xc000119f18 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc000119fc8 sp=0xc000119f38 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc000119fe0 sp=0xc000119fc8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc000119fe8 sp=0xc000119fe0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 22 gp=0xc000102a80 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc00011a738 sp=0xc00011a718 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc00011a7c8 sp=0xc00011a738 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc00011a7e0 sp=0xc00011a7c8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc00011a7e8 sp=0xc00011a7e0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 23 gp=0xc000102c40 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc00011af38 sp=0xc00011af18 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc00011afc8 sp=0xc00011af38 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc00011afe0 sp=0xc00011afc8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc00011afe8 sp=0xc00011afe0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 24 gp=0xc000102e00 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc00011b738 sp=0xc00011b718 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc00011b7c8 sp=0xc00011b738 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc00011b7e0 sp=0xc00011b7c8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc00011b7e8 sp=0xc00011b7e0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 25 gp=0xc000102fc0 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc00011bf38 sp=0xc00011bf18 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc00011bfc8 sp=0xc00011bf38 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc00011bfe0 sp=0xc00011bfc8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc00011bfe8 sp=0xc00011bfe0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 26 gp=0xc000103180 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc000114738 sp=0xc000114718 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc0001147c8 sp=0xc000114738 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc0001147e0 sp=0xc0001147c8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc0001147e8 sp=0xc0001147e0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 27 gp=0xc000103340 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc000114f38 sp=0xc000114f18 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc000114fc8 sp=0xc000114f38 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc000114fe0 sp=0xc000114fc8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc000114fe8 sp=0xc000114fe0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 34 gp=0xc00032e000 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc000334738 sp=0xc000334718 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc0003347c8 sp=0xc000334738 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc0003347e0 sp=0xc0003347c8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc0003347e8 sp=0xc0003347e0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 35 gp=0xc00032e1c0 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc000334f38 sp=0xc000334f18 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc000334fc8 sp=0xc000334f38 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc000334fe0 sp=0xc000334fc8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc000334fe8 sp=0xc000334fe0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 36 gp=0xc00032e380 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc000335738 sp=0xc000335718 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc0003357c8 sp=0xc000335738 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc0003357e0 sp=0xc0003357c8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc0003357e8 sp=0xc0003357e0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 37 gp=0xc00032e540 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc000335f38 sp=0xc000335f18 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc000335fc8 sp=0xc000335f38 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc000335fe0 sp=0xc000335fc8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc000335fe8 sp=0xc000335fe0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 11 gp=0xc0001f7340 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc0000a6f38 sp=0xc0000a6f18 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc0000a6fc8 sp=0xc0000a6f38 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc0000a6fe0 sp=0xc0000a6fc8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc0000a6fe8 sp=0xc0000a6fe0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 28 gp=0xc000103500 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc000115738 sp=0xc000115718 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc0001157c8 sp=0xc000115738 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc0001157e0 sp=0xc0001157c8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc0001157e8 sp=0xc0001157e0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 38 gp=0xc00032e700 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x56226cc9d520?, 0x1?, 0x15?, 0xbe?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc000336738 sp=0xc000336718 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc0003367c8 sp=0xc000336738 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc0003367e0 sp=0xc0003367c8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc0003367e8 sp=0xc0003367e0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 39 gp=0xc00032e8c0 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x9496baa9fae9?, 0x1?, 0x37?, 0x90?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc000336f38 sp=0xc000336f18 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc000336fc8 sp=0xc000336f38 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc000336fe0 sp=0xc000336fc8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc000336fe8 sp=0xc000336fe0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 40 gp=0xc00032ea80 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x56226cc9d520?, 0x1?, 0xf4?, 0x92?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc000337738 sp=0xc000337718 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc0003377c8 sp=0xc000337738 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc0003377e0 sp=0xc0003377c8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc0003377e8 sp=0xc0003377e0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 41 gp=0xc00032ec40 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x56226cc9d520?, 0x1?, 0x70?, 0x68?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc000337f38 sp=0xc000337f18 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc000337fc8 sp=0xc000337f38 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc000337fe0 sp=0xc000337fc8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc000337fe8 sp=0xc000337fe0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 12 gp=0xc0001f7500 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x9496864637cd?, 0x1?, 0x69?, 0x9e?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc0000a7738 sp=0xc0000a7718 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc0000a77c8 sp=0xc0000a7738 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc0000a77e0 sp=0xc0000a77c8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc0000a77e8 sp=0xc0000a77e0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 29 gp=0xc0001036c0 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x9496b9eff420?, 0x1?, 0x6f?, 0x58?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc000115f38 sp=0xc000115f18 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc000115fc8 sp=0xc000115f38 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc000115fe0 sp=0xc000115fc8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc000115fe8 sp=0xc000115fe0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 13 gp=0xc0001f76c0 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x9496baaa3127?, 0x1?, 0xfa?, 0x14?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc0000a7f38 sp=0xc0000a7f18 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc0000a7fc8 sp=0xc0000a7f38 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc0000a7fe0 sp=0xc0000a7fc8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc0000a7fe8 sp=0xc0000a7fe0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 42 gp=0xc00032ee00 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x949686383216?, 0x1?, 0xcc?, 0x1f?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc000330738 sp=0xc000330718 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc0003307c8 sp=0xc000330738 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc0003307e0 sp=0xc0003307c8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc0003307e8 sp=0xc0003307e0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 43 gp=0xc00032efc0 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x9496baa9c14d?, 0x1?, 0xfc?, 0x18?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc000330f38 sp=0xc000330f18 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc000330fc8 sp=0xc000330f38 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc000330fe0 sp=0xc000330fc8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc000330fe8 sp=0xc000330fe0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 44 gp=0xc00032f180 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x949686382d32?, 0x1?, 0x3b?, 0x9f?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc000331738 sp=0xc000331718 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc0003317c8 sp=0xc000331738 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc0003317e0 sp=0xc0003317c8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc0003317e8 sp=0xc0003317e0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 45 gp=0xc00032f340 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x94968645f85b?, 0x3?, 0x6f?, 0xae?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc000331f38 sp=0xc000331f18 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc000331fc8 sp=0xc000331f38 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc000331fe0 sp=0xc000331fc8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc000331fe8 sp=0xc000331fe0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 46 gp=0xc00032f500 m=nil [GC worker (idle)]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x56226cc9d520?, 0x1?, 0x62?, 0x3e?, 0x0?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc000332738 sp=0xc000332718 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkWorker(0xc0000e3570)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1423 +0xe9 fp=0xc0003327c8 sp=0xc000332738 pc=0x56226a8acaa9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gcBgMarkStartWorkers.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x25 fp=0xc0003327e0 sp=0xc0003327c8 pc=0x56226a8ac985
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc0003327e8 sp=0xc0003327e0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by runtime.gcBgMarkStartWorkers in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/mgc.go:1339 +0x105
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 14 gp=0xc00051efc0 m=nil [chan receive]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x30?, 0x56226c0cfb20?, 0x1?, 0x0?, 0xc000f7b798?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc000f7b750 sp=0xc000f7b730 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.chanrecv(0xc0003781c0, 0x0, 0x1)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/chan.go:664 +0x445 fp=0xc000f7b7c8 sp=0xc000f7b750 pc=0x56226a89b085
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.chanrecv1(0x56226bbf2664?, 0x29?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/chan.go:506 +0x12 fp=0xc000f7b7f0 sp=0xc000f7b7c8 pc=0x56226a89ac12
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: github.com/ollama/ollama/runner/ollamarunner.(*Server).forwardBatch(_, {0x1, {0x56226c1a0790, 0xc0049c4400}, {0x56226c1adbf0, 0xc004a28420}, {0xc000b0a040, 0x1, 0x1}, {{0x56226c1adbf0, ...}, ...}, ...})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         github.com/ollama/ollama/runner/ollamarunner/runner.go:476 +0xfa fp=0xc000f7bb58 sp=0xc000f7b7f0 pc=0x56226af1e09a
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: github.com/ollama/ollama/runner/ollamarunner.(*Server).run(0xc00026d0e0, {0x56226c1942e0, 0xc000152870})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         github.com/ollama/ollama/runner/ollamarunner/runner.go:453 +0x18c fp=0xc000f7bfb8 sp=0xc000f7bb58 pc=0x56226af1dd4c
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: github.com/ollama/ollama/runner/ollamarunner.Execute.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         github.com/ollama/ollama/runner/ollamarunner/runner.go:1424 +0x28 fp=0xc000f7bfe0 sp=0xc000f7bfb8 pc=0x56226af27488
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc000f7bfe8 sp=0xc000f7bfe0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by github.com/ollama/ollama/runner/ollamarunner.Execute in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         github.com/ollama/ollama/runner/ollamarunner/runner.go:1424 +0x4c9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 15 gp=0xc00051f180 m=nil [select]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0xc000049a08?, 0x2?, 0xc0?, 0x97?, 0xc00004986c?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc000049698 sp=0xc000049678 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.selectgo(0xc000049a08, 0xc000049868, 0x21?, 0x0, 0x1?, 0x1)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/select.go:351 +0x837 fp=0xc0000497d0 sp=0xc000049698 pc=0x56226a8ddc17
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: github.com/ollama/ollama/runner/ollamarunner.(*Server).completion(0xc00026d0e0, {0x56226c191b60, 0xc00082c0e0}, 0xc00035e140)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         github.com/ollama/ollama/runner/ollamarunner/runner.go:956 +0xc4e fp=0xc000049ac0 sp=0xc0000497d0 pc=0x56226af2252e
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: github.com/ollama/ollama/runner/ollamarunner.(*Server).completion-fm({0x56226c191b60?, 0xc00082c0e0?}, 0xc000659b40?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         <autogenerated>:1 +0x36 fp=0xc000049af0 sp=0xc000049ac0 pc=0x56226af27976
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: net/http.HandlerFunc.ServeHTTP(0xc00037dc80?, {0x56226c191b60?, 0xc00082c0e0?}, 0xc000659b60?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         net/http/server.go:2294 +0x29 fp=0xc000049b18 sp=0xc000049af0 pc=0x56226abff8c9
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: net/http.(*ServeMux).ServeHTTP(0x56226a8a3ac5?, {0x56226c191b60, 0xc00082c0e0}, 0xc00035e140)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         net/http/server.go:2822 +0x1c4 fp=0xc000049b68 sp=0xc000049b18 pc=0x56226ac017c4
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: net/http.serverHandler.ServeHTTP({0x56226c18de50?}, {0x56226c191b60?, 0xc00082c0e0?}, 0x1?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         net/http/server.go:3301 +0x8e fp=0xc000049b98 sp=0xc000049b68 pc=0x56226ac1f24e
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: net/http.(*conn).serve(0xc000172480, {0x56226c1942a8, 0xc00016d4d0})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         net/http/server.go:2102 +0x625 fp=0xc000049fb8 sp=0xc000049b98 pc=0x56226abfddc5
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: net/http.(*Server).Serve.gowrap3()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         net/http/server.go:3454 +0x28 fp=0xc000049fe0 sp=0xc000049fb8 pc=0x56226ac03688
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc000049fe8 sp=0xc000049fe0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by net/http.(*Server).Serve in goroutine 1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         net/http/server.go:3454 +0x485
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: goroutine 827 gp=0xc0005a48c0 m=nil [chan receive]:
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.gopark(0x30?, 0x56226c0cfb20?, 0x1?, 0x2a?, 0xc0000bdb20?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/proc.go:435 +0xce fp=0xc0000bdad8 sp=0xc0000bdab8 pc=0x56226a8feeee
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.chanrecv(0xc000378150, 0x0, 0x1)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/chan.go:664 +0x445 fp=0xc0000bdb50 sp=0xc0000bdad8 pc=0x56226a89b085
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.chanrecv1(0x56226bbf6342?, 0x2c?)
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/chan.go:506 +0x12 fp=0xc0000bdb78 sp=0xc0000bdb50 pc=0x56226a89ac12
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: github.com/ollama/ollama/runner/ollamarunner.(*Server).computeBatch(0xc00026d0e0, {0x1, {0x56226c1a0790, 0xc0049c4400}, {0x56226c1adbf0, 0xc004a28420}, {0xc000b0a040, 0x1, 0x1}, {{0x56226c1adbf0, ...}, ...}, ...})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         github.com/ollama/ollama/runner/ollamarunner/runner.go:645 +0x185 fp=0xc0000bdef0 sp=0xc0000bdb78 pc=0x56226af1fba5
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: github.com/ollama/ollama/runner/ollamarunner.(*Server).run.gowrap1()
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         github.com/ollama/ollama/runner/ollamarunner/runner.go:459 +0x58 fp=0xc0000bdfe0 sp=0xc0000bdef0 pc=0x56226af1df78
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: runtime.goexit({})
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         runtime/asm_amd64.s:1700 +0x1 fp=0xc0000bdfe8 sp=0xc0000bdfe0 pc=0x56226a906e61
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: created by github.com/ollama/ollama/runner/ollamarunner.(*Server).run in goroutine 14
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]:         github.com/ollama/ollama/runner/ollamarunner/runner.go:459 +0x2cd
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: rax    0x3a8000
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: rbx    0x40
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: rcx    0x7f7aa8bde040
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: rdx    0x0
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: rdi    0x200
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: rsi    0x0
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: rbp    0x7f7bb89d7720
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: rsp    0x7f7bb89d7660
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: r8     0x3a8000
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: r9     0x80
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: r10    0x7f7aa8bde040
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: r11    0x7f
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: r12    0x7f
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: r13    0x7f7aa8bde044
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: r14    0x0
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: r15    0x1
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: rip    0x7f7c302fd1b5
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: rflags 0x10246
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: cs     0x33
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: fs     0x0
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: gs     0x0
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:22:58.200+09:00 level=ERROR source=server.go:1610 msg="post predict" error="Post \"http://127.0.0.1:34011/completion\": EOF"
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 21:22:58 | 500 |  2.855217425s |       127.0.0.1 | POST     "/api/generate"
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 21:22:58 | 200 |      25.859µs |       127.0.0.1 | HEAD     "/"
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 21:22:58 | 200 |      29.366µs |       127.0.0.1 | GET      "/api/ps"
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 21:22:58 | 200 |      31.049µs |       127.0.0.1 | HEAD     "/"
+ 3月 08 21:22:58 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 21:22:58 | 200 |      24.888µs |       127.0.0.1 | GET      "/api/ps"

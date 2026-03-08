@@ -1,0 +1,43 @@
+{
+  "run_id": "run_20260308_212345",
+  "started_at": "2026-03-08T21:23:45.552412",
+  "backend_target": "rocm",
+  "model": "phi4-mini:latest",
+  "epochs": 1,
+  "total_epochs": 2,
+  "num_predict": 512,
+  "num_gpu": null,
+  "num_gpu_values": [
+    0,
+    1
+  ],
+  "num_gpu_raw": "0,1",
+  "ollama_host": "http://127.0.0.1:11434",
+  "records": [
+    {
+      "epoch": 1,
+      "case_epoch": 1,
+      "started_at": "2026-03-08T21:23:46.182900",
+      "num_gpu": 0,
+      "rocm_smi_before_file": "rocm_smi_epoch_001_before.txt",
+      "rocm_smi_after_file": "rocm_smi_epoch_001_after.txt",
+      "ollama_ps_before_file": "ollama_ps_epoch_001_before.txt",
+      "ollama_ps_after_file": "ollama_ps_epoch_001_after.txt",
+      "status": "ok",
+      "elapsed_sec": 18.823,
+      "done": true,
+      "eval_count": 318,
+      "eval_duration": 15867680530,
+      "prompt_eval_count": 25,
+      "prompt_eval_duration": 362340224,
+      "response_chars": 1913,
+      "response_file": "epoch_001.txt"
+    }
+  ],
+  "summary_by_num_gpu": {
+    "0": {
+      "ok": 1,
+      "error": 0
+    }
+  }
+}

@@ -1,0 +1,38 @@
+The Linux kernel is the core of the operating system on x86 and ARM-based systems, responsible for managing hardware resources and providing a unified interface between applications and hardware. Here's a breakdown of its key architectural components:
+
+---
+
+### 1. Overall Architecture Overview
+
+The Linux kernel is built around the Linux Object Model (LinuxOM) and follows a modular, component-based design that supports extensibility, performance optimization, and system stability.
+
+- **Layered Design**: The kernel is organized into functional layers, each serving a specific purpose and interacting via standard interfaces.
+- **Module Loading**: The kernel's modules (e.g., `kernel`, `mm`, `vm`) are loaded dynamically using the `.ko` format.
+- **Process Abstraction**: The kernel manages user-level processes through memory, scheduling, and security boundaries.
+
+---
+
+### 2. Scheduler
+
+The scheduler is responsible for time-slicing process execution and is a high-performance, multi-threading mechanism.
+
+#### Key Components:
+- **CFS (Completely Fair Scheduler)**: The default scheduler that allocates CPU time fairly based on process priority and quantum.
+- **Preemptive Real-time**: Supports priority scheduling with time-slicing and interrupt-driven preemption.
+- **BPF**: Enables just-in-time (JIT) compiler optimizations for low-overhead scheduling.
+- **Locking**: Prevents race conditions during context switching and critical sections.
+
+#### Architecture Features:
+- **Preemptive Locking**: Ensures mutual exclusion without deadlocks.
+- **Priority Scheduling**: Supports varying CPU priorities for workloads.
+- **Context Switching**: Efficiently handles transitions between process states, ensuring responsiveness.
+
+---
+
+### 3. Memory Management
+
+The memory subsystem manages allocation, deallocation, protection, and caching for process and system memory.
+
+#### Key Components:
+- **Virtual Memory (vm)**: Uses page tables and memory-mapped I/O.
+- **Page Tables**: Maintain mappings between physical and virtual addresses.

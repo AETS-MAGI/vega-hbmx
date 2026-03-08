@@ -1,0 +1,36 @@
+# Linux Kernel Architecture Overview
+
+The Linux kernel is the operating system's core that manages hardware resources, system calls, and processes. Here's a breakdown of its key subsystems:
+
+---
+
+## 1. Scheduler (Process Scheduling)
+
+### CPU Time Management
+- **Preemptive Scheduling**: The kernel actively manages time slices for CPU execution.
+- **Scheduling Policies**:
+  - **Round-Robin**: Time slice-based for multi-user systems (e.g., Linux's `rcu` scheduler)
+  - **Shortest Remaining Time First (SRTF)**: Prioritizes tasks with the least remaining work
+  - **Priority Queues**: Allows task priority management
+  - **Load Balancing**: Distributes CPU load across all processes
+
+### Scheduler Components
+- **`task`** Structure: Represents a running process/thread
+- **Scheduling Functions**: `select()`, `schedule()`, and thread scheduling APIs
+- **Scheduling Control**:
+  - **Preempt** / **Non-preempt**: Control preemption behavior
+  - **Time Slicing**: Limit CPU usage per task
+
+---
+
+## 2. Memory Management
+
+### Virtual Memory
+- **Virtual Address Space**: Each process has its own virtual address space
+- **Page Tables**: Map virtual addresses to physical memory
+- **Page Size**: Typically 4KB on x86_64
+
+### Memory Management Components
+- **Page Table**: Virtual ↔ physical mapping
+- **Address Space Layout**:
+  - **User/Kernel Space**: Different address ranges
