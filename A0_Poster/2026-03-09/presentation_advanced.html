@@ -102,16 +102,39 @@ if(CMAKE_HIP_COMPILER)
     </div>
 
     <div class="slide">
-      <div class="slide-title"><div class="slide-num bg-blue">3</div><h2 class="slide-title-text blue">Code Trace: num_gpu Semantics</h2></div>
+      <div class="slide-title"><div class="slide-num bg-blue">3b</div><h2 class="slide-title-text blue">Code Trace: num_gpu Semantics (Exact Source Lines)</h2></div>
       <table>
-        <tr><th class="bg-blue">Stage</th><th class="bg-blue">Code location</th><th class="bg-blue">Interpretation</th></tr>
-        <tr><td><strong>CLI</strong></td><td>cmd/interactive.go:112</td><td>"number of layers sent to GPU"</td></tr>
-        <tr><td><strong>Server</strong></td><td>llm/server.go:992, 1063-1076</td><td>requestedLayers = NumGPU; upper-bounded by model layers</td></tr>
-        <tr><td><strong>Runner</strong></td><td>runner/llamarunner/runner.go:906-925</td><td>Builds NumGpuLayers from layer counts</td></tr>
-        <tr><td><strong>Bridge</strong></td><td>llama/llama.go:246-249, 264-267</td><td>NumGpuLayers mapped to cparams.n_gpu_layers</td></tr>
-        <tr><td><strong>llama.cpp</strong></td><td>include/llama.h:289</td><td>n_gpu_layers = layers stored in VRAM</td></tr>
+        <tr><th class="bg-blue">Stage</th><th class="bg-blue">Code location</th><th class="bg-blue">Exact content / Interpretation</th></tr>
+        <tr><td><strong>Python Client</strong></td><td>ollama/_types.py:104-110</td><td><code>class Options: num_gpu: Optional[int] = None</code> — raw int, no semantic annotation</td></tr>
+        <tr><td><strong>API call</strong></td><td>ollama/_client.py:281-305</td><td>Passed as <code>options=options</code> in <code>/api/generate</code> POST body</td></tr>
+        <tr><td><strong>Go type</strong></td><td>api/types.go:604</td><td><code>NumGPU int \`json:"num_gpu,omitempty"\`</code> in Runner struct</td></tr>
+        <tr><td><strong>Default value</strong></td><td>api/types.go:1075</td><td><code>NumGPU: -1, // -1 here indicates that NumGPU should be set dynamically</code></td></tr>
+        <tr><td><strong>CLI help text</strong></td><td>cmd/interactive.go:112</td><td><code>"/set parameter num_gpu &lt;int&gt;   The number of layers to send to the GPU"</code></td></tr>
+        <tr><td><strong>Server</strong></td><td>llm/server.go:992, 1063-1076</td><td><code>assignLayers(..., s.options.NumGPU, ...)</code>; requestedLayers upper-bounded by len(layers)</td></tr>
+        <tr><td><strong>Runner</strong></td><td>runner/llamarunner/runner.go:906-924</td><td><code>numGPU += len(layers.Layers)</code>; <code>NumGpuLayers: numGPU</code></td></tr>
+        <tr><td><strong>Bridge</strong></td><td>llama/llama.go:264-267</td><td><code>cparams.n_gpu_layers = C.int(params.NumGpuLayers)</code></td></tr>
+        <tr><td><strong>llama.cpp API</strong></td><td>include/llama.h:289</td><td><code>int32_t n_gpu_layers; // number of layers to store in VRAM, a negative value means all layers</code></td></tr>
       </table>
-      <p><strong class="red">Conclusion:</strong> num_gpu is offloaded layer count, not GPU device count.</p>
+      <p><strong class="red">Conclusion:</strong> num_gpu = offloaded layer count. journal confirms: "offloading 2 repeating layers to GPU" / "offloaded 2/25 layers to GPU" when num_gpu=2.</p>
+    </div>
+
+    <div class="slide">
+      <div class="slide-title"><div class="slide-num bg-orange">3c</div><h2 class="slide-title-text orange">HIP Backend: gfx900 Architecture Constants & dp4a Emulation</h2></div>
+      <table style="margin-bottom:10px;">
+        <tr><th class="bg-orange">Constant / Macro</th><th class="bg-orange">Value</th><th class="bg-orange">Comment (ggml-cuda/common.cuh)</th></tr>
+        <tr><td><code>GGML_CUDA_CC_GCN4</code></td><td>0x1000803</td><td>Tonga/Fiji/Polaris — minimum for fast fp16 (line 64)</td></tr>
+        <tr><td><code><strong>GGML_CUDA_CC_VEGA</strong></code></td><td class="orange"><strong>0x1000900</strong></td><td><strong>Vega56/64 — minimum for fp16 dual issue (line 65)</strong></td></tr>
+        <tr><td><code>GGML_CUDA_CC_VEGA20</code></td><td>0x1000906</td><td>MI50/Radeon VII — minimum for dp4a (line 66)</td></tr>
+        <tr><td><code>GGML_CUDA_CC_IS_GCN(cc)</code></td><td>OFFSET_AMD &lt; cc &lt; CDNA1</td><td>gfx900 falls in GCN range, NOT CDNA (line 86)</td></tr>
+      </table>
+      <p style="font-size:17px; margin-bottom:6px;"><strong>dp4a dispatch in <code>ggml_cuda_dp4a()</code> (common.cuh:666–704):</strong></p>
+      <table>
+        <tr><th class="bg-orange">Condition</th><th class="bg-orange">Implementation</th><th class="bg-orange">Cost</th></tr>
+        <tr><td>CDNA / RDNA2 / <code>__gfx906__</code></td><td><code>__builtin_amdgcn_sdot4(a, b, c, false)</code></td><td class="green">1 instruction (hardware)</td></tr>
+        <tr><td>RDNA3 / RDNA4</td><td><code>__builtin_amdgcn_sudot4(...)</code></td><td class="green">1 instruction (hardware)</td></tr>
+        <tr><td class="orange"><strong><code>RDNA1 || __gfx900__</code></strong></td><td class="orange"><strong>6-insn inline asm: v_mul_i32_i24 ×4 + v_add3_u32 ×2</strong></td><td class="red">Software emulation (line 672–685)</td></tr>
+      </table>
+      <p class="dim" style="font-size:16px; margin-top:8px;">Also: <code>V_DOT2_F32_F16_AVAILABLE</code> macro (common.cuh:715) excludes gfx900 — no hardware fp16 dot product instruction.</p>
     </div>
 
     <div class="slide">
@@ -187,6 +210,46 @@ if(CMAKE_HIP_COMPILER)
         <tr><td>01:31:47 / 01:31:57</td><td>Same sequence repeats</td><td>The same failure pattern appears for num_gpu=2 and -1 in this run log</td></tr>
       </table>
       <p class="dim" style="font-size:17px;">Source: vega_work_log/run_20260307_013050/ollama_journal_since_start.txt</p>
+    </div>
+
+    <div class="slide">
+      <div class="slide-title"><div class="slide-num bg-red">6b</div><h2 class="slide-title-text red">Vulkan Crash: Full Stack Trace Evidence</h2></div>
+      <p style="font-size:17px; margin-bottom:8px;"><strong>From:</strong> <code>ollama_journal_since_start.txt</code> (run_20260307_013050), 01:31:39 JST — immediately after runner started</p>
+      <pre style="background:#1a1a2e; color:#e0e0e0; padding:14px; border-radius:8px; font-size:13.5px; line-height:1.55; overflow:auto;">SIGSEGV: segmentation violation
+PC=0x7efbc5b801b5 m=41 sigcode=1 addr=0x3a8000
+signal arrived during cgo execution
+
+goroutine 853 [syscall]:
+runtime.cgocall(0x55e54a0e2710, 0xc0000bdaa0)
+    runtime/cgocall.go:167
+github.com/ollama/ollama/ml/backend/ggml._Cfunc_ggml_backend_sched_graph_compute_async(...)
+    _cgo_gotypes.go:979
+github.com/ollama/ollama/ml/backend/ggml.(*Context).ComputeWithNotify.func2(...)
+    ml/backend/ggml/ggml.go:825
+github.com/ollama/ollama/ml/backend/ggml.(*Context).ComputeWithNotify(...)
+    ml/backend/ggml/ggml.go:825 +0x1b2
+github.com/ollama/ollama/runner/ollamarunner.(*Server).computeBatch(...)
+    runner/ollamarunner/runner.go:716 +0x862
+github.com/ollama/ollama/runner/ollamarunner.(*Server).run.gowrap1()
+    runner/ollamarunner/runner.go:459</pre>
+      <p style="font-size:17px;"><strong class="red">Crash point:</strong> C function <code>ggml_backend_sched_graph_compute_async</code> called via cgo from <code>ComputeWithNotify(ggml.go:825)</code> → <code>computeBatch(runner.go:716)</code>. The runner process terminates; server.go sees EOF at 01:31:39.</p>
+    </div>
+
+    <div class="slide">
+      <div class="slide-title"><div class="slide-num bg-orange">6c</div><h2 class="slide-title-text orange">Vulkan: gfx900 AMD_GCN Detection & Feature Impact</h2></div>
+      <table style="margin-bottom:10px;">
+        <tr><th class="bg-orange">Code location</th><th class="bg-orange">Content</th><th class="bg-orange">Impact on gfx900</th></tr>
+        <tr><td><code>ggml-vulkan.cpp:250-252</code></td><td><code>enum vk_device_architecture { OTHER, AMD_GCN, AMD_RDNA1, AMD_RDNA2, AMD_RDNA3 }</code></td><td>gfx900 → AMD_GCN branch</td></tr>
+        <tr><td><code>ggml-vulkan.cpp:296-297</code></td><td><code>if (maxSubgroupSize==64 &amp;&amp; minSubgroupSize==64) return AMD_GCN;</code></td><td>GCN wave64-only → classified AMD_GCN</td></tr>
+        <tr><td><code>ggml-vulkan.cpp:3964</code></td><td><code>use_subgroups = subgroup_arithmetic &amp;&amp; arch != AMD_GCN</code></td><td class="red">Subgroup arithmetic <strong>disabled</strong> for gfx900</td></tr>
+        <tr><td><code>ggml-vulkan.cpp:3241-3243</code></td><td>AMD_GCN + open-source driver → altered warptile: <code>m_warptile_mmq = {256,64,64,32,16,16,2,2,2,1,16}</code></td><td>Different matrix multiply tile parameters</td></tr>
+        <tr><td><code>ggml-vulkan.cpp:3953-3957</code></td><td>AMD_GCN: <code>rm_stdq=2, rm_kq=4, rm_stdq_int=4</code></td><td>Different row-reduce parameters</td></tr>
+      </table>
+      <p style="font-size:17px; margin-bottom:6px;"><strong>Journal evidence (01:31:37):</strong></p>
+      <pre style="background:#1a1a2e; color:#e0e0e0; padding:10px; border-radius:6px; font-size:14px;">ggml_vulkan: 0 = AMD Radeon RX Vega (RADV VEGA10) (radv) |
+  uma: 0 | fp16: 1 | bf16: 0 | warp size: 64 |
+  shared memory: 65536 | <span style="color:#ff6b6b">int dot: 0</span> | matrix cores: none</pre>
+      <p class="dim" style="font-size:16px;"><code>int dot: 0</code> = VK_KHR_shader_integer_dot_product not hardware-accelerated on RADV/Vega10. <code>matrix cores: none</code> = no cooperative matrix support. Vulkan RADV driver identifies gfx900 as VEGA10.</p>
     </div>
 
     <div class="slide">
