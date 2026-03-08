@@ -1,0 +1,37 @@
+The Linux kernel is a complex, modular operating system core written in C that provides essential system services. It is organized into subsystems that manage the system's hardware, software, and resources. Understanding these components is key to mastering Linux system design and development.
+
+---
+
+## 1. Overall Architecture
+
+The Linux kernel architecture is built around the concept of subsystems, each responsible for a specific set of operations. Key components include:
+
+- **Kernel:** Core of the OS managing memory, process scheduling, interrupts, and device drivers.
+- **Modules (`.ko`):** Loadable kernel modules for dynamic device driver installation.
+- **Syscalls:** Interface between user space and kernel for system calls and program execution.
+- **User Space:** The OS-independent environment for applications.
+- **Kernel Space:** Privileged space where the kernel resides and executes system-level operations.
+
+---
+
+## 2. Scheduler
+
+The Linux scheduler decides which process runs next based on priority, scheduling quantum, CPU availability, and I/O waiting state.
+
+- **CFS (Completely Fair Scheduler):** The default scheduling algorithm; uses Cgroups to control process resources.
+- **Real-time Scheduling (e.g., Deadline Scheduler, SCHED_FIFO):** For time-critical processes.
+- **Preemptive Scheduling (e.g., COW, IRQ, Sleep):** Used to preempt or suspend processes.
+- **Threading Scheduling (e.g., COW, COW2):** Enables efficient multi-threaded execution.
+
+Scheduling decisions are made using CPU time slices, process priorities, and resource constraints.
+
+---
+
+## 3. Memory Management (MM)
+
+Memory management includes allocation, tracking, and deallocation.
+
+- **Kernel Virtual Memory (KVM):** Handles virtual memory addresses and mapping.
+- **Slab Allocator:** Efficiently manages small kernel objects.
+- **Page Cache:** Stores user data temporarily for faster access.
+- **Swap/TL

@@ -1,0 +1,29 @@
+{
+  "run_id": "run_20260307_010655",
+  "started_at": "2026-03-07T01:06:56.257081",
+  "model": "qwen3.5:2b",
+  "epochs": 3,
+  "num_predict": 512,
+  "num_gpu": 1,
+  "records": [
+    {
+      "epoch": 1,
+      "started_at": "2026-03-07T01:06:56.257179",
+      "status": "error",
+      "error": "HTTP 500 from Ollama: model runner has unexpectedly stopped, this may be due to resource limitations or an internal error, check ollama server logs for details"
+    },
+    {
+      "epoch": 2,
+      "started_at": "2026-03-07T01:06:59.202404",
+      "status": "error",
+      "error": "HTTP 500 from Ollama: model runner has unexpectedly stopped, this may be due to resource limitations or an internal error, check ollama server logs for details"
+    },
+    {
+      "epoch": 3,
+      "started_at": "2026-03-07T01:07:07.070376",
+      "status": "error",
+      "error": "HTTP 500 from Ollama: model runner has unexpectedly stopped, this may be due to resource limitations or an internal error, check ollama server logs for details"
+    }
+  ],
+  "finished_at": "2026-03-07T01:07:14.972762"
+}

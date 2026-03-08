@@ -1,0 +1,15 @@
+The Linux kernel is made up of several components that work together to provide a stable and efficient system for running applications on an operating system (OS). Some of the main components in the Linux kernel architecture are:
+
+1. Scheduling: The Linux kernel has two primary schedulers: init and systemd. These schedulers determine which processes should run at any given time, taking into account CPU, memory, and I/O resources.
+
+2. Memory management: The Linux kernel manages the allocation of system memory for running processes. This includes pages of data and virtual memory. Different types of processes (such as user, kernel, and init) have different access privileges to memory, which can influence their performance.
+
+3. VFS (Virtual File System): The VFS provides a way for userspace applications to access the underlying filesystem. It allows accessing files using the standard Unix file system operations, such as reading, writing, and deleting files.
+
+4. Interrupts: Interrupts are signals that can trigger an application to do something in response to an external event. The Linux kernel uses interrupts to manage I/O requests and other system resources.
+
+5. Device drivers: The Linux kernel has a set of device driver modules that provide abstraction over various hardware devices (such as USB, Wi-Fi, and storage). These modules allow applications to access the hardware efficiently and directly.
+
+6. System calls: The Linux kernel provides a set of system calls for performing specific tasks. These calls can be called by userspace or from kernel code to perform certain operations.
+
+Overall, the Linux kernel architecture is designed to provide an efficient and reliable system for running applications on a Unix-based OS.

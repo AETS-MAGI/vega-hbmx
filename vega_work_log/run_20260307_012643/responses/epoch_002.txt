@@ -1,0 +1,37 @@
+The Linux kernel is one of the most complex and essential components of Unix-like operating systems. Its architecture supports dynamic resource allocation, hardware virtualization, concurrent execution, and efficient multitasking. Here's an overview of its major subsystems:
+
+---
+
+## 1. **Memory Management**
+Linux manages memory dynamically and ensures isolation among processes through several layers:
+
+### Memory Hierarchy
+- **Physical → Page Frame:** A physical memory frame corresponds to a page (4KB) in virtual memory space.
+- **Virtual Address Translation:** The kernel maintains a page table mapping virtual addresses to physical frames using techniques like paging and segmentation.
+- **Kernel Pages:** Each process maps to kernel memory via kernel structures (e.g., `kmem`, `mm`).
+
+### Key Concepts
+| Technique | Description |
+|----------|-------------|
+| Page Tables | Maps virtual pages to physical frames |
+| Virtual Memory | Allows processes to access more than 4GB of RAM |
+| Swap Space | Manages disk-backed memory for paging out inactive memory |
+| Kernel Memory Protection | Prevents kernel corruption via permission checks |
+
+---
+
+## 2. **Virtual File System (VFS)**
+The VFS abstracts file systems and allows any process to request access to files, directories, sockets, and devices without knowledge of the underlying storage details.
+
+### VFS Layers
+| Layer | Description |
+|-------|-------------|
+| `mount()` | Mounting a filesystem (e.g., ext4, XFS) to the root directory |
+| `file_operations` | Defines how data is read/written from/into memory buffers |
+| `inode` | A logical file identifier (contains metadata and pointers to user space) |
+| `dentry` | Directory entry mapping filesystem inodes |
+
+---
+
+## 3. **Interrupt Handling**
+The interrupt subsystem processes hardware signals

@@ -1,0 +1,130 @@
+{
+  "run_id": "run_20260307_004556",
+  "started_at": "2026-03-07T00:45:56.363100",
+  "model": "qwen3.5:2b",
+  "epochs": 20,
+  "num_predict": 512,
+  "records": [
+    {
+      "epoch": 1,
+      "started_at": "2026-03-07T00:45:56.363165",
+      "status": "error",
+      "error": "HTTPConnectionPool(host='127.0.0.1', port=11434): Max retries exceeded with url: /api/generate (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=11434): Failed to establish a new connection: [Errno 1] Operation not permitted\"))"
+    },
+    {
+      "epoch": 2,
+      "started_at": "2026-03-07T00:45:56.494158",
+      "status": "error",
+      "error": "HTTPConnectionPool(host='127.0.0.1', port=11434): Max retries exceeded with url: /api/generate (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=11434): Failed to establish a new connection: [Errno 1] Operation not permitted\"))"
+    },
+    {
+      "epoch": 3,
+      "started_at": "2026-03-07T00:45:56.616275",
+      "status": "error",
+      "error": "HTTPConnectionPool(host='127.0.0.1', port=11434): Max retries exceeded with url: /api/generate (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=11434): Failed to establish a new connection: [Errno 1] Operation not permitted\"))"
+    },
+    {
+      "epoch": 4,
+      "started_at": "2026-03-07T00:45:56.736376",
+      "status": "error",
+      "error": "HTTPConnectionPool(host='127.0.0.1', port=11434): Max retries exceeded with url: /api/generate (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=11434): Failed to establish a new connection: [Errno 1] Operation not permitted\"))"
+    },
+    {
+      "epoch": 5,
+      "started_at": "2026-03-07T00:45:56.859200",
+      "status": "error",
+      "error": "HTTPConnectionPool(host='127.0.0.1', port=11434): Max retries exceeded with url: /api/generate (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=11434): Failed to establish a new connection: [Errno 1] Operation not permitted\"))"
+    },
+    {
+      "epoch": 6,
+      "started_at": "2026-03-07T00:45:56.981128",
+      "status": "error",
+      "error": "HTTPConnectionPool(host='127.0.0.1', port=11434): Max retries exceeded with url: /api/generate (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=11434): Failed to establish a new connection: [Errno 1] Operation not permitted\"))"
+    },
+    {
+      "epoch": 7,
+      "started_at": "2026-03-07T00:45:57.104281",
+      "status": "error",
+      "error": "HTTPConnectionPool(host='127.0.0.1', port=11434): Max retries exceeded with url: /api/generate (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=11434): Failed to establish a new connection: [Errno 1] Operation not permitted\"))"
+    },
+    {
+      "epoch": 8,
+      "started_at": "2026-03-07T00:45:57.224301",
+      "status": "error",
+      "error": "HTTPConnectionPool(host='127.0.0.1', port=11434): Max retries exceeded with url: /api/generate (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=11434): Failed to establish a new connection: [Errno 1] Operation not permitted\"))"
+    },
+    {
+      "epoch": 9,
+      "started_at": "2026-03-07T00:45:57.347473",
+      "status": "error",
+      "error": "HTTPConnectionPool(host='127.0.0.1', port=11434): Max retries exceeded with url: /api/generate (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=11434): Failed to establish a new connection: [Errno 1] Operation not permitted\"))"
+    },
+    {
+      "epoch": 10,
+      "started_at": "2026-03-07T00:45:57.468849",
+      "status": "error",
+      "error": "HTTPConnectionPool(host='127.0.0.1', port=11434): Max retries exceeded with url: /api/generate (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=11434): Failed to establish a new connection: [Errno 1] Operation not permitted\"))"
+    },
+    {
+      "epoch": 11,
+      "started_at": "2026-03-07T00:45:57.590699",
+      "status": "error",
+      "error": "HTTPConnectionPool(host='127.0.0.1', port=11434): Max retries exceeded with url: /api/generate (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=11434): Failed to establish a new connection: [Errno 1] Operation not permitted\"))"
+    },
+    {
+      "epoch": 12,
+      "started_at": "2026-03-07T00:45:57.713073",
+      "status": "error",
+      "error": "HTTPConnectionPool(host='127.0.0.1', port=11434): Max retries exceeded with url: /api/generate (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=11434): Failed to establish a new connection: [Errno 1] Operation not permitted\"))"
+    },
+    {
+      "epoch": 13,
+      "started_at": "2026-03-07T00:45:57.833292",
+      "status": "error",
+      "error": "HTTPConnectionPool(host='127.0.0.1', port=11434): Max retries exceeded with url: /api/generate (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=11434): Failed to establish a new connection: [Errno 1] Operation not permitted\"))"
+    },
+    {
+      "epoch": 14,
+      "started_at": "2026-03-07T00:45:57.957195",
+      "status": "error",
+      "error": "HTTPConnectionPool(host='127.0.0.1', port=11434): Max retries exceeded with url: /api/generate (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=11434): Failed to establish a new connection: [Errno 1] Operation not permitted\"))"
+    },
+    {
+      "epoch": 15,
+      "started_at": "2026-03-07T00:45:58.079921",
+      "status": "error",
+      "error": "HTTPConnectionPool(host='127.0.0.1', port=11434): Max retries exceeded with url: /api/generate (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=11434): Failed to establish a new connection: [Errno 1] Operation not permitted\"))"
+    },
+    {
+      "epoch": 16,
+      "started_at": "2026-03-07T00:45:58.201851",
+      "status": "error",
+      "error": "HTTPConnectionPool(host='127.0.0.1', port=11434): Max retries exceeded with url: /api/generate (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=11434): Failed to establish a new connection: [Errno 1] Operation not permitted\"))"
+    },
+    {
+      "epoch": 17,
+      "started_at": "2026-03-07T00:45:58.322888",
+      "status": "error",
+      "error": "HTTPConnectionPool(host='127.0.0.1', port=11434): Max retries exceeded with url: /api/generate (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=11434): Failed to establish a new connection: [Errno 1] Operation not permitted\"))"
+    },
+    {
+      "epoch": 18,
+      "started_at": "2026-03-07T00:45:58.444101",
+      "status": "error",
+      "error": "HTTPConnectionPool(host='127.0.0.1', port=11434): Max retries exceeded with url: /api/generate (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=11434): Failed to establish a new connection: [Errno 1] Operation not permitted\"))"
+    },
+    {
+      "epoch": 19,
+      "started_at": "2026-03-07T00:45:58.566856",
+      "status": "error",
+      "error": "HTTPConnectionPool(host='127.0.0.1', port=11434): Max retries exceeded with url: /api/generate (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=11434): Failed to establish a new connection: [Errno 1] Operation not permitted\"))"
+    },
+    {
+      "epoch": 20,
+      "started_at": "2026-03-07T00:45:58.688723",
+      "status": "error",
+      "error": "HTTPConnectionPool(host='127.0.0.1', port=11434): Max retries exceeded with url: /api/generate (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=11434): Failed to establish a new connection: [Errno 1] Operation not permitted\"))"
+    }
+  ],
+  "finished_at": "2026-03-07T00:45:58.811399"
+}

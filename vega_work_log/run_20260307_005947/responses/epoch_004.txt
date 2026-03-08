@@ -1,0 +1,13 @@
+The Linux kernel is a highly versatile and powerful operating system (OS) kernel that powers most modern computers. It consists of three main components:
+
+1. Scheduler - The Linux kernel uses a scheduler called "sched", which allows different processes to run concurrently on the CPU, while scheduling them into available CPU time slots.
+
+2. Memory Management - The memory management component is responsible for allocating and freeing memory in the system. It manages physical memory, virtual memory, and page tables, among other things.
+
+3. VFS - The Virtual File System (VFS) is a library that provides an interface between userspace applications and file systems on the disk. This allows file operations to be performed without having to worry about accessing the actual data on the disk.
+
+4. Interrupts - The Linux kernel has two main types of interrupts: generic interrupts (G-interrupts) and system-level interrupts (S-interrupts). Generic interrupts are used for normal I/O operations, such as reading from a file or accessing the system memory. S-interrupts, on the other hand, are used to wake up specific processes that have been waiting for an interrupt.
+
+5. Device Drivers - The Linux kernel has several device drivers that allow for the control and access of various hardware devices, including CPUs, memories, storage devices, and sensors. This allows applications to be written in a way that is independent of specific hardware platforms, and provides flexibility for developers to customize their systems.
+
+Overall, the Linux kernel uses an event-driven architecture to manage processes and resources efficiently and effectively. It offers multiple ways for users to interact with the system, and includes a variety of features to handle various types of tasks and scenarios.

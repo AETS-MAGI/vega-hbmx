@@ -1,0 +1,121 @@
+== date ==
+2026-03-07T01:18:54+09:00
+
+== ollama env ==
+ROCM_PATH=/opt/rocm
+
+== rocm-smi quick ==
+WARNING: AMD GPU device(s) is/are in a low-power state. Check power control/runtime_status
+
+
+
+============================ ROCm System Management Interface ============================
+============================== Version of System Component ===============================
+Driver version: 6.18.16-1-lts
+==========================================================================================
+====================================== Product Info ======================================
+GPU[0]		: Card Series: 		AMD Radeon RX Vega
+GPU[0]		: Card Model: 		0x687f
+GPU[0]		: Card Vendor: 		Advanced Micro Devices, Inc. [AMD/ATI]
+GPU[0]		: Card SKU: 		D0500100
+GPU[0]		: Subsystem ID: 	0x6b76
+GPU[0]		: Device Rev: 		0xc1
+GPU[0]		: Node ID: 		1
+GPU[0]		: GUID: 		39034
+GPU[0]		: GFX Version: 		gfx900
+==========================================================================================
+================================== End of ROCm SMI Log ===================================
+
+== ollama ps ==
+NAME          ID              SIZE      PROCESSOR    CONTEXT    UNTIL               
+qwen3.5:2b    324d162be6ca    4.1 GB    100% CPU     4096       44 seconds from now    
+
+== process grep ollama ==
+limonene    1415    1406  0 00:00 ?        00:00:00 /usr/bin/ollama serve
+limonene    1416    1406  7 00:00 ?        00:06:02 /usr/local/bin/ollama serve
+limonene   69643    1416 99 01:11 ?        00:44:01 /usr/local/bin/ollama runner --ollama-engine --model /home/limonene/.ollama/models/blobs/sha256-b709d81508a078a686961de6ca07a953b895d9b286c46e17f00fb267f4f2d297 --port 33011
+
+== journalctl (recent) ==
+Mar 07 01:11:26 abyss-hbmx ollama-vega-vulkan[1416]: rcx    0x7f3dccbde040
+Mar 07 01:11:26 abyss-hbmx ollama-vega-vulkan[1416]: rdx    0x0
+Mar 07 01:11:26 abyss-hbmx ollama-vega-vulkan[1416]: rdi    0x200
+Mar 07 01:11:26 abyss-hbmx ollama-vega-vulkan[1416]: rsi    0x0
+Mar 07 01:11:26 abyss-hbmx ollama-vega-vulkan[1416]: rbp    0x7f3e0e7fb720
+Mar 07 01:11:26 abyss-hbmx ollama-vega-vulkan[1416]: rsp    0x7f3e0e7fb660
+Mar 07 01:11:26 abyss-hbmx ollama-vega-vulkan[1416]: r8     0x3a8000
+Mar 07 01:11:26 abyss-hbmx ollama-vega-vulkan[1416]: r9     0x80
+Mar 07 01:11:26 abyss-hbmx ollama-vega-vulkan[1416]: r10    0x7f3dccbde040
+Mar 07 01:11:26 abyss-hbmx ollama-vega-vulkan[1416]: r11    0x7f
+Mar 07 01:11:26 abyss-hbmx ollama-vega-vulkan[1416]: r12    0x7f
+Mar 07 01:11:26 abyss-hbmx ollama-vega-vulkan[1416]: r13    0x7f3dccbde044
+Mar 07 01:11:26 abyss-hbmx ollama-vega-vulkan[1416]: r14    0x0
+Mar 07 01:11:26 abyss-hbmx ollama-vega-vulkan[1416]: r15    0x1
+Mar 07 01:11:26 abyss-hbmx ollama-vega-vulkan[1416]: rip    0x7f3f3c70f1b5
+Mar 07 01:11:26 abyss-hbmx ollama-vega-vulkan[1416]: rflags 0x10246
+Mar 07 01:11:26 abyss-hbmx ollama-vega-vulkan[1416]: cs     0x33
+Mar 07 01:11:26 abyss-hbmx ollama-vega-vulkan[1416]: fs     0x0
+Mar 07 01:11:26 abyss-hbmx ollama-vega-vulkan[1416]: gs     0x0
+Mar 07 01:11:26 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:26.422+09:00 level=ERROR source=server.go:1610 msg="post predict" error="Post \"http://127.0.0.1:45625/completion\": EOF"
+Mar 07 01:11:26 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:11:26 | 500 |  7.688125766s |       127.0.0.1 | POST     "/api/generate"
+Mar 07 01:11:26 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:26.797+09:00 level=INFO source=server.go:431 msg="starting runner" cmd="/usr/local/bin/ollama runner --ollama-engine --port 33379"
+Mar 07 01:11:27 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:27.094+09:00 level=INFO source=server.go:431 msg="starting runner" cmd="/usr/local/bin/ollama runner --ollama-engine --port 41861"
+Mar 07 01:11:27 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:27.343+09:00 level=INFO source=server.go:431 msg="starting runner" cmd="/usr/local/bin/ollama runner --ollama-engine --port 43999"
+Mar 07 01:11:27 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:27.593+09:00 level=INFO source=server.go:431 msg="starting runner" cmd="/usr/local/bin/ollama runner --ollama-engine --port 43537"
+Mar 07 01:11:27 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:27.843+09:00 level=INFO source=server.go:431 msg="starting runner" cmd="/usr/local/bin/ollama runner --ollama-engine --port 45101"
+Mar 07 01:11:28 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:28.093+09:00 level=INFO source=server.go:431 msg="starting runner" cmd="/usr/local/bin/ollama runner --ollama-engine --port 42759"
+Mar 07 01:11:28 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:28.343+09:00 level=INFO source=server.go:431 msg="starting runner" cmd="/usr/local/bin/ollama runner --ollama-engine --port 36515"
+Mar 07 01:11:28 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:28.593+09:00 level=INFO source=server.go:431 msg="starting runner" cmd="/usr/local/bin/ollama runner --ollama-engine --port 33741"
+Mar 07 01:11:28 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:28.844+09:00 level=INFO source=server.go:431 msg="starting runner" cmd="/usr/local/bin/ollama runner --ollama-engine --port 45649"
+Mar 07 01:11:29 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:29.093+09:00 level=INFO source=server.go:431 msg="starting runner" cmd="/usr/local/bin/ollama runner --ollama-engine --port 34755"
+Mar 07 01:11:29 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:29.344+09:00 level=INFO source=server.go:431 msg="starting runner" cmd="/usr/local/bin/ollama runner --ollama-engine --port 44459"
+Mar 07 01:11:29 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:29.594+09:00 level=INFO source=server.go:431 msg="starting runner" cmd="/usr/local/bin/ollama runner --ollama-engine --port 45343"
+Mar 07 01:11:29 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:29.844+09:00 level=INFO source=server.go:431 msg="starting runner" cmd="/usr/local/bin/ollama runner --ollama-engine --port 40865"
+Mar 07 01:11:30 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:30.094+09:00 level=INFO source=server.go:431 msg="starting runner" cmd="/usr/local/bin/ollama runner --ollama-engine --port 32863"
+Mar 07 01:11:30 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:30.344+09:00 level=INFO source=server.go:431 msg="starting runner" cmd="/usr/local/bin/ollama runner --ollama-engine --port 44511"
+Mar 07 01:11:30 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:30.594+09:00 level=INFO source=server.go:431 msg="starting runner" cmd="/usr/local/bin/ollama runner --ollama-engine --port 41965"
+Mar 07 01:11:30 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:30.843+09:00 level=INFO source=server.go:431 msg="starting runner" cmd="/usr/local/bin/ollama runner --ollama-engine --port 45305"
+Mar 07 01:11:31 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:31.093+09:00 level=INFO source=server.go:431 msg="starting runner" cmd="/usr/local/bin/ollama runner --ollama-engine --port 43301"
+Mar 07 01:11:31 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:31.343+09:00 level=INFO source=server.go:431 msg="starting runner" cmd="/usr/local/bin/ollama runner --ollama-engine --port 43099"
+Mar 07 01:11:31 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:31.593+09:00 level=INFO source=server.go:431 msg="starting runner" cmd="/usr/local/bin/ollama runner --ollama-engine --port 36053"
+Mar 07 01:11:31 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:31.844+09:00 level=INFO source=server.go:431 msg="starting runner" cmd="/usr/local/bin/ollama runner --ollama-engine --port 36743"
+Mar 07 01:11:31 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:31.844+09:00 level=INFO source=runner.go:464 msg="failure during GPU discovery" OLLAMA_LIBRARY_PATH="[/usr/local/lib/ollama /usr/local/lib/ollama/vulkan]" extra_envs=map[] error="failed to finish discovery before timeout"
+Mar 07 01:11:31 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:31.844+09:00 level=WARN source=runner.go:356 msg="unable to refresh free memory, using old values"
+Mar 07 01:11:32 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:32.050+09:00 level=INFO source=server.go:247 msg="enabling flash attention"
+Mar 07 01:11:32 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:32.050+09:00 level=INFO source=server.go:431 msg="starting runner" cmd="/usr/local/bin/ollama runner --ollama-engine --model /home/limonene/.ollama/models/blobs/sha256-b709d81508a078a686961de6ca07a953b895d9b286c46e17f00fb267f4f2d297 --port 33011"
+Mar 07 01:11:32 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:32.051+09:00 level=INFO source=sched.go:491 msg="system memory" total="62.7 GiB" free="59.3 GiB" free_swap="8.8 GiB"
+Mar 07 01:11:32 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:32.051+09:00 level=INFO source=server.go:757 msg="loading model" "model layers"=25 requested=0
+Mar 07 01:11:32 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:32.067+09:00 level=INFO source=runner.go:1411 msg="starting ollama engine"
+Mar 07 01:11:32 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:32.067+09:00 level=INFO source=runner.go:1446 msg="Server listening on 127.0.0.1:33011"
+Mar 07 01:11:32 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:32.072+09:00 level=INFO source=runner.go:1284 msg=load request="{Operation:fit LoraPath:[] Parallel:1 BatchSize:512 FlashAttention:Enabled KvSize:4096 KvCacheType: NumThreads:16 GPULayers:[] MultiUserCache:false ProjectorPath: MainGPU:0 UseMmap:false}"
+Mar 07 01:11:32 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:32.164+09:00 level=INFO source=ggml.go:136 msg="" architecture=qwen35 file_type=Q8_0 name="" description="" num_tensors=728 num_key_values=52
+Mar 07 01:11:32 abyss-hbmx ollama-vega-vulkan[1416]: load_backend: loaded CPU backend from /usr/local/lib/ollama/libggml-cpu-haswell.so
+Mar 07 01:11:32 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:32.169+09:00 level=INFO source=ggml.go:104 msg=system CPU.0.SSE3=1 CPU.0.SSSE3=1 CPU.0.AVX=1 CPU.0.AVX2=1 CPU.0.F16C=1 CPU.0.FMA=1 CPU.0.BMI2=1 CPU.0.LLAMAFILE=1 CPU.1.LLAMAFILE=1 compiler=cgo(gcc)
+Mar 07 01:11:32 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:32.536+09:00 level=INFO source=runner.go:1284 msg=load request="{Operation:alloc LoraPath:[] Parallel:1 BatchSize:512 FlashAttention:Enabled KvSize:4096 KvCacheType: NumThreads:16 GPULayers:[] MultiUserCache:false ProjectorPath: MainGPU:0 UseMmap:false}"
+Mar 07 01:11:33 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:33.224+09:00 level=INFO source=runner.go:1284 msg=load request="{Operation:commit LoraPath:[] Parallel:1 BatchSize:512 FlashAttention:Enabled KvSize:4096 KvCacheType: NumThreads:16 GPULayers:[] MultiUserCache:false ProjectorPath: MainGPU:0 UseMmap:false}"
+Mar 07 01:11:33 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:33.224+09:00 level=INFO source=ggml.go:482 msg="offloading 0 repeating layers to GPU"
+Mar 07 01:11:33 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:33.224+09:00 level=INFO source=ggml.go:486 msg="offloading output layer to CPU"
+Mar 07 01:11:33 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:33.224+09:00 level=INFO source=ggml.go:494 msg="offloaded 0/25 layers to GPU"
+Mar 07 01:11:33 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:33.224+09:00 level=INFO source=device.go:245 msg="model weights" device=CPU size="3.0 GiB"
+Mar 07 01:11:33 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:33.224+09:00 level=INFO source=device.go:256 msg="kv cache" device=CPU size="529.6 MiB"
+Mar 07 01:11:33 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:33.224+09:00 level=INFO source=device.go:267 msg="compute graph" device=CPU size="260.1 MiB"
+Mar 07 01:11:33 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:33.224+09:00 level=INFO source=device.go:272 msg="total memory" size="3.8 GiB"
+Mar 07 01:11:33 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:33.224+09:00 level=INFO source=sched.go:566 msg="loaded runners" count=1
+Mar 07 01:11:33 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:33.224+09:00 level=INFO source=server.go:1350 msg="waiting for llama runner to start responding"
+Mar 07 01:11:33 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:33.225+09:00 level=INFO source=server.go:1384 msg="waiting for server to become available" status="llm server loading model"
+Mar 07 01:11:33 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-07T01:11:33.727+09:00 level=INFO source=server.go:1388 msg="llama runner started in 1.68 seconds"
+Mar 07 01:12:15 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:12:15 | 200 | 49.404898621s |       127.0.0.1 | POST     "/api/generate"
+Mar 07 01:12:31 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:12:31 | 200 |      51.212µs |       127.0.0.1 | HEAD     "/"
+Mar 07 01:12:31 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:12:31 | 200 |       27.98µs |       127.0.0.1 | GET      "/api/ps"
+Mar 07 01:13:13 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:13:13 | 200 | 42.268238683s |       127.0.0.1 | POST     "/api/generate"
+Mar 07 01:13:56 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:13:56 | 200 | 42.834351615s |       127.0.0.1 | POST     "/api/generate"
+Mar 07 01:14:39 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:14:39 | 200 | 42.457752445s |       127.0.0.1 | POST     "/api/generate"
+Mar 07 01:14:40 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:14:40 | 200 |      28.008µs |       127.0.0.1 | HEAD     "/"
+Mar 07 01:14:40 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:14:40 | 200 |      38.115µs |       127.0.0.1 | GET      "/api/ps"
+Mar 07 01:18:54 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:18:54 | 200 |      30.317µs |       127.0.0.1 | HEAD     "/"
+Mar 07 01:18:54 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:18:54 | 200 |      30.207µs |       127.0.0.1 | GET      "/api/ps"
+Mar 07 01:18:54 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:18:54 | 200 |      43.982µs |       127.0.0.1 | GET      "/api/version"
+Mar 07 01:18:54 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:18:54 | 200 |      36.489µs |       127.0.0.1 | HEAD     "/"
+Mar 07 01:18:54 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:18:54 | 200 |      29.455µs |       127.0.0.1 | GET      "/api/ps"
+
+== run started at ==
+2026-03-07T01:18:54.157284

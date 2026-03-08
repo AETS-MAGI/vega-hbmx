@@ -1,0 +1,27 @@
+The Linux kernel is written in C, and it consists of several components that work together to perform various tasks. These components are:
+
+1. Scheduling (scheduler): The scheduler manages the resources used by different processes on a system. It schedules processes according to their priorities, loads and unloads kernel modules based on runtime requirements, etc.
+
+2. Memory management (memory allocation): Linux manages memory for processes, devices, buffers, file descriptors, and other data structures. It uses page faults and paging to allocate and free memory in a coherent way.
+
+3. Virtualization: The kernel manages virtual machines (VMs), which can simulate multiple CPUs on a single physical machine. This includes hardware features like hypervisors, vCPUs, and virtual networks.
+
+4. VFS (Versioned File System): The VFS provides an interface for accessing files over file systems. It allows various types of file systems to be used and manages them as a cohesive whole in the kernel.
+
+5. Interrupts: Linux implements interrupts in the kernel, which are raised when the system detects activity or an unexpected event occurs. This enables the CPU to take action quickly and perform other tasks without having to wait for the next scheduled task.
+
+6. Device drivers: The kernel provides a virtual device layer that allows different devices (such as hard drives, USB sticks, etc.) to be interfaced with the system. These drivers are responsible for providing hardware support and access to the various I/O interfaces on a system.
+
+In summary, Linux's architecture consists of these components:
+
+1. Scheduler: Manages processes by scheduling them according to their priorities and resources.
+
+2. Memory management: Manages memory allocation in a coherent way for different processes, devices, buffers, file descriptors, etc.
+
+3. Virtualization: Allows multiple CPUs to simulate multiple physical machines.
+
+4. VFS: Provides an interface for accessing files over file systems.
+
+5. Interrupts: Manages interrupts in the kernel for fast response times.
+
+6. Device drivers: Provide a virtual device layer that allows different devices (such as hard drives, USB sticks) to be interfaced with the system. Drivers are responsible for providing hardware support and access to various I/O interfaces on

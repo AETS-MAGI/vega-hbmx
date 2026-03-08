@@ -1,0 +1,15 @@
+The Linux kernel is a complex system with multiple layers of code that control a computer's operation. Here are some of the fundamental components and their roles in this architecture:
+
+1. Scheduler: The schedule or kernel scheduler determines which tasks should run next, based on CPU resources, priorities, and other factors. It is responsible for scheduling threads, processes, and devices, such as I/O devices.
+
+2. Memory management: The memory manager allocates and frees memory to processes based on their needs. It manages the physical memory used by a computer and ensures that resources are allocated efficiently and consistently.
+
+3. VFS (Virtual File System): The Virtual File System (VFS) allows different operating systems, like Linux, to access shared data and file systems. It provides interoperability between different file systems, including FAT, EXT2/EXT3, NTFS, HFS+, etc.
+
+4. Interrupts: Linux uses a system call interface to communicate with hardware interrupt controllers (such as CPU-based interrupt controllers) and other devices. The kernel handles hardware interrupts and sends them to the appropriate device or function.
+
+5. Device drivers: The Linux kernel provides a set of drivers for all devices, such as hard drives, RAM chips, network cards, etc. They allow the system to communicate with these devices over the network, file system or other APIs provided by the operating system.
+
+6. Threads: The Linux kernel has a threading model where each task is responsible for its own CPU usage, scheduling, and memory management. These tasks share resources such as memory, processors, I/O devices, etc., with other threads in the system.
+
+These are just some of the important components of the Linux kernel. Each of these layers of code has its unique responsibilities, ensuring that the operating system runs smoothly and efficiently.

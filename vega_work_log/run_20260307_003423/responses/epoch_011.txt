@@ -1,0 +1,17 @@
+The Linux kernel is divided into several modules, each responsible for providing specific functionality. The main components of the Linux kernel are:
+
+1. Schedule - This module provides a set of scheduling algorithms for managing system resources, including tasks, processes, and threads. It includes features such as preemptive scheduling, priority inversion, and time slicing.
+
+2. Memory Management - The memory management subsystem ensures that memory is used efficiently by allocating memory to processes based on their needs, using techniques like virtual address spaces (VAS) and page tables. It also manages physical memory allocation and deallocations, as well as the allocation of memory for kernel stacks.
+
+3. VFS - This module provides a virtual file system (VFS) interface, enabling users to interact with file systems through a standard API such as the Unix or Windows file system APIs. It includes features like read/write access, file locking, and directory handling.
+
+4. Interrupts - This module manages interrupts in Linux, including handling of IRQ, PIC, and ISR events. It also provides support for interrupt context switching between threads, which allows multiple threads to execute in parallel.
+
+5. Device Drivers - The device drivers subsystem manages the interaction between software applications and hardware devices. It includes drivers for various types of hardware, including hard drives, USB storage, and network interfaces.
+
+6. Process Management - The process management module provides a flexible way to manage processes in Linux. It includes features such as prioritization, scheduling, and signal handling.
+
+7. Networking - This module is responsible for managing networking connections between devices on the local and networked computer systems. It includes features like TCP/IP stacks, internet protocol (IP) addressing, and network configuration management.
+
+In summary, the Linux kernel architecture is designed to provide a flexible and efficient framework for running and managing various types of applications, including users, processes, devices, networks, and memory.

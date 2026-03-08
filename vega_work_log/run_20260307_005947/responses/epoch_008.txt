@@ -1,0 +1,13 @@
+The Linux kernel is based on the POSIX standard for interprocess communication (IPC) and is designed to manage memory, scheduling, file systems (VFS), I/O, power management, networking, and many other aspects of computer operation. Here are some key parts of its architecture:
+
+1. Scheduling: The Linux kernel uses a global priority table called the sched_table to allocate CPU time to running tasks. A task's priority is assigned based on various factors like its system call latency, the current workload, and any other constraints that may be in place. The kernel also implements a fair scheduler which balances tasks to ensure each task gets an equal amount of CPU time.
+
+2. Memory management: The Linux kernel manages memory allocation by using a garbage collection algorithm called "kmem_cache". This algorithm efficiently allocates memory to running processes based on their size requirements and other constraints like memory cache hit ratio, system limits on memory usage, and the number of active processes in the system.
+
+3. VFS: The Linux kernel provides an interface for accessing file systems like FS1, XFS, EXT2/EXT3, NTFS, HDFS or other external storage devices. It manages I/O by using a device driver for each specific hardware device on the system. Each device driver is responsible for handling I/O requests from userspace applications and ensuring that all accesses to the device are performed according to its specification.
+
+4. Interrupts: The Linux kernel provides interrupt handling by registering interrupt handlers in userland code. It then calls a pre-emptive scheduler (i.e., a task can only be scheduled on top of another running task) when an interrupt is detected, and the interrupt handler is called to handle the event gracefully.
+
+5. Device drivers: The Linux kernel provides device driver interfaces for handling various hardware devices on the system. Each device driver has a unique name that's passed in as an argument to the mount() call when adding new devices to the file system. This ensures that each device driver is responsible for managing the device itself and not the userland code.
+
+Overall, the Linux kernel provides a unified and robust set of features that support all aspects of modern computing: memory management, scheduling, device drivers, network access, power management, etc., which make it an essential component of a modern computer system.

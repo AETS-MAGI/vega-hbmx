@@ -1,0 +1,109 @@
+{
+  "run_id": "run_20260307_013050",
+  "started_at": "2026-03-07T01:30:50.708761",
+  "backend_target": "rocm",
+  "model": "qwen3.5:2b",
+  "epochs": 1,
+  "total_epochs": 4,
+  "num_predict": 512,
+  "num_gpu": null,
+  "num_gpu_values": [
+    0,
+    1,
+    2,
+    -1
+  ],
+  "num_gpu_raw": "0,1,2,-1",
+  "ollama_host": "http://127.0.0.1:11434",
+  "records": [
+    {
+      "epoch": 1,
+      "case_epoch": 1,
+      "started_at": "2026-03-07T01:30:51.330096",
+      "num_gpu": 0,
+      "rocm_smi_before_file": "rocm_smi_epoch_001_before.txt",
+      "rocm_smi_after_file": "rocm_smi_epoch_001_after.txt",
+      "ollama_ps_before_file": "ollama_ps_epoch_001_before.txt",
+      "ollama_ps_after_file": "ollama_ps_epoch_001_after.txt",
+      "status": "ok",
+      "elapsed_sec": 45.002,
+      "done": true,
+      "eval_count": 512,
+      "eval_duration": 41778665097,
+      "prompt_eval_count": 33,
+      "prompt_eval_duration": 337749721,
+      "response_chars": 0,
+      "response_file": "epoch_001.txt"
+    },
+    {
+      "epoch": 2,
+      "case_epoch": 1,
+      "started_at": "2026-03-07T01:31:36.739364",
+      "num_gpu": 1,
+      "rocm_smi_before_file": "rocm_smi_epoch_002_before.txt",
+      "rocm_smi_after_file": "rocm_smi_epoch_002_after.txt",
+      "ollama_ps_before_file": "ollama_ps_epoch_002_before.txt",
+      "ollama_ps_after_file": "ollama_ps_epoch_002_after.txt",
+      "status": "error",
+      "elapsed_sec": 2.672,
+      "error_type": "http_error",
+      "error": "HTTP 500 from Ollama: model runner has unexpectedly stopped, this may be due to resource limitations or an internal error, check ollama server logs for details",
+      "http_status": 500,
+      "response_error": "model runner has unexpectedly stopped, this may be due to resource limitations or an internal error, check ollama server logs for details",
+      "response_text_snippet": "{\"error\":\"model runner has unexpectedly stopped, this may be due to resource limitations or an internal error, check ollama server logs for details\"}"
+    },
+    {
+      "epoch": 3,
+      "case_epoch": 1,
+      "started_at": "2026-03-07T01:31:39.790939",
+      "num_gpu": 2,
+      "rocm_smi_before_file": "rocm_smi_epoch_003_before.txt",
+      "rocm_smi_after_file": "rocm_smi_epoch_003_after.txt",
+      "ollama_ps_before_file": "ollama_ps_epoch_003_before.txt",
+      "ollama_ps_after_file": "ollama_ps_epoch_003_after.txt",
+      "status": "error",
+      "elapsed_sec": 7.64,
+      "error_type": "http_error",
+      "error": "HTTP 500 from Ollama: model runner has unexpectedly stopped, this may be due to resource limitations or an internal error, check ollama server logs for details",
+      "http_status": 500,
+      "response_error": "model runner has unexpectedly stopped, this may be due to resource limitations or an internal error, check ollama server logs for details",
+      "response_text_snippet": "{\"error\":\"model runner has unexpectedly stopped, this may be due to resource limitations or an internal error, check ollama server logs for details\"}"
+    },
+    {
+      "epoch": 4,
+      "case_epoch": 1,
+      "started_at": "2026-03-07T01:31:47.829697",
+      "num_gpu": -1,
+      "rocm_smi_before_file": "rocm_smi_epoch_004_before.txt",
+      "rocm_smi_after_file": "rocm_smi_epoch_004_after.txt",
+      "ollama_ps_before_file": "ollama_ps_epoch_004_before.txt",
+      "ollama_ps_after_file": "ollama_ps_epoch_004_after.txt",
+      "status": "error",
+      "elapsed_sec": 9.816,
+      "error_type": "http_error",
+      "error": "HTTP 500 from Ollama: model runner has unexpectedly stopped, this may be due to resource limitations or an internal error, check ollama server logs for details",
+      "http_status": 500,
+      "response_error": "model runner has unexpectedly stopped, this may be due to resource limitations or an internal error, check ollama server logs for details",
+      "response_text_snippet": "{\"error\":\"model runner has unexpectedly stopped, this may be due to resource limitations or an internal error, check ollama server logs for details\"}"
+    }
+  ],
+  "summary_by_num_gpu": {
+    "0": {
+      "ok": 1,
+      "error": 0
+    },
+    "1": {
+      "ok": 0,
+      "error": 1
+    },
+    "2": {
+      "ok": 0,
+      "error": 1
+    },
+    "-1": {
+      "ok": 0,
+      "error": 1
+    }
+  },
+  "finished_at": "2026-03-07T01:31:58.040291"
+}

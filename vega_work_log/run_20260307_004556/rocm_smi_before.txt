@@ -1,0 +1,3 @@
+shm_open: Permission denied
+Exception caught: rsmi_init.
+ERROR:root:ROCm SMI returned 8 (the expected value is 0)

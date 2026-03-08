@@ -1,0 +1,39 @@
+The Linux kernel is a modular, multi-core, and highly extensible Linux operating system core, designed as an open-source implementation of the C programming language to provide a low-level software environment for running applications. Its architecture is organized into several critical subsystems that coordinate system functions and manage hardware resources in an efficient and reliable manner.
+
+---
+
+## 1. Linux Kernel Architecture Overview
+
+The kernel consists of multiple modules that implement core functionalities. The main components include:
+
+- **Init Process**: Starts the boot sequence and loads kernel modules.
+- **Kernel Modules**: Loadable libraries that define core services like filesystems, networking, and drivers.
+- **Boot Sequence**: Includes bootloader, kernel, initramfs, and device drivers.
+- **Runtime Environment**: Manages the running kernel state, process execution, and resource allocation.
+
+---
+
+## 2. Scheduler
+
+The scheduler is responsible for selecting which process to run and when. It works by:
+
+- **Time Slicing**: Using time slices to allocate CPU time fairly.
+- **Priority Queues**: Tasks are assigned a priority level; higher priority tasks get CPU first.
+- **Context Switching**: Switching between processes based on their readiness state.
+
+Scheduler types:
+- **Round Robin**: Fair distribution among equal-priority tasks.
+- **Priority Scheduling**: Higher-priority tasks preempt lower ones.
+- **Real-Time Scheduling**: Deterministic scheduling for hard real-time tasks.
+
+---
+
+## 3. Memory Management
+
+The Linux kernel employs a sophisticated memory management system:
+
+- **Linear Address Space**: Virtual memory is contiguous.
+- **Process Address Spaces**: Each process has its own address space.
+- **Virtual Memory Allocation**: Pages are allocated from memory using the Page Table.
+- **Kernel Virtual Memory Mapping (KVM)**: Allows kernel access to virtual memory for memory management.
+- **Memory Protection**: Pages are protected against illegal access.

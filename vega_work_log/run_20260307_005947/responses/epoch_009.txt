@@ -1,0 +1,19 @@
+The Linux kernel is designed as an open-source system that provides a platform for running multiple types of software applications on a computer or a set of computers connected together. The architecture of the Linux kernel includes several important subsystems, including:
+
+1. Scheduler: The scheduler is responsible for managing system resources and ensuring fair access to them. It determines which tasks are allowed to run at any given time and which ones should wait for their turn.
+
+2. Memory management: The memory management subsystem manages the allocation and freeing of memory on the kernel's memory allocator. This includes things like page tables, virtual memory pages, and paging.
+
+3. VFS (Virtual File System): VFS provides a standard way for accessing storage devices such as hard disks or flash drives. It allows different applications to access different storage types based on their needs.
+
+4. Interrupts: The interrupt subsystem processes incoming interrupt signals from various sources such as CPUs, graphics cards, and keyboard/mouse inputs.
+
+5. Device drivers: Device drivers are responsible for interacting with the physical devices attached to a computer, such as hard drives or network cards. They provide a way for software to access and control these devices.
+
+6. Process scheduling: The process scheduler is responsible for managing multiple tasks at once. It decides which tasks should be run next based on factors like CPU utilization, I/O waiting time, and memory usage.
+
+7. System calls: System calls are called to perform specific tasks on the operating system. These calls pass data between different parts of the kernel, such as a driver or a process.
+
+8. Power management: The power management subsystem manages power consumption in Linux systems. This includes things like suspending, resuming, and throttling CPU usage.
+
+These subsystems work together to provide a complete operating system that allows software applications to run on top of it.

@@ -1,0 +1,32 @@
+The Linux kernel is a modular, multi-platform operating system kernel with a layered, modular design that integrates various subsystems. It handles core functionality including process scheduling, virtual memory, filesystems, and hardware interactions through specialized driver models. Below is a structured explanation of the key architectural components:
+
+### 1. Overall Architecture
+The Linux kernel is organized as a layered, hierarchical system, similar to the traditional kernel structure but more modular. It is built on top of user-space applications and provides low-level operations such as memory management and hardware access.
+
+### 2. Scheduler
+The **scheduler** is responsible for managing CPU time and task scheduling among processes.
+
+- **Kernel Scheduling**: Uses workqueue and task queues to prioritize execution.
+- **Process Scheduling**: Implements scheduling algorithms (e.g., CFS, SCHED_OTHER, SCHED_FIFO).
+- **Task Migration**: Handles context switching and memory placement.
+- **Concurrency**: Supports multiple threads and processes.
+
+Scheduler is typically implemented in the kernel's task queue and thread context switching mechanisms.
+
+### 3. Memory Management
+Memory management is a critical subsystem that ensures efficient allocation and utilization of memory.
+
+- **Virtual Memory**: Uses a virtual address space and the page table to translate virtual addresses to physical ones.
+- **Page Table**: Manages the mapping of virtual memory to physical memory.
+- **Memory Management Unit (MMU)**: Allows memory protection and paging via the user space.
+- **Kernel Module**: Can allocate or reclaim memory dynamically.
+
+Linux uses a page cache, shared memory, and page allocation mechanisms to manage physical and virtual memory efficiently.
+
+### 4. Virtual File System (VFS)
+The **VFS (Virtual File System)** provides a common interface to all userspace and kernel-space filesystems.
+
+- **File System Tree**: Organizes filesystems as a tree structure.
+- **Inode**: A data structure that represents a file or directory.
+- **Block Device**: Used for file storage.
+- **Mount Point

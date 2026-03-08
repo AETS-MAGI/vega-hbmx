@@ -1,0 +1,11 @@
+The Linux kernel is designed as an open-source operating system (OS) with a highly modular architecture. The Linux kernel consists of several parts, including:
+
+1. Scheduler: It manages the scheduling of CPU resources, such as processes and threads, to ensure maximum performance.
+2. Memory management: This includes tasks of managing virtual memory space, allocating and freeing pages in-memory, and maintaining process heaps and stacks.
+3. VFS (Virtual File System): The Linux kernel provides an abstract file system interface, allowing applications to access storage devices, including hard drives, flash drives, and USB sticks.
+4. Interrupts: The Linux kernel handles interrupts in a way that is optimized for the specific hardware and system requirements, such as providing fast and efficient mechanisms for handling I/O requests.
+5. Device drivers: Drivers are software modules that allow devices to communicate with the operating system. These drivers handle tasks like reading and writing data from storage devices, or controlling their power consumption.
+
+The Linux kernel is also designed to be a highly modular OS, which means it can be extended and customized by users through its development community. This allows for customization and optimization of the Linux kernel for specific hardware and system requirements.
+
+In summary, the architecture of the Linux kernel includes three main parts: scheduler, memory management, and VFS, with additional device drivers that are designed to provide a more detailed support for specific hardware and system configurations.

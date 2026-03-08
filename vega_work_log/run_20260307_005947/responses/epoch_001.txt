@@ -1,0 +1,17 @@
+The Linux kernel is based on a modular and object-oriented system. It follows an event-driven model that allows for the execution of various types of tasks (e.g., drivers) in response to system events. The Linux kernel's architecture is divided into several modules, including:
+
+1. User space: This module includes the user interface provided by the graphical user interface (GUI), such as the Bash shell. It also provides an event-driven system for performing different tasks and handling input from the GUI.
+
+2. Kernel space: This module is responsible for controlling various aspects of the underlying hardware, including memory management, I/O devices, and scheduling. The kernel runs continuously in kernel space, but it can also run in user space when certain functions are needed to perform specific tasks.
+
+3. Scheduler: The scheduler module handles tasks that can be scheduled, such as driver-level tasks or system service tasks (e.g., rebooting the computer). It manages the scheduling of these tasks using a complex set of rules and algorithms.
+
+4. Memory management: This module is responsible for managing memory allocation and deallocation. The Linux kernel uses a dynamic memory allocator, which dynamically allocates and frees memory based on various criteria, such as system resources, task requirements, and other factors.
+
+5. VFS (Void File System): This is the virtual file system (VFS) that provides an interface for accessing various types of storage devices, such as hard drives, optical discs, flash memories, etc. The VFS module manages access to these devices using a set of file system interfaces and drivers.
+
+6. Interrupts: This module is responsible for handling hardware interrupts from various sources, including user-level applications, the kernel, and external devices. It also handles interrupts from CPUs and other resources.
+
+7. Device drivers: These are the modules that provide drivers for hardware devices (e.g., hard drives, optical disc drives, graphics cards). They provide a way for users to install and use such devices on their systems using an API provided by the kernel.
+
+In summary, the Linux kernel's architecture is modular, event-driven, and based on a complex set of modules that work together to perform various tasks.

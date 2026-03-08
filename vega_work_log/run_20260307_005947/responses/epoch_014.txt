@@ -1,0 +1,13 @@
+The Linux kernel is an operating system that manages multiple devices, processes, and threads (CPUs), as well as scheduling operations for each one. The architecture of the Linux kernel includes several components:
+
+1. Scheduler: This component is responsible for managing the scheduling of CPUs within a process or thread, including prioritizing tasks based on their priority levels and resources available to them.
+
+2. Memory management: The Linux kernel has a hierarchical memory allocation system that manages pages of data, which can be used by processes to access memory. The system allows for caching, page-faults, and prefetching to improve performance.
+
+3. VFS (Virtual File System): The VFS provides an abstraction layer between the Linux kernel and other file systems such as FAT, EXT2/3, HFS+, XDF, NTFS, and MS-DOS. It provides file access and management functionalities that are commonly found in operating systems.
+
+4. Interrupts: The interrupt system is responsible for handling all events that cause a hardware interrupt such as button pushes or device requests. The interrupt system has different mechanisms to handle different types of events, including generic interrupts, irq (interrupt request), and timer interrupts.
+
+5. Device drivers: Drivers are specialized software applications that interact with devices such as hard drives, printers, keyboards, and mice. They provide the ability for a device to communicate with the computer's hardware through its bus interface or using special protocols.
+
+In summary, the Linux kernel provides several components for managing multiple devices, processes, threads, scheduling, memory allocation, virtual file systems, interrupts, and device drivers. This architecture enables the Linux operating system to handle a diverse set of input/output devices and concurrently execute multiple tasks in parallel without degrading system performance.

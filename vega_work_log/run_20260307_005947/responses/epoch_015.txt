@@ -1,0 +1,17 @@
+The Linux kernel is built on an architecture that consists of several layers:
+
+1. Kernel (the base layer): The kernel provides fundamental services such as address translation, file system support, device driver interfaces, and system management. It also manages the core CPU, memory allocation, and I/O interrupts.
+
+2. Userland (secondary layer): The userland layer runs applications and processes within a restricted environment controlled by the kernel. It includes the user interface, file system, graphics, network stack, and other system components.
+
+3. Initialization (third layer): This is the primary area of Linux where the userland programs are started, libraries are loaded, and kernel modules are initialized.
+
+4. Kernel Stack: The kernel stack is a part of the user-space process's execution environment that contains the application's code and arguments. It runs concurrently with the operating system kernel and allows running other processes in parallel.
+
+5. User Space: This is the area where the application or process is located, including its memory, files, and other services. The userland stack executes only within this environment, and all communication between it and the kernel is done through the kernel stack.
+
+6. System Management Layer (SML): This is a critical layer that controls and manages the operating system's overall behavior and functionality. It includes various services such as scheduling, power management, resource allocation, and communication with hardware devices.
+
+7. Device Drivers: These are specialized drivers that communicate with specific hardware components, including disk drives, network cards, and USB devices. They provide functions such as reading, writing, and controlling the attached devices.
+
+The Linux kernel uses a variety of abstraction layers to provide a flexible and scalable system for operating systems. The different layers work together to manage resources, delivering reliable services to users.

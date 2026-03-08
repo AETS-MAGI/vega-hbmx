@@ -1,0 +1,13 @@
+The Linux kernel is a complex operating system with several layers of software that work together to provide an efficient and stable computing environment for end-users. Here's a brief overview of the key components in the architecture:
+
+1. Scheduling: The Linux kernel implements a scheduling algorithm called Kernel Time Sharing (KTSS) to allocate CPU time among different processes. It uses a first-come, first-served approach based on priority levels assigned to each process. This allows processes with higher priorities to receive more CPU time than those with lower priorities, ensuring that the system runs smoothly and efficiently.
+
+2. Memory management: The Linux kernel manages memory allocation and deallocation for all processes. It provides a consistent set of memory allocation functions, such as allocating pages from different physical memory domains. This allows applications to run on different hardware platforms without the need for memory translation or virtualization.
+
+3. Virtual Filesystem (VFS): The VFS (Virtual File System) layer provides an interface between userspace and a kernel-based file system. It is responsible for handling I/O requests, file operations, and file systems. The Linux kernel uses VFS to provide support for different file systems such as ext4, XFS, and BTRFS.
+
+4. Interrupts: The Linux kernel provides an interrupt mechanism that allows processes to react to system events, such as hardware inputs or software interrupts. It uses a generic interrupt handling layer called Kernel Stacked I/O (KSIO) to manage these events. This is responsible for providing a consistent and efficient way for drivers to process I/O requests from applications.
+
+5. Device drivers: The Linux kernel provides a set of device driver interfaces, such as PCI/ACPI and PCIe, that allow devices to be attached to the system. These drivers handle all aspects of hardware interaction with applications, including device control, power management, and firmware loading.
+
+These are some key components in the Linux kernel's architecture. As the kernel runs on a large number of processors and virtual machines, it needs to support a wide range of devices and configurations. The combination of these layers helps ensure that the system is efficient and stable, while providing interoperability and flexibility for developers and users alike.

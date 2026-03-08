@@ -1,0 +1,9 @@
+The Linux kernel is built on top of the POSIX (Portable Operating System Interface) specification. This means that the Linux kernel's core functions are designed to be portable across different Unix-like operating systems, such as Ubuntu or Debian. The architecture of the Linux kernel is a complex one, and each component has its own unique responsibilities.
+
+The first level of the Linux kernel's architecture is memory management. This includes scheduling tasks on a thread pool based on their requirements, managing memory allocation to ensure it stays within system limits, and providing a mechanism for drivers (such as hardware devices) to request memory from the kernel. Memory management is handled by two key parts of the Linux kernel: the sched_yield() function and the kmem_cache_alloc().
+
+The next level of the Linux kernel's architecture is the virtual file system (VFS). VFS provides a common interface for accessing file systems across different Unix-like operating systems. It manages access to different filesystems, such as ext2/3/4 or NTFS, in a standardized way. The VFS layer is implemented by various VFS drivers, which are loaded dynamically at boot time.
+
+The final level of the Linux kernel's architecture is interrupts. Interrupt handling is one of the most critical parts of any kernel and is handled by several different types of interrupt handlers. These handlers receive events such as keyboard input or device activity, determine what to do with them (such as sending a signal to the process that generated the event), and then propagate the signals up to parent processes.
+
+Overall, the Linux kernel's architecture provides a foundation for providing reliable, high-performance system services. It is designed to be modular, reusable, and extensible, allowing different components to coexist within a single system and adapting to new hardware and operating system designs as they emerge.

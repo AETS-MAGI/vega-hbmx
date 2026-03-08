@@ -1,0 +1,127 @@
+Mar 07 01:26:43 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:26:43 | 200 |      25.417µs |       127.0.0.1 | HEAD     "/"
+Mar 07 01:26:43 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:26:43 | 200 |      10.289µs |       127.0.0.1 | GET      "/api/ps"
+Mar 07 01:26:43 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:26:43 | 200 |      53.409µs |       127.0.0.1 | GET      "/api/version"
+Mar 07 01:26:43 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:26:43 | 200 |       21.33µs |       127.0.0.1 | HEAD     "/"
+Mar 07 01:26:43 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:26:43 | 200 |       8.967µs |       127.0.0.1 | GET      "/api/ps"
+Mar 07 01:26:44 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:26:44 | 200 |      28.403µs |       127.0.0.1 | HEAD     "/"
+Mar 07 01:26:44 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:26:44 | 200 |      14.346µs |       127.0.0.1 | GET      "/api/ps"
+Mar 07 01:26:44 abyss-hbmx ollama-rocm-serve[1415]: ggml_hip_get_device_memory searching for device 0000:44:00.0
+Mar 07 01:26:44 abyss-hbmx ollama-rocm-serve[1415]: ggml_backend_cuda_device_get_memory device 0000:44:00.0 utilizing AMD specific memory reporting free: 7158448128 total: 8573157376
+Mar 07 01:26:44 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:26:44.767+09:00 level=INFO source=server.go:430 msg="starting runner" cmd="/usr/bin/ollama runner --ollama-engine --port 33157"
+Mar 07 01:26:45 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:26:45.080+09:00 level=INFO source=server.go:246 msg="enabling flash attention"
+Mar 07 01:26:45 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:26:45.081+09:00 level=INFO source=server.go:430 msg="starting runner" cmd="/usr/bin/ollama runner --ollama-engine --model /home/limonene/.ollama/models/blobs/sha256-b709d81508a078a686961de6ca07a953b895d9b286c46e17f00fb267f4f2d297 --port 34395"
+Mar 07 01:26:45 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:26:45.081+09:00 level=INFO source=sched.go:489 msg="system memory" total="62.7 GiB" free="59.3 GiB" free_swap="8.8 GiB"
+Mar 07 01:26:45 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:26:45.081+09:00 level=INFO source=server.go:757 msg="loading model" "model layers"=25 requested=0
+Mar 07 01:26:45 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:26:45.094+09:00 level=INFO source=runner.go:1429 msg="starting ollama engine"
+Mar 07 01:26:45 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:26:45.095+09:00 level=INFO source=runner.go:1464 msg="Server listening on 127.0.0.1:34395"
+Mar 07 01:26:45 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:26:45.104+09:00 level=INFO source=runner.go:1302 msg=load request="{Operation:fit LoraPath:[] Parallel:1 BatchSize:512 FlashAttention:Enabled KvSize:4096 KvCacheType: NumThreads:16 GPULayers:[] MultiUserCache:false ProjectorPath: MainGPU:0 UseMmap:false}"
+Mar 07 01:26:45 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:26:45.184+09:00 level=INFO source=ggml.go:136 msg="" architecture=qwen35 file_type=Q8_0 name="" description="" num_tensors=728 num_key_values=52
+Mar 07 01:26:45 abyss-hbmx ollama-rocm-serve[1415]: ggml_cuda_init: GGML_CUDA_FORCE_MMQ:    no
+Mar 07 01:26:45 abyss-hbmx ollama-rocm-serve[1415]: ggml_cuda_init: GGML_CUDA_FORCE_CUBLAS: no
+Mar 07 01:26:45 abyss-hbmx ollama-rocm-serve[1415]: ggml_cuda_init: found 1 ROCm devices:
+Mar 07 01:26:45 abyss-hbmx ollama-rocm-serve[1415]:   Device 0: AMD Radeon RX Vega, gfx900:xnack- (0x900), VMM: no, Wave Size: 64, ID: GPU-0213fa4ba46c2884
+Mar 07 01:26:45 abyss-hbmx ollama-rocm-serve[1415]: load_backend: loaded ROCm backend from /usr/lib/ollama/libggml-hip.so
+Mar 07 01:26:45 abyss-hbmx ollama-rocm-serve[1415]: load_backend: loaded CPU backend from /usr/lib/ollama/libggml-cpu-haswell.so
+Mar 07 01:26:45 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:26:45.262+09:00 level=INFO source=ggml.go:104 msg=system CPU.0.SSE3=1 CPU.0.SSSE3=1 CPU.0.AVX=1 CPU.0.AVX2=1 CPU.0.F16C=1 CPU.0.FMA=1 CPU.0.BMI2=1 CPU.0.LLAMAFILE=1 CPU.1.LLAMAFILE=1 ROCm.0.NO_VMM=1 ROCm.0.PEER_MAX_BATCH_SIZE=128 compiler=cgo(gcc)
+Mar 07 01:26:45 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:26:45.654+09:00 level=INFO source=runner.go:1302 msg=load request="{Operation:alloc LoraPath:[] Parallel:1 BatchSize:512 FlashAttention:Enabled KvSize:4096 KvCacheType: NumThreads:16 GPULayers:[] MultiUserCache:false ProjectorPath: MainGPU:0 UseMmap:false}"
+Mar 07 01:26:46 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:26:46.348+09:00 level=INFO source=runner.go:1302 msg=load request="{Operation:commit LoraPath:[] Parallel:1 BatchSize:512 FlashAttention:Enabled KvSize:4096 KvCacheType: NumThreads:16 GPULayers:[] MultiUserCache:false ProjectorPath: MainGPU:0 UseMmap:false}"
+Mar 07 01:26:46 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:26:46.348+09:00 level=INFO source=ggml.go:482 msg="offloading 0 repeating layers to GPU"
+Mar 07 01:26:46 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:26:46.348+09:00 level=INFO source=ggml.go:486 msg="offloading output layer to CPU"
+Mar 07 01:26:46 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:26:46.348+09:00 level=INFO source=ggml.go:494 msg="offloaded 0/25 layers to GPU"
+Mar 07 01:26:46 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:26:46.348+09:00 level=INFO source=device.go:245 msg="model weights" device=CPU size="3.0 GiB"
+Mar 07 01:26:46 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:26:46.349+09:00 level=INFO source=device.go:256 msg="kv cache" device=CPU size="529.6 MiB"
+Mar 07 01:26:46 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:26:46.349+09:00 level=INFO source=device.go:267 msg="compute graph" device=CPU size="260.1 MiB"
+Mar 07 01:26:46 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:26:46.349+09:00 level=INFO source=device.go:272 msg="total memory" size="3.8 GiB"
+Mar 07 01:26:46 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:26:46.349+09:00 level=INFO source=sched.go:565 msg="loaded runners" count=1
+Mar 07 01:26:46 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:26:46.349+09:00 level=INFO source=server.go:1350 msg="waiting for llama runner to start responding"
+Mar 07 01:26:46 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:26:46.349+09:00 level=INFO source=server.go:1384 msg="waiting for server to become available" status="llm server loading model"
+Mar 07 01:26:46 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:26:46.851+09:00 level=INFO source=server.go:1388 msg="llama runner started in 1.77 seconds"
+Mar 07 01:27:30 abyss-hbmx ollama-rocm-serve[1415]: [GIN] 2026/03/07 - 01:27:30 | 200 |  46.68563847s |       127.0.0.1 | POST     "/api/generate"
+Mar 07 01:27:31 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:27:31 | 200 |      25.497µs |       127.0.0.1 | HEAD     "/"
+Mar 07 01:27:31 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:27:31 | 200 |      10.449µs |       127.0.0.1 | GET      "/api/ps"
+Mar 07 01:27:31 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:27:31 | 200 |      28.793µs |       127.0.0.1 | HEAD     "/"
+Mar 07 01:27:31 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:27:31 | 200 |      10.489µs |       127.0.0.1 | GET      "/api/ps"
+Mar 07 01:27:31 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:27:31.651+09:00 level=INFO source=server.go:430 msg="starting runner" cmd="/usr/bin/ollama runner --ollama-engine --port 35653"
+Mar 07 01:27:31 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:27:31.985+09:00 level=INFO source=server.go:246 msg="enabling flash attention"
+Mar 07 01:27:31 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:27:31.985+09:00 level=INFO source=server.go:430 msg="starting runner" cmd="/usr/bin/ollama runner --ollama-engine --model /home/limonene/.ollama/models/blobs/sha256-b709d81508a078a686961de6ca07a953b895d9b286c46e17f00fb267f4f2d297 --port 37949"
+Mar 07 01:27:31 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:27:31.986+09:00 level=INFO source=sched.go:489 msg="system memory" total="62.7 GiB" free="59.2 GiB" free_swap="8.8 GiB"
+Mar 07 01:27:31 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:27:31.986+09:00 level=INFO source=sched.go:496 msg="gpu memory" id=GPU-0213fa4ba46c2884 library=ROCm available="7.0 GiB" free="7.5 GiB" minimum="457.0 MiB" overhead="0 B"
+Mar 07 01:27:31 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:27:31.986+09:00 level=INFO source=server.go:757 msg="loading model" "model layers"=25 requested=1
+Mar 07 01:27:32 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:27:32.003+09:00 level=INFO source=runner.go:1429 msg="starting ollama engine"
+Mar 07 01:27:32 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:27:32.003+09:00 level=INFO source=runner.go:1464 msg="Server listening on 127.0.0.1:37949"
+Mar 07 01:27:32 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:27:32.008+09:00 level=INFO source=runner.go:1302 msg=load request="{Operation:fit LoraPath:[] Parallel:1 BatchSize:512 FlashAttention:Enabled KvSize:4096 KvCacheType: NumThreads:16 GPULayers:1[ID:GPU-0213fa4ba46c2884 Layers:1(23..23)] MultiUserCache:false ProjectorPath: MainGPU:0 UseMmap:false}"
+Mar 07 01:27:32 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:27:32.086+09:00 level=INFO source=ggml.go:136 msg="" architecture=qwen35 file_type=Q8_0 name="" description="" num_tensors=728 num_key_values=52
+Mar 07 01:27:32 abyss-hbmx ollama-rocm-serve[1415]: ggml_cuda_init: GGML_CUDA_FORCE_MMQ:    no
+Mar 07 01:27:32 abyss-hbmx ollama-rocm-serve[1415]: ggml_cuda_init: GGML_CUDA_FORCE_CUBLAS: no
+Mar 07 01:27:32 abyss-hbmx ollama-rocm-serve[1415]: ggml_cuda_init: found 1 ROCm devices:
+Mar 07 01:27:32 abyss-hbmx ollama-rocm-serve[1415]:   Device 0: AMD Radeon RX Vega, gfx900:xnack- (0x900), VMM: no, Wave Size: 64, ID: GPU-0213fa4ba46c2884
+Mar 07 01:27:32 abyss-hbmx ollama-rocm-serve[1415]: load_backend: loaded ROCm backend from /usr/lib/ollama/libggml-hip.so
+Mar 07 01:27:32 abyss-hbmx ollama-rocm-serve[1415]: load_backend: loaded CPU backend from /usr/lib/ollama/libggml-cpu-haswell.so
+Mar 07 01:27:32 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:27:32.145+09:00 level=INFO source=ggml.go:104 msg=system CPU.0.SSE3=1 CPU.0.SSSE3=1 CPU.0.AVX=1 CPU.0.AVX2=1 CPU.0.F16C=1 CPU.0.FMA=1 CPU.0.BMI2=1 CPU.0.LLAMAFILE=1 CPU.1.LLAMAFILE=1 ROCm.0.NO_VMM=1 ROCm.0.PEER_MAX_BATCH_SIZE=128 compiler=cgo(gcc)
+Mar 07 01:27:32 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:27:32.885+09:00 level=INFO source=runner.go:1302 msg=load request="{Operation:alloc LoraPath:[] Parallel:1 BatchSize:512 FlashAttention:Enabled KvSize:4096 KvCacheType: NumThreads:16 GPULayers:1[ID:GPU-0213fa4ba46c2884 Layers:1(23..23)] MultiUserCache:false ProjectorPath: MainGPU:0 UseMmap:false}"
+Mar 07 01:27:33 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:27:33.586+09:00 level=INFO source=runner.go:1302 msg=load request="{Operation:commit LoraPath:[] Parallel:1 BatchSize:512 FlashAttention:Enabled KvSize:4096 KvCacheType: NumThreads:16 GPULayers:1[ID:GPU-0213fa4ba46c2884 Layers:1(23..23)] MultiUserCache:false ProjectorPath: MainGPU:0 UseMmap:false}"
+Mar 07 01:27:33 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:27:33.586+09:00 level=INFO source=ggml.go:482 msg="offloading 1 repeating layers to GPU"
+Mar 07 01:27:33 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:27:33.586+09:00 level=INFO source=ggml.go:486 msg="offloading output layer to CPU"
+Mar 07 01:27:33 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:27:33.586+09:00 level=INFO source=ggml.go:494 msg="offloaded 1/25 layers to GPU"
+Mar 07 01:27:33 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:27:33.586+09:00 level=INFO source=device.go:240 msg="model weights" device=ROCm0 size="53.1 MiB"
+Mar 07 01:27:33 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:27:33.586+09:00 level=INFO source=device.go:245 msg="model weights" device=CPU size="3.0 GiB"
+Mar 07 01:27:33 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:27:33.586+09:00 level=INFO source=device.go:251 msg="kv cache" device=ROCm0 size="8.0 MiB"
+Mar 07 01:27:33 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:27:33.586+09:00 level=INFO source=device.go:256 msg="kv cache" device=CPU size="521.6 MiB"
+Mar 07 01:27:33 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:27:33.586+09:00 level=INFO source=device.go:262 msg="compute graph" device=ROCm0 size="354.9 MiB"
+Mar 07 01:27:33 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:27:33.586+09:00 level=INFO source=device.go:267 msg="compute graph" device=CPU size="306.8 MiB"
+Mar 07 01:27:33 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:27:33.586+09:00 level=INFO source=device.go:272 msg="total memory" size="4.2 GiB"
+Mar 07 01:27:33 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:27:33.586+09:00 level=INFO source=sched.go:565 msg="loaded runners" count=1
+Mar 07 01:27:33 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:27:33.586+09:00 level=INFO source=server.go:1350 msg="waiting for llama runner to start responding"
+Mar 07 01:27:33 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:27:33.587+09:00 level=INFO source=server.go:1384 msg="waiting for server to become available" status="llm server loading model"
+Mar 07 01:27:34 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:27:34.089+09:00 level=INFO source=server.go:1388 msg="llama runner started in 2.10 seconds"
+Mar 07 01:28:19 abyss-hbmx ollama-rocm-serve[1415]: [GIN] 2026/03/07 - 01:28:19 | 200 | 48.740712177s |       127.0.0.1 | POST     "/api/generate"
+Mar 07 01:28:20 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:28:20 | 200 |      57.276µs |       127.0.0.1 | HEAD     "/"
+Mar 07 01:28:20 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:28:20 | 200 |      54.521µs |       127.0.0.1 | GET      "/api/ps"
+Mar 07 01:28:20 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:28:20 | 200 |      24.725µs |       127.0.0.1 | HEAD     "/"
+Mar 07 01:28:20 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:28:20 | 200 |      15.979µs |       127.0.0.1 | GET      "/api/ps"
+Mar 07 01:28:20 abyss-hbmx ollama-rocm-serve[1415]: ggml_hip_get_device_memory searching for device 0000:44:00.0
+Mar 07 01:28:20 abyss-hbmx ollama-rocm-serve[1415]: ggml_backend_cuda_device_get_memory device 0000:44:00.0 utilizing AMD specific memory reporting free: 7250665472 total: 8573157376
+Mar 07 01:28:21 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:28:21.014+09:00 level=INFO source=server.go:430 msg="starting runner" cmd="/usr/bin/ollama runner --ollama-engine --port 34203"
+Mar 07 01:28:21 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:28:21.105+09:00 level=INFO source=server.go:430 msg="starting runner" cmd="/usr/bin/ollama runner --ollama-engine --port 35151"
+Mar 07 01:28:21 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:28:21.483+09:00 level=INFO source=server.go:246 msg="enabling flash attention"
+Mar 07 01:28:21 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:28:21.483+09:00 level=INFO source=server.go:430 msg="starting runner" cmd="/usr/bin/ollama runner --ollama-engine --model /home/limonene/.ollama/models/blobs/sha256-b709d81508a078a686961de6ca07a953b895d9b286c46e17f00fb267f4f2d297 --port 43955"
+Mar 07 01:28:21 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:28:21.484+09:00 level=INFO source=sched.go:489 msg="system memory" total="62.7 GiB" free="59.2 GiB" free_swap="8.8 GiB"
+Mar 07 01:28:21 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:28:21.484+09:00 level=INFO source=sched.go:496 msg="gpu memory" id=GPU-0213fa4ba46c2884 library=ROCm available="7.0 GiB" free="7.5 GiB" minimum="457.0 MiB" overhead="0 B"
+Mar 07 01:28:21 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:28:21.484+09:00 level=INFO source=server.go:757 msg="loading model" "model layers"=25 requested=2
+Mar 07 01:28:21 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:28:21.503+09:00 level=INFO source=runner.go:1429 msg="starting ollama engine"
+Mar 07 01:28:21 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:28:21.504+09:00 level=INFO source=runner.go:1464 msg="Server listening on 127.0.0.1:43955"
+Mar 07 01:28:21 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:28:21.506+09:00 level=INFO source=runner.go:1302 msg=load request="{Operation:fit LoraPath:[] Parallel:1 BatchSize:512 FlashAttention:Enabled KvSize:4096 KvCacheType: NumThreads:16 GPULayers:2[ID:GPU-0213fa4ba46c2884 Layers:2(22..23)] MultiUserCache:false ProjectorPath: MainGPU:0 UseMmap:false}"
+Mar 07 01:28:21 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:28:21.577+09:00 level=INFO source=ggml.go:136 msg="" architecture=qwen35 file_type=Q8_0 name="" description="" num_tensors=728 num_key_values=52
+Mar 07 01:28:21 abyss-hbmx ollama-rocm-serve[1415]: ggml_cuda_init: GGML_CUDA_FORCE_MMQ:    no
+Mar 07 01:28:21 abyss-hbmx ollama-rocm-serve[1415]: ggml_cuda_init: GGML_CUDA_FORCE_CUBLAS: no
+Mar 07 01:28:21 abyss-hbmx ollama-rocm-serve[1415]: ggml_cuda_init: found 1 ROCm devices:
+Mar 07 01:28:21 abyss-hbmx ollama-rocm-serve[1415]:   Device 0: AMD Radeon RX Vega, gfx900:xnack- (0x900), VMM: no, Wave Size: 64, ID: GPU-0213fa4ba46c2884
+Mar 07 01:28:21 abyss-hbmx ollama-rocm-serve[1415]: load_backend: loaded ROCm backend from /usr/lib/ollama/libggml-hip.so
+Mar 07 01:28:21 abyss-hbmx ollama-rocm-serve[1415]: load_backend: loaded CPU backend from /usr/lib/ollama/libggml-cpu-haswell.so
+Mar 07 01:28:21 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:28:21.653+09:00 level=INFO source=ggml.go:104 msg=system CPU.0.SSE3=1 CPU.0.SSSE3=1 CPU.0.AVX=1 CPU.0.AVX2=1 CPU.0.F16C=1 CPU.0.FMA=1 CPU.0.BMI2=1 CPU.0.LLAMAFILE=1 CPU.1.LLAMAFILE=1 ROCm.0.NO_VMM=1 ROCm.0.PEER_MAX_BATCH_SIZE=128 compiler=cgo(gcc)
+Mar 07 01:28:22 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:28:22.365+09:00 level=INFO source=runner.go:1302 msg=load request="{Operation:alloc LoraPath:[] Parallel:1 BatchSize:512 FlashAttention:Enabled KvSize:4096 KvCacheType: NumThreads:16 GPULayers:2[ID:GPU-0213fa4ba46c2884 Layers:2(22..23)] MultiUserCache:false ProjectorPath: MainGPU:0 UseMmap:false}"
+Mar 07 01:28:23 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:28:23.115+09:00 level=INFO source=runner.go:1302 msg=load request="{Operation:commit LoraPath:[] Parallel:1 BatchSize:512 FlashAttention:Enabled KvSize:4096 KvCacheType: NumThreads:16 GPULayers:2[ID:GPU-0213fa4ba46c2884 Layers:2(22..23)] MultiUserCache:false ProjectorPath: MainGPU:0 UseMmap:false}"
+Mar 07 01:28:23 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:28:23.115+09:00 level=INFO source=ggml.go:482 msg="offloading 2 repeating layers to GPU"
+Mar 07 01:28:23 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:28:23.116+09:00 level=INFO source=ggml.go:486 msg="offloading output layer to CPU"
+Mar 07 01:28:23 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:28:23.116+09:00 level=INFO source=ggml.go:494 msg="offloaded 2/25 layers to GPU"
+Mar 07 01:28:23 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:28:23.116+09:00 level=INFO source=device.go:240 msg="model weights" device=ROCm0 size="112.8 MiB"
+Mar 07 01:28:23 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:28:23.116+09:00 level=INFO source=device.go:245 msg="model weights" device=CPU size="2.9 GiB"
+Mar 07 01:28:23 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:28:23.116+09:00 level=INFO source=device.go:251 msg="kv cache" device=ROCm0 size="34.8 MiB"
+Mar 07 01:28:23 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:28:23.116+09:00 level=INFO source=device.go:256 msg="kv cache" device=CPU size="494.9 MiB"
+Mar 07 01:28:23 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:28:23.116+09:00 level=INFO source=device.go:262 msg="compute graph" device=ROCm0 size="354.9 MiB"
+Mar 07 01:28:23 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:28:23.116+09:00 level=INFO source=device.go:267 msg="compute graph" device=CPU size="306.8 MiB"
+Mar 07 01:28:23 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:28:23.116+09:00 level=INFO source=device.go:272 msg="total memory" size="4.2 GiB"
+Mar 07 01:28:23 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:28:23.116+09:00 level=INFO source=sched.go:565 msg="loaded runners" count=1
+Mar 07 01:28:23 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:28:23.116+09:00 level=INFO source=server.go:1350 msg="waiting for llama runner to start responding"
+Mar 07 01:28:23 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:28:23.116+09:00 level=INFO source=server.go:1384 msg="waiting for server to become available" status="llm server loading model"
+Mar 07 01:28:23 abyss-hbmx ollama-rocm-serve[1415]: time=2026-03-07T01:28:23.869+09:00 level=INFO source=server.go:1388 msg="llama runner started in 2.39 seconds"
+Mar 07 01:29:08 abyss-hbmx ollama-rocm-serve[1415]: [GIN] 2026/03/07 - 01:29:08 | 200 | 47.745642664s |       127.0.0.1 | POST     "/api/generate"
+Mar 07 01:29:08 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:29:08 | 200 |      22.956µs |       127.0.0.1 | HEAD     "/"
+Mar 07 01:29:08 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:29:08 | 200 |      10.151µs |       127.0.0.1 | GET      "/api/ps"
+Mar 07 01:29:08 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:29:08 | 200 |      35.952µs |       127.0.0.1 | HEAD     "/"
+Mar 07 01:29:08 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:29:08 | 200 |      16.844µs |       127.0.0.1 | GET      "/api/ps"
+Mar 07 01:29:52 abyss-hbmx ollama-rocm-serve[1415]: [GIN] 2026/03/07 - 01:29:52 | 200 | 44.262892027s |       127.0.0.1 | POST     "/api/generate"
+Mar 07 01:29:53 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:29:53 | 200 |      37.845µs |       127.0.0.1 | HEAD     "/"
+Mar 07 01:29:53 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:29:53 | 200 |       15.09µs |       127.0.0.1 | GET      "/api/ps"
+Mar 07 01:29:53 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:29:53 | 200 |      26.403µs |       127.0.0.1 | HEAD     "/"
+Mar 07 01:29:53 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/07 - 01:29:53 | 200 |      11.082µs |       127.0.0.1 | GET      "/api/ps"

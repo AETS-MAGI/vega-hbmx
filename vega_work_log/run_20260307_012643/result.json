@@ -1,0 +1,115 @@
+{
+  "run_id": "run_20260307_012643",
+  "started_at": "2026-03-07T01:26:43.349124",
+  "backend_target": "rocm",
+  "model": "qwen3.5:2b",
+  "epochs": 1,
+  "total_epochs": 4,
+  "num_predict": 512,
+  "num_gpu": null,
+  "num_gpu_values": [
+    0,
+    1,
+    2,
+    -1
+  ],
+  "num_gpu_raw": "0,1,2,-1",
+  "ollama_host": "http://127.0.0.1:11435",
+  "records": [
+    {
+      "epoch": 1,
+      "case_epoch": 1,
+      "started_at": "2026-03-07T01:26:43.971023",
+      "num_gpu": 0,
+      "rocm_smi_before_file": "rocm_smi_epoch_001_before.txt",
+      "rocm_smi_after_file": "rocm_smi_epoch_001_after.txt",
+      "ollama_ps_before_file": "ollama_ps_epoch_001_before.txt",
+      "ollama_ps_after_file": "ollama_ps_epoch_001_after.txt",
+      "status": "ok",
+      "elapsed_sec": 46.689,
+      "done": true,
+      "eval_count": 512,
+      "eval_duration": 42016540155,
+      "prompt_eval_count": 33,
+      "prompt_eval_duration": 410688156,
+      "response_chars": 0,
+      "response_file": "epoch_001.txt"
+    },
+    {
+      "epoch": 2,
+      "case_epoch": 1,
+      "started_at": "2026-03-07T01:27:31.075956",
+      "num_gpu": 1,
+      "rocm_smi_before_file": "rocm_smi_epoch_002_before.txt",
+      "rocm_smi_after_file": "rocm_smi_epoch_002_after.txt",
+      "ollama_ps_before_file": "ollama_ps_epoch_002_before.txt",
+      "ollama_ps_after_file": "ollama_ps_epoch_002_after.txt",
+      "status": "ok",
+      "elapsed_sec": 48.742,
+      "done": true,
+      "eval_count": 512,
+      "eval_duration": 43853670072,
+      "prompt_eval_count": 33,
+      "prompt_eval_duration": 452365023,
+      "response_chars": 1809,
+      "response_file": "epoch_002.txt"
+    },
+    {
+      "epoch": 3,
+      "case_epoch": 1,
+      "started_at": "2026-03-07T01:28:20.221256",
+      "num_gpu": 2,
+      "rocm_smi_before_file": "rocm_smi_epoch_003_before.txt",
+      "rocm_smi_after_file": "rocm_smi_epoch_003_after.txt",
+      "ollama_ps_before_file": "ollama_ps_epoch_003_before.txt",
+      "ollama_ps_after_file": "ollama_ps_epoch_003_after.txt",
+      "status": "ok",
+      "elapsed_sec": 47.748,
+      "done": true,
+      "eval_count": 512,
+      "eval_duration": 42307474936,
+      "prompt_eval_count": 33,
+      "prompt_eval_duration": 432273235,
+      "response_chars": 1951,
+      "response_file": "epoch_003.txt"
+    },
+    {
+      "epoch": 4,
+      "case_epoch": 1,
+      "started_at": "2026-03-07T01:29:08.349303",
+      "num_gpu": -1,
+      "rocm_smi_before_file": "rocm_smi_epoch_004_before.txt",
+      "rocm_smi_after_file": "rocm_smi_epoch_004_after.txt",
+      "ollama_ps_before_file": "ollama_ps_epoch_004_before.txt",
+      "ollama_ps_after_file": "ollama_ps_epoch_004_after.txt",
+      "status": "ok",
+      "elapsed_sec": 44.265,
+      "done": true,
+      "eval_count": 512,
+      "eval_duration": 42084598410,
+      "prompt_eval_count": 33,
+      "prompt_eval_duration": 408591226,
+      "response_chars": 1849,
+      "response_file": "epoch_004.txt"
+    }
+  ],
+  "summary_by_num_gpu": {
+    "0": {
+      "ok": 1,
+      "error": 0
+    },
+    "1": {
+      "ok": 1,
+      "error": 0
+    },
+    "2": {
+      "ok": 1,
+      "error": 0
+    },
+    "-1": {
+      "ok": 1,
+      "error": 0
+    }
+  },
+  "finished_at": "2026-03-07T01:29:53.022725"
+}

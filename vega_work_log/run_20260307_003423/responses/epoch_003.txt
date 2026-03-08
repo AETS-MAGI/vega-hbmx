@@ -1,0 +1,19 @@
+The Linux kernel is a complex system that runs on a variety of platforms and devices, and it consists of various components with different functions. Here's a breakdown of its architecture:
+
+1. Scheduling: The Linux kernel uses a multi-threaded, priority-based scheduler called "mmm" (Minor MMP). This scheduling algorithm prioritizes processes based on their relative CPU usage and allows the kernel to balance system resources evenly among all processes in the system.
+
+2. Memory Management: The Linux kernel manages memory access through a set of different structures such as virtual memory pages, page tables, and memory allocators. It handles accesses to memory by processes in the following ways:
+
+   - Virtual memory (VirtIO) pages are allocated dynamically on demand based on their physical address.
+   - Physical memory is accessed using PTEs (Page Table Entries), which refer to pages owned by a specific process.
+   - The kernel uses virtual memory page tables to map user-space page tables into kernel memory, and vice versa.
+
+3. Virtual File System (VFS): The Linux kernel provides a simple, reliable VFS (Virtual File System) that simplifies the handling of files on the filesystem for applications running on top of it. It allows users to use various file systems such as ext2/ext3, NTFS, and FAT.
+
+4. Interrupts: The Linux kernel provides a basic interrupt mechanism that allows the CPU to interrupt a process when an event occurs (such as a hardware interrupt). This is used in situations where the kernel can't do everything itself (such as in device drivers) or when other processes need to be aware of the event.
+
+5. Device Drivers: The Linux kernel provides device driver support for various types of devices such as USB, SATA, and Bluetooth. These drivers allow applications to interact with these devices and access their features and properties.
+
+6. Cryptography: The Linux kernel implements cryptographic algorithms, including AES (Advanced Encryption Standard), RSA (Rivest-Shamir-Adleman), and NIST (National Institute of Standards and Technology) algorithms. These algorithms are used in various applications such as file encryption and cryptographic signatures.
+
+Overall, the Linux kernel is designed to be modular, scalable, and efficient. It provides a complete system architecture for running applications

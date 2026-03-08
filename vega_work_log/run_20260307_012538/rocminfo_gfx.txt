@@ -1,0 +1,11 @@
+HSA Agents               
+Agent 1                  
+  Name:                    AMD Ryzen Threadripper 2950X 16-Core Processor
+  Marketing Name:          AMD Ryzen Threadripper 2950X 16-Core Processor
+  Vendor Name:             CPU                                
+Agent 2                  
+  Name:                    gfx900                             
+  Marketing Name:          AMD Radeon RX Vega                 
+  Vendor Name:             AMD                                
+      Name:                    amdgcn-amd-amdhsa--gfx900:xnack-   
+      Name:                    amdgcn-amd-amdhsa--gfx9-generic:xnack-

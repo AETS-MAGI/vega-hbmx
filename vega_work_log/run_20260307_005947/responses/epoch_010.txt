@@ -1,0 +1,13 @@
+The Linux kernel is built on top of an extensive set of software components that work together to provide a reliable and efficient operating system for many different platforms. The overall architecture of Linux follows the S-tree (Superblock Tree) structure, with each layer consisting of several subtrees.
+
+Scheduler: The Linux kernel includes the scheduler scheduling system that enables applications to be scheduled according to priority levels. Priority levels are determined by the user-space application and can be configured through the /proc/sched file.
+
+Memory Management: Memory management is an essential part of Linux's overall architecture. It ensures that memory is allocated, freed, and used efficiently for various types of tasks. The kernel utilizes a first-come, first-served (FCFS) memory allocation algorithm to allocate memory to processes based on their priority level.
+
+VFS: VFS stands for Virtual File System. It provides a generic interface for accessing file systems in the Linux kernel. Each operating system's storage media is typically represented by a file system. The VFS is responsible for exposing these file systems to applications running in the Linux kernel.
+
+Interrupts: In Linux, interrupts are handled by a separate set of drivers and interrupt controllers. The interrupt controller ensures that all interrupts are handled quickly and efficiently. It also provides support for different levels of interrupt latency.
+
+Device Drivers: Device drivers are software modules that allow the Linux kernel to interact with various devices such as hard drives, printers, and network cards. Each device driver is responsible for managing the communication between the hardware and the operating system.
+
+The Linux kernel architecture also includes a variety of subsystems, including netlink, ksmbd, etc., which provide additional functionality for the Linux kernel.

@@ -1,0 +1,40 @@
+The Linux kernel is built around five core subsystems that coordinate system operation: the scheduler, memory management, virtual file system (VFS), interrupts, and device drivers. These subsystems work together to manage system resources and ensure efficient, deterministic execution.
+
+---
+
+### 1. Overall Architecture
+
+The Linux kernel is modular and organized into subsystems, each encapsulated and managed as a distinct entity:
+
+- **Core Module Structure**:
+  - The kernel is primarily divided into modules such as kernel headers, subsystems (e.g., networking, drivers), drivers, and the system-level components (e.g., scheduler).
+- **Boot and Bootloader Support**:
+  - The kernel initializes during boot and can be split across memory regions (e.g., RAM or ROM).
+  - A boot loader (such as GRUB, U-Boot, or similar) loads and sets up the kernel.
+- **Inter-process and Inter-subsystem Communication**:
+  - The kernel supports multiple concurrent processes, each executing its own code.
+  - System-level interactions occur between processes, subsystems, and hardware.
+
+---
+
+### 2. Scheduler
+
+The **kernel scheduler** manages CPU scheduling by deciding which process gets to run next.
+
+- **Main Components**:
+  - Process Priority Levels:
+    - `softirq` and `hardirq`:
+    - `idle` threads (e.g., `idle` daemon).
+  - Process Priority:
+    - `priority`:
+    - `rtprio`:
+    - `realtime`:
+  - `cpu_affinity`:
+    - `cpu_mask`:
+    - `cpu_affinity`:
+  - `cpu_set`:
+    - `cpu_set` (used for process context switching)
+  - `sched_clock`:
+    - `sched_clock` (used for scheduling time calculations)
+  - `cpu_mask`:
+    - `cpu

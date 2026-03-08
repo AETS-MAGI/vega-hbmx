@@ -1,0 +1,13 @@
+The Linux kernel is composed of several components that work together to provide a stable, secure, and efficient operating system (OS) environment for most modern computers. The Linux kernel is divided into three primary components:
+
+1. Scheduler: This component manages the CPU resources assigned to each process, allocating them efficiently and effectively, based on task priority and the system's current needs.
+
+2. Memory Management: This component manages the memory allocation for processes and other applications running in the Linux kernel. It handles data cache coherence, synchronization between threads, and virtual memory management.
+
+3. Virtual File System (VFS): The VFS provides a common interface to file systems used by different types of devices, including hard drives, solid-state drives, floppy disks, and CDROM drives. It handles I/O requests from the kernel and userspace applications alike, ensuring that all data accesses are efficient.
+
+4. Interrupts: The Linux kernel includes a general-purpose interrupt controller (IC) that handles interrupts coming in from the hardware devices. This IC is responsible for dispatching interrupts to CPUs, which can then execute the necessary code and react accordingly.
+
+5. Device drivers: These components are responsible for handling specific device types, including input/output (I/O) devices such as hard drives, printers, and keyboards. They provide a way for applications to communicate with these devices directly and enable them to be used by various applications.
+
+Overall, the Linux kernel provides a stable foundation that enables other components to work together effectively, enabling userspace applications to run smoothly and efficiently on top of it.

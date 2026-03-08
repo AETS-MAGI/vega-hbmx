@@ -1,0 +1,15 @@
+Sure! Here's a high-level overview of the architecture of the Linux kernel:
+
+1. Scheduler: The Linux kernel is designed with a modular and parallelized scheduling system that handles CPU scheduling requests from various applications, drivers, and processes. This system is implemented through a set of scheduling APIs called sched_setns() and sched_getns(). It provides an interface for userspace to request CPU time on the kernel-managed CPUs by providing a way to switch between them.
+
+2. Memory management: The Linux kernel implements various memory management strategies to manage and allocate system resources efficiently. This includes techniques like page allocations, paging, caching, and power management.
+
+3. VFS: The Virtual File System (VFS) is responsible for exposing device drivers to a user-space application, allowing the application to access underlying devices. The VFS layer in the kernel provides a common API for devices to communicate with each other and also facilitates device driver interchangeability between different Linux distributions.
+
+4. Interrupts: The Linux kernel implements interrupts as a mechanism for catching external events that trigger system awareness, such as hardware events or user-level applications. It provides a simple and flexible API for accessing interrupts, allowing different devices to provide different types of interrupt events.
+
+5. Device drivers: Devices (e.g., CPUs, memory, and storage devices) in the Linux kernel are managed by various driver layers that provide a common interface for userspace applications and device drivers to communicate with each other. These drivers enable devices to communicate with system-level services like network cards, file systems, or processors.
+
+6. Drivers: The Linux kernel supports thousands of device drivers from various vendors, providing various types of resources to applications running on the system. These drivers are responsible for interpreting user-level input/output requests and translating them into device-specific operations.
+
+In summary, the Linux kernel provides a flexible and parallelized scheduling, memory management, VFS, interrupts, and device driver systems that facilitate efficient execution of various applications on a hardware platform.

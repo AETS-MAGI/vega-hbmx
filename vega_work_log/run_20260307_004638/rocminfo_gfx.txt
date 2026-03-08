@@ -1,0 +1,3 @@
+  Name:                    gfx900                             
+      Name:                    amdgcn-amd-amdhsa--gfx900:xnack-   
+      Name:                    amdgcn-amd-amdhsa--gfx9-generic:xnack-

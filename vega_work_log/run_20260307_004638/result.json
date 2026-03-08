@@ -1,0 +1,130 @@
+{
+  "run_id": "run_20260307_004638",
+  "started_at": "2026-03-07T00:46:39.137763",
+  "model": "qwen3.5:2b",
+  "epochs": 20,
+  "num_predict": 512,
+  "records": [
+    {
+      "epoch": 1,
+      "started_at": "2026-03-07T00:46:39.137872",
+      "status": "error",
+      "error": "500 Server Error: Internal Server Error for url: http://127.0.0.1:11434/api/generate"
+    },
+    {
+      "epoch": 2,
+      "started_at": "2026-03-07T00:46:49.108944",
+      "status": "error",
+      "error": "500 Server Error: Internal Server Error for url: http://127.0.0.1:11434/api/generate"
+    },
+    {
+      "epoch": 3,
+      "started_at": "2026-03-07T00:46:58.933490",
+      "status": "error",
+      "error": "500 Server Error: Internal Server Error for url: http://127.0.0.1:11434/api/generate"
+    },
+    {
+      "epoch": 4,
+      "started_at": "2026-03-07T00:47:09.038761",
+      "status": "error",
+      "error": "500 Server Error: Internal Server Error for url: http://127.0.0.1:11434/api/generate"
+    },
+    {
+      "epoch": 5,
+      "started_at": "2026-03-07T00:47:19.080002",
+      "status": "error",
+      "error": "500 Server Error: Internal Server Error for url: http://127.0.0.1:11434/api/generate"
+    },
+    {
+      "epoch": 6,
+      "started_at": "2026-03-07T00:47:29.413439",
+      "status": "error",
+      "error": "500 Server Error: Internal Server Error for url: http://127.0.0.1:11434/api/generate"
+    },
+    {
+      "epoch": 7,
+      "started_at": "2026-03-07T00:47:39.507362",
+      "status": "error",
+      "error": "500 Server Error: Internal Server Error for url: http://127.0.0.1:11434/api/generate"
+    },
+    {
+      "epoch": 8,
+      "started_at": "2026-03-07T00:47:49.600170",
+      "status": "error",
+      "error": "500 Server Error: Internal Server Error for url: http://127.0.0.1:11434/api/generate"
+    },
+    {
+      "epoch": 9,
+      "started_at": "2026-03-07T00:47:59.625722",
+      "status": "error",
+      "error": "500 Server Error: Internal Server Error for url: http://127.0.0.1:11434/api/generate"
+    },
+    {
+      "epoch": 10,
+      "started_at": "2026-03-07T00:48:09.663070",
+      "status": "error",
+      "error": "500 Server Error: Internal Server Error for url: http://127.0.0.1:11434/api/generate"
+    },
+    {
+      "epoch": 11,
+      "started_at": "2026-03-07T00:48:19.464406",
+      "status": "error",
+      "error": "500 Server Error: Internal Server Error for url: http://127.0.0.1:11434/api/generate"
+    },
+    {
+      "epoch": 12,
+      "started_at": "2026-03-07T00:48:29.530208",
+      "status": "error",
+      "error": "500 Server Error: Internal Server Error for url: http://127.0.0.1:11434/api/generate"
+    },
+    {
+      "epoch": 13,
+      "started_at": "2026-03-07T00:48:39.703617",
+      "status": "error",
+      "error": "500 Server Error: Internal Server Error for url: http://127.0.0.1:11434/api/generate"
+    },
+    {
+      "epoch": 14,
+      "started_at": "2026-03-07T00:48:49.753612",
+      "status": "error",
+      "error": "500 Server Error: Internal Server Error for url: http://127.0.0.1:11434/api/generate"
+    },
+    {
+      "epoch": 15,
+      "started_at": "2026-03-07T00:48:59.835709",
+      "status": "error",
+      "error": "500 Server Error: Internal Server Error for url: http://127.0.0.1:11434/api/generate"
+    },
+    {
+      "epoch": 16,
+      "started_at": "2026-03-07T00:49:09.881624",
+      "status": "error",
+      "error": "500 Server Error: Internal Server Error for url: http://127.0.0.1:11434/api/generate"
+    },
+    {
+      "epoch": 17,
+      "started_at": "2026-03-07T00:49:20.300279",
+      "status": "error",
+      "error": "500 Server Error: Internal Server Error for url: http://127.0.0.1:11434/api/generate"
+    },
+    {
+      "epoch": 18,
+      "started_at": "2026-03-07T00:49:30.316752",
+      "status": "error",
+      "error": "500 Server Error: Internal Server Error for url: http://127.0.0.1:11434/api/generate"
+    },
+    {
+      "epoch": 19,
+      "started_at": "2026-03-07T00:49:40.279289",
+      "status": "error",
+      "error": "500 Server Error: Internal Server Error for url: http://127.0.0.1:11434/api/generate"
+    },
+    {
+      "epoch": 20,
+      "started_at": "2026-03-07T00:49:50.266376",
+      "status": "error",
+      "error": "500 Server Error: Internal Server Error for url: http://127.0.0.1:11434/api/generate"
+    }
+  ],
+  "finished_at": "2026-03-07T00:50:00.409615"
+}

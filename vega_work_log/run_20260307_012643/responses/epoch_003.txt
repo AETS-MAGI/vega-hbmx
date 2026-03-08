@@ -1,0 +1,39 @@
+The Linux kernel is the operating system core, handling hardware operations and system services for all applications. Its design follows Unix-like principles with a modular, scalable structure. Below is an organized breakdown of major subsystems:
+
+---
+
+## 1. Process Scheduler
+
+- **Scheduler**: Manages CPU time allocation among processes.
+  - Uses the **time slice** mechanism to allow switching between processes.
+  - Includes policies like `CFS` (Completely Fair Scheduler), which allocates CPU time based on process load and fairness, replacing `FCFS`.
+  - Runs in the kernel context (no user-mode code) and manages scheduling decisions without user-level interference.
+
+---
+
+## 2. Memory Management
+
+- **Kernel Memory**: All pages are managed by the kernel; userspace runs only in virtual memory.
+- **Page Table and Virtual Addressing**: Each virtual address maps to a physical address via page tables, enabling process isolation and efficient memory allocation.
+- **Memory Protection**: Protects memory with user-level or kernel-level permissions (e.g., `PAGE_KERNEL`).
+- **Dynamic Memory Allocation**: Uses the **Slab allocator** for caching data structures like buffers, locks, etc.
+
+---
+
+## 3. Virtual File System (VFS)
+
+- VFS is the interface layer that abstracts all storage devices.
+- Allows processes to access files and directories without knowing the physical underlying hardware or filesystem format.
+- Handles:
+  - Opening/closing file descriptors
+  - Reading/writing file data
+  - Directory listings and symlinks
+- **Path resolution**: Converts absolute paths to VFS handles for further processing.
+- Uses `VFS` to access `/`, mount points, inodes, device files, etc.
+
+---
+
+## 4. Interrupts
+
+- **Interrupt Service Routine (ISR)**: Runs on a timer or hardware signal to respond to hardware events (e.g., timer interrupt, I/O requests).
+- **Hardware**: Monitors and responds to system interrupts such as keyboard input, network signals

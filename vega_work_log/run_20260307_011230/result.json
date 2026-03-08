@@ -1,0 +1,59 @@
+{
+  "run_id": "run_20260307_011230",
+  "started_at": "2026-03-07T01:12:31.134150",
+  "model": "qwen3.5:2b",
+  "epochs": 3,
+  "num_predict": 512,
+  "num_gpu": 0,
+  "records": [
+    {
+      "epoch": 1,
+      "started_at": "2026-03-07T01:12:31.134262",
+      "status": "ok",
+      "elapsed_sec": 42.271,
+      "done": true,
+      "eval_count": 512,
+      "eval_duration": 41157305250,
+      "prompt_eval_count": 33,
+      "prompt_eval_duration": 399376496,
+      "num_gpu": 0,
+      "response_chars": 2105,
+      "response_file": "epoch_001.txt",
+      "rocm_smi_before_file": "rocm_smi_epoch_001_before.txt",
+      "rocm_smi_after_file": "rocm_smi_epoch_001_after.txt"
+    },
+    {
+      "epoch": 2,
+      "started_at": "2026-03-07T01:13:13.769715",
+      "status": "ok",
+      "elapsed_sec": 42.837,
+      "done": true,
+      "eval_count": 512,
+      "eval_duration": 41698697501,
+      "prompt_eval_count": 33,
+      "prompt_eval_duration": 427140519,
+      "num_gpu": 0,
+      "response_chars": 1999,
+      "response_file": "epoch_002.txt",
+      "rocm_smi_before_file": "rocm_smi_epoch_002_before.txt",
+      "rocm_smi_after_file": "rocm_smi_epoch_002_after.txt"
+    },
+    {
+      "epoch": 3,
+      "started_at": "2026-03-07T01:13:56.987343",
+      "status": "ok",
+      "elapsed_sec": 42.459,
+      "done": true,
+      "eval_count": 512,
+      "eval_duration": 41350158899,
+      "prompt_eval_count": 33,
+      "prompt_eval_duration": 351449542,
+      "num_gpu": 0,
+      "response_chars": 1901,
+      "response_file": "epoch_003.txt",
+      "rocm_smi_before_file": "rocm_smi_epoch_003_before.txt",
+      "rocm_smi_after_file": "rocm_smi_epoch_003_after.txt"
+    }
+  ],
+  "finished_at": "2026-03-07T01:14:39.819683"
+}

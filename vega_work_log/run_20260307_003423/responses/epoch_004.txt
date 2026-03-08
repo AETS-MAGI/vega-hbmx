@@ -1,0 +1,17 @@
+The Linux kernel has an architecture that supports scheduling, memory management, virtual file systems (VFS), device drivers, and I/O support for different hardware platforms. Here's a brief overview of the major components:
+
+1. Scheduling: The Linux kernel uses an efficient scheduler called SCHED_FIFO to manage CPU time among processes. The scheduling algorithm determines the order in which tasks are run based on their priorities and workload.
+
+2. Memory Management: The Linux kernel has a memory management system that allocates memory, frees it, and manages page faults (when a process needs to access virtual memory). The allocation, freeing, and pagefault operations are controlled by the kernel using a powerful set of APIs like mmap() and vmalloc().
+
+3. Virtual File Systems: VFS is an abstract API that enables accessing and manipulating files on different file systems such as NTFS, FAT, EXT2/3/4, HFS+, and XFS. It provides a common interface to these file systems using the same APIs for easier interoperation with different file systems.
+
+4. Interrupts: The Linux kernel supports different types of interrupts, including IRQ, RTCWakeup (for wake-up from sleep mode), FIQ, IRQ, and MSI/MSIX (for system management interrupts). It also provides APIs for setting up interrupt handlers and monitoring interrupt status.
+
+5. Device Drivers: The Linux kernel includes device drivers that are responsible for handling the physical interface between a computer and hardware components like peripheral devices, USB storage devices, network adapters, etc.
+
+6. Memory Management: The Linux kernel uses a garbage collector called Older-Allocator (OOO) to manage memory. It is used when the memory pool becomes too full or too empty. Whenever a process needs more memory, it can request more via the OOO mechanism and get released back into the pool later.
+
+7. I/O: The Linux kernel supports different types of I/O using different abstractions such as block devices, character devices, and file systems. It also provides APIs for reading and writing data to disk, allocating memory, and accessing device drivers.
+
+These are just a few examples of the components of the Linux kernel. There are many more that contribute to its overall functionality.

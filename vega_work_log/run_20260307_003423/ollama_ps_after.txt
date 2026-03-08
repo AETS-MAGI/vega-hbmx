@@ -1,0 +1,2 @@
+NAME                ID              SIZE      PROCESSOR    CONTEXT    UNTIL              
+tinyllama:latest    2644915ede35    800 MB    100% GPU     2048       4 minutes from now    
