@@ -225,7 +225,7 @@ if(CMAKE_HIP_COMPILER)
         <tr><td>run_20260308_201641 (Vulkan)</td><td>1/2/-1</td><td class="red"><strong>error</strong></td><td>2.70 / 7.64 / 9.81</td><td>—</td><td>—</td></tr>
         <tr><td>run_20260308_201924 (Vulkan)</td><td>0 × 5 epochs</td><td class="green"><strong>5/5 ok</strong></td><td>50.03 / 42.46 / 43.18 / 42.67 / 43.07</td><td>512 each</td><td>no crash</td></tr>
       </table>
-      <p class="dim" style="font-size:17px; margin-top:8px;">Data source: vega_work_log/*/result.json</p>
+      <p class="dim" style="font-size:17px; margin-top:8px;">Data source: vega_work_log/*/result.json | 16 matched-record rows extracted from the full log set.</p>
       <div class="takeaway">Raw numbers now include one matched rerun and a 5-epoch Vulkan num_gpu=0 stability check. Error elapsed time reflects time-to-crash, not inference time.</div>
     </div>
 
@@ -278,8 +278,8 @@ github.com/ollama/ollama/runner/ollamarunner.(*Server).run.gowrap1()
         <tr><td><strong>Token-count control</strong></td><td>run_20260308_212254, Vulkan, qwen3.5:2b, <code>NUM_PREDICT=128</code>, <code>NUM_GPU=1</code></td><td><span class="red"><strong>error</strong></span> at 2.858s (vs mean 2.653s at <code>NUM_PREDICT=512</code>)</td><td class="blue"><strong>Crash timing is largely independent of requested output length.</strong></td></tr>
         <tr><td><strong>Timing statistics</strong></td><td>3 qwen3.5:2b Vulkan runs, <code>num_gpu&gt;=1</code></td><td><code>num_gpu=1</code>: 2.653s ±0.059s; <code>2</code>: 7.630s ±0.014s; <code>-1</code>: 9.819s ±0.016s</td><td class="blue"><strong>Failure timing is highly deterministic, not obviously a random race.</strong></td></tr>
       </table>
-      <p class="dim" style="font-size:16px; margin-top:8px;">Source: run_20260308_212345, run_20260308_212254, and analysis_summary.md derived from vega_work_log/.</p>
-      <div class="takeaway">Refined claim: qwen3.5:2b Q8_0 reproducibly crashes on Vulkan offload in this setup, but phi4-mini does not. The failure is backend-sensitive and model-dependent.</div>
+      <p class="dim" style="font-size:16px; margin-top:8px;">Source: run_20260308_212345, run_20260308_212254, and analysis_summary.md derived from 15 runs / 119 records in vega_work_log/.</p>
+      <div class="takeaway">Refined claim: qwen3.5:2b Q8_0 reproducibly crashes on Vulkan offload in this setup, but phi4-mini does not, and the crash timing is largely token-count independent. The failure is backend-sensitive and model-dependent.</div>
     </div>
 
     <!-- 15: Vulkan AMD_GCN -->
@@ -332,7 +332,7 @@ github.com/ollama/ollama/runner/ollamarunner.(*Server).run.gowrap1()
         <tr><td class="orange"><strong>2. Conditional executability</strong></td><td>In this environment, with HSA_OVERRIDE_GFX_VERSION=9.0.0 and pre-existing artifacts, ROCm/HIP ran successfully across all tested num_gpu values on two matched-run days.</td></tr>
         <tr><td class="blue"><strong>3. Backend-dependent stability</strong></td><td>Under matched qwen3.5:2b conditions across two days, Vulkan SIGSEGV'd for num_gpu&gt;=1 while ROCm/HIP did not; Vulkan remained stable at num_gpu=0, including a 5-epoch run. A phi4-mini follow-up completed at num_gpu=1, indicating model dependence.</td></tr>
       </table>
-      <div class="takeaway">The three tiers are independent claims. Tier 2 does not contradict Tier 1; Tier 3 is now supported by two matched qwen runs, a 5-epoch Vulkan num_gpu=0 control, and a phi4-mini counterexample to any universal-crash claim.</div>
+      <div class="takeaway">The three tiers are independent claims. Tier 2 does not contradict Tier 1; Tier 3 is now supported by two matched qwen runs, a 5-epoch Vulkan num_gpu=0 control, a phi4-mini counterexample, and deterministic crash-timing statistics.</div>
     </div>
 
     <!-- 18: Reproducibility Package -->
@@ -343,12 +343,13 @@ github.com/ollama/ollama/runner/ollamarunner.(*Server).run.gowrap1()
         <tr><td>Primary metrics</td><td>vega_work_log/run_*/result.json</td><td>Status, latency, error_type per num_gpu case</td></tr>
         <tr><td>Crash phase logs</td><td>vega_work_log/run_*/ollama_journal_since_start.txt</td><td>Full stack trace and EOF timing</td></tr>
         <tr><td>Backend identity</td><td>vega_work_log/run_*/backend_probe.txt</td><td>Confirms ROCm vs Vulkan service path, device recognition</td></tr>
+        <tr><td>Aggregate analysis</td><td>analyze_runs.py + analysis_summary.md</td><td>Full-log aggregation over 15 runs / 119 records; crash timing statistics and pivots</td></tr>
         <tr><td>Code semantics trace</td><td>work_log/investigations/2026-03-07_numgpu_semantics_trace.md</td><td>Line-level evidence for num_gpu semantics</td></tr>
         <tr><td>Gate analysis</td><td>work_log/investigations/2026-03-07_gfx900_gate_matrix.md</td><td>Layered block/allow model for gfx900</td></tr>
       </table>
       <p style="font-size:17px; margin-top:10px;"><strong>Replay command:</strong> <code>OLLAMA_HOST=http://127.0.0.1:11435|11434 EPOCHS=1 NUM_PREDICT=512 NUM_GPU=0,1,2,-1 python vega-loop_qwen_rocm.py</code></p>
       <p style="font-size:16px; margin-top:6px;"><strong>Stability check:</strong> <code>OLLAMA_HOST=http://127.0.0.1:11434 EPOCHS=5 NUM_GPU=0 NUM_PREDICT=512 python vega-loop_qwen.py</code></p>
-      <div class="takeaway">Every claim in this deck is linked to a run_id + file path. The matched rerun, the Vulkan num_gpu=0 control, and the targeted phi4-mini / NUM_PREDICT follow-ups can all be replayed from the current scripts.</div>
+      <div class="takeaway">Every claim in this deck is linked to a run_id + file path. The matched rerun, the Vulkan num_gpu=0 control, the targeted phi4-mini / NUM_PREDICT follow-ups, and the aggregate analysis are all reproducible from the current files.</div>
     </div>
 
     <!-- 19: Limitations -->
@@ -360,7 +361,7 @@ github.com/ollama/ollama/runner/ollamarunner.(*Server).run.gowrap1()
       <ul style="font-size:20px;">
         <li>Matched comparison is still centered on qwen3.5:2b. However, the one-epoch matched run was reproduced on two days, Vulkan num_gpu=0 was additionally stable for 5 epochs, and phi4-mini did not reproduce the num_gpu=1 crash.</li>
         <li>Ollama versions differ between endpoints (0.17.4 Vulkan vs 0.17.5/0.17.6 ROCm) — a potential confound remains.</li>
-        <li>ROCm result depends on <code>HSA_OVERRIDE_GFX_VERSION=9.0.0</code>; outcome without the override is not tested here.</li>
+        <li>ROCm result depends on <code>HSA_OVERRIDE_GFX_VERSION=9.0.0</code>; outcome without the override is not tested here, and the override-off check was deferred because it requires service restart and recovery handling.</li>
         <li>Root cause within <code>ggml_backend_sched_graph_compute_async</code> (C/Vulkan side) is not resolved from the Go stack trace alone.</li>
         <li>The new phi4-mini result indicates that gfx900 Vulkan stability is model- or workload-dependent; the exact trigger in qwen3.5:2b Q8_0 remains unresolved.</li>
       </ul>
@@ -387,7 +388,7 @@ github.com/ollama/ollama/runner/ollamarunner.(*Server).run.gowrap1()
           <p style="font-size: 17px;">For qwen3.5:2b across two matched runs, Vulkan SIGSEGV'd for num_gpu&gt;=1 while ROCm/HIP did not; Vulkan stayed stable at num_gpu=0 for 5/5 epochs. A phi4-mini follow-up passed at num_gpu=1, so the failure is not universal to gfx900 Vulkan.</p>
         </div>
       </div>
-      <p class="dim" style="text-align: center; font-style: italic; margin-top: 18px; font-size: 20px;">Based on the collected evidence: "not officially supported" and "not executable in any configuration" are distinct statements. | The qwen3.5 ROCm/Vulkan difference reproduced across two days, but phi4-mini shows the Vulkan offload failure is model-specific rather than universal.</p>
+      <p class="dim" style="text-align: center; font-style: italic; margin-top: 18px; font-size: 20px;">Based on the collected evidence: "not officially supported" and "not executable in any configuration" are distinct statements. | The qwen3.5 ROCm/Vulkan difference reproduced across two days with deterministic crash timing, but phi4-mini shows the Vulkan offload failure is model-specific rather than universal.</p>
     </div>
 
     <div class="footer">Slide <span id="current">1</span> / <span id="total">?</span> (Use Arrow Keys ← → to navigate)</div>
