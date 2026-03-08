@@ -68,13 +68,37 @@
       <table>
         <tr><th class="bg-blue">Layer</th><th class="bg-blue">Current handling of gfx900</th><th class="bg-blue">Blocks / Allows</th></tr>
         <tr><td><strong>Official matrix (ROCm 7.2)</strong></td><td>gfx900 not listed in GPU target list</td><td class="red"><strong>Blocks (official scope)</strong></td></tr>
-        <tr><td><strong>CMake filter (ollama)</strong></td><td>Default regex does not include gfx900; manual override is possible via AMDGPU_TARGETS</td><td class="orange"><strong>Blocks default / Allows manual</strong></td></tr>
+        <tr><td><strong>CMake filter (ollama)</strong></td><td>CMakeLists.txt:127 default regex <code>^gfx(94[012]|101[02]|1030|110[012]|120[01])$</code> — gfx900 excluded; manual <code>AMDGPU_TARGETS=gfx900</code> override is possible</td><td class="orange"><strong>Blocks default / Allows manual</strong></td></tr>
         <tr><td><strong>rocBLAS artifacts</strong></td><td>Kernels.so-000-gfx900.hsaco found in /usr/lib/ollama/rocblas/library/</td><td class="green"><strong>Allows</strong></td></tr>
-        <tr><td><strong>Runner init validation</strong></td><td>GGML_CUDA_INIT=1: gfx900 recognized as valid agent</td><td class="green"><strong>Allows</strong></td></tr>
-        <tr><td><strong>Source macros</strong></td><td>__gfx900__ -&gt; GCN5 retained; dp4a path exists</td><td class="green"><strong>Allows</strong></td></tr>
+        <tr><td><strong>Runner init validation</strong></td><td>GGML_CUDA_INIT=1: gfx900 recognized as valid agent; journal: "Device 0: AMD Radeon RX Vega, gfx900:xnack- (0x900), VMM: no, Wave Size: 64"</td><td class="green"><strong>Allows</strong></td></tr>
+        <tr><td><strong>Source macros</strong></td><td>common.cuh:65 <code>GGML_CUDA_CC_VEGA=0x1000900</code>; __gfx900__ dp4a path exists (software emulation via inline asm)</td><td class="green"><strong>Allows</strong></td></tr>
         <tr><td><strong>Runtime execution</strong></td><td>In the matched runs, ROCm/HIP: all tested num_gpu values OK. Vulkan: SIGSEGV when num_gpu &gt;= 1</td><td class="orange"><strong>Backend-dependent (tested scope)</strong></td></tr>
       </table>
-      <p class="dim" style="font-size:18px; margin-top:12px;">Source: work_log/investigations/2026-03-07_gfx900_gate_matrix.md</p>
+      <p class="dim" style="font-size:17px; margin-top:10px;">Source: work_log/investigations/2026-03-07_gfx900_gate_matrix.md | ollama/CMakeLists.txt:127 | ggml-cuda/common.cuh:65</p>
+    </div>
+
+    <div class="slide">
+      <div class="slide-title"><div class="slide-num bg-blue">3a</div><h2 class="slide-title-text blue">CMake Default Filter: Exact Source Evidence</h2></div>
+      <p style="font-size:18px; margin-bottom:8px;"><strong>Source:</strong> <code>ollama/CMakeLists.txt:121-128</code></p>
+      <pre style="background:#1a1a2e; color:#e0e0e0; padding:16px; border-radius:8px; font-size:15px; line-height:1.6; overflow:auto;">check_language(HIP)
+if(CMAKE_HIP_COMPILER)
+    if(NOT AMDGPU_TARGETS)
+        find_package(hip REQUIRED)
+        list(FILTER AMDGPU_TARGETS INCLUDE REGEX
+            "^gfx(94[012]|101[02]|1030|110[012]|120[01])$")
+    endif()
+    if(AMDGPU_TARGETS)
+        add_subdirectory(.../ggml-hip)</pre>
+      <table style="margin-top:12px;">
+        <tr><th class="bg-blue">Regex group</th><th class="bg-blue">Targets included</th><th class="bg-blue">Architecture</th></tr>
+        <tr><td><code>94[012]</code></td><td>gfx940, gfx941, gfx942</td><td>CDNA3 (MI300)</td></tr>
+        <tr><td><code>101[02]</code></td><td>gfx1010, gfx1012</td><td>RDNA1 (RX 5000)</td></tr>
+        <tr><td><code>1030</code></td><td>gfx1030</td><td>RDNA2 (RX 6000)</td></tr>
+        <tr><td><code>110[012]</code></td><td>gfx1100, gfx1101, gfx1102</td><td>RDNA3 (RX 7000)</td></tr>
+        <tr><td><code>120[01]</code></td><td>gfx1200, gfx1201</td><td>RDNA4 (RX 9000)</td></tr>
+        <tr><td class="red"><strong>(absent)</strong></td><td class="red"><strong>gfx900 — NOT included</strong></td><td class="red"><strong>GCN5 / Vega56/64</strong></td></tr>
+      </table>
+      <p class="dim" style="font-size:16px; margin-top:8px;">gfx900 build requires explicit <code>AMDGPU_TARGETS=gfx900</code> override. The installed /usr/lib/ollama/libggml-hip.so was built with this override or pre-compiled artifacts.</p>
     </div>
 
     <div class="slide">
