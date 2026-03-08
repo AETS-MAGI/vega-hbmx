@@ -1,0 +1,59 @@
+The Linux Kernel is a powerful piece of software that manages resources in an operating system to provide services for computer programs.
+
+**Scheduler:**
+
+The primary function of the Scheduler within the context of Linux's kernel design includes managing CPU time allocation amongst competing processes by utilizing several scheduling policies:
+
+- **Completely Fair Scheduler (CFS):** A modern scheduler introduced with 2.6 kernels that prioritizes tasks based on their workload and fairness.
+  
+- **Traditional Scheduling:** Prior to CFS, round-robin or static priority-based systems were common.
+
+The Linux kernel also employs a multi-level queue system for process scheduling:
+
+1. Real-time processes (`rt`)
+2. System threads
+3. Kernel threads (daemon)
+4. Regular user processes
+
+**Memory Management:**
+
+Linux manages memory through several mechanisms and strategies, including but not limited to Virtual Memory Allocation using page tables with features such as Address Space Layout Randomization (ASLR) for security purposes.
+
+Key components include:
+
+- **Page Tables:** Mapping of virtual addresses to physical ones.
+  
+- **Swapping/Self-maintaining Swaps (Swap):** Moving less-used pages from RAM onto a storage device when memory is scarce. Self-maintenance refers to the kernel's ability to manage its own swap space optimally.
+
+- **NUMA Awareness:** Modern systems often use Non-uniform Memory Access architectures that require special handling in Linux for optimal performance across different cores and nodes of processors.
+
+
+**Virtual File System (VFS):**
+
+The VFS is a layer within the Linux Kernel responsible for abstracting file system operations. It provides interfaces to access files, directories, etc., regardless of their actual location or underlying format.
+
+Key components are:
+
+- **Superblock:** Holds metadata about every block device like partitions and disk volumes.
+  
+- **Inode Tables**: Stores information that describes each individual file in the filesystem.
+
+
+**Interrupt Handling (IRQs):**
+
+Linux handles interrupts using its Interrupt Handlers, allowing it to respond quickly when hardware or software signals an event. The kernel uses a combination of polled I/O as well as interrupt-driven mechanisms.
+
+Key components include:
+
+- **Hardware Abstraction Layer:** It allows generic handling across different device drivers.
+  
+- **Device Drivers**: Software modules that manage the interaction between Linux and various devices.
+
+
+**Device Drivers (Driver Model):**
+
+Linux supports an enormous variety of hardware by using a modular architecture for its Device Driver model.
+
+Key components include:
+
+- **Character Devices, Block Devices:** Handle input/output data streams. Character device drivers work on single

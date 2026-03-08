@@ -1,0 +1,476 @@
+ 3月 08 21:23:45 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 21:23:45 | 200 |      23.705µs |       127.0.0.1 | HEAD     "/"
+ 3月 08 21:23:45 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 21:23:45 | 200 |      42.482µs |       127.0.0.1 | GET      "/api/ps"
+ 3月 08 21:23:45 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 21:23:45 | 200 |      48.883µs |       127.0.0.1 | GET      "/api/version"
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 21:23:46 | 200 |      28.304µs |       127.0.0.1 | HEAD     "/"
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 21:23:46 | 200 |      47.981µs |       127.0.0.1 | GET      "/api/ps"
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 21:23:46 | 200 |      38.744µs |       127.0.0.1 | HEAD     "/"
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 21:23:46 | 200 |       57.53µs |       127.0.0.1 | GET      "/api/ps"
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: loaded meta data with 36 key-value pairs and 196 tensors from /home/limonene/.ollama/models/blobs/sha256-3c168af1dea0a414299c7d9077e100ac763370e5a98b3c53801a958a47f0a5db (version GGUF V3 (latest))
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   0:                       general.architecture str              = phi3
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   1:              phi3.rope.scaling.attn_factor f32              = 1.190238
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   2:                               general.type str              = model
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   3:                               general.name str              = Phi 4 Mini Instruct
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   4:                           general.finetune str              = instruct
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   5:                           general.basename str              = Phi-4
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   6:                         general.size_label str              = mini
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   7:                            general.license str              = mit
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   8:                       general.license.link str              = https://huggingface.co/microsoft/Phi-...
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   9:                               general.tags arr[str,3]       = ["nlp", "code", "text-generation"]
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  10:                          general.languages arr[str,24]      = ["multilingual", "ar", "zh", "cs", "d...
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  11:                        phi3.context_length u32              = 131072
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  12:  phi3.rope.scaling.original_context_length u32              = 4096
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  13:                      phi3.embedding_length u32              = 3072
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  14:                   phi3.feed_forward_length u32              = 8192
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  15:                           phi3.block_count u32              = 32
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  16:                  phi3.attention.head_count u32              = 24
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  17:               phi3.attention.head_count_kv u32              = 8
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  18:      phi3.attention.layer_norm_rms_epsilon f32              = 0.000010
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  19:                  phi3.rope.dimension_count u32              = 96
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  20:                        phi3.rope.freq_base f32              = 10000.000000
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  21:              phi3.attention.sliding_window u32              = 262144
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  22:                       tokenizer.ggml.model str              = gpt2
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  23:                         tokenizer.ggml.pre str              = gpt-4o
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  24:                      tokenizer.ggml.tokens arr[str,200064]  = ["!", "\"", "#", "$", "%", "&", "'", ...
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  25:                  tokenizer.ggml.token_type arr[i32,200064]  = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  26:                      tokenizer.ggml.merges arr[str,199742]  = ["Ġ Ġ", "ĠĠ ĠĠ", "i n", "e r", ...
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  27:                tokenizer.ggml.bos_token_id u32              = 199999
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  28:                tokenizer.ggml.eos_token_id u32              = 199999
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  29:            tokenizer.ggml.unknown_token_id u32              = 199999
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  30:            tokenizer.ggml.padding_token_id u32              = 199999
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  31:               tokenizer.ggml.add_bos_token bool             = false
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  32:               tokenizer.ggml.add_eos_token bool             = false
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  33:                    tokenizer.chat_template str              = {% for message in messages %}{% if me...
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  34:               general.quantization_version u32              = 2
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  35:                          general.file_type u32              = 15
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - type  f32:   67 tensors
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - type q4_K:   80 tensors
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - type q5_K:   32 tensors
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - type q6_K:   17 tensors
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: print_info: file format = GGUF V3 (latest)
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: print_info: file type   = Q4_K - Medium
+ 3月 08 21:23:46 abyss-hbmx ollama-vega-vulkan[1416]: print_info: file size   = 2.31 GiB (5.18 BPW)
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: load: printing all EOG tokens:
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: load:   - 199999 ('<|endoftext|>')
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: load:   - 200020 ('<|end|>')
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: load: special tokens cache size = 12
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: load: token to piece cache size = 1.3333 MB
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: arch             = phi3
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: vocab_only       = 1
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: no_alloc         = 0
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: model type       = ?B
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: model params     = 3.84 B
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: general.name     = Phi 4 Mini Instruct
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: vocab type       = BPE
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_vocab          = 200064
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_merges         = 199742
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: BOS token        = 199999 '<|endoftext|>'
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: EOS token        = 199999 '<|endoftext|>'
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: EOT token        = 199999 '<|endoftext|>'
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: UNK token        = 199999 '<|endoftext|>'
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: PAD token        = 199999 '<|endoftext|>'
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: LF token         = 198 'Ċ'
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: EOG token        = 199999 '<|endoftext|>'
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: EOG token        = 200020 '<|end|>'
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: max token length = 256
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_load: vocab only - skipping tensors
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:23:47.121+09:00 level=INFO source=server.go:431 msg="starting runner" cmd="/usr/local/bin/ollama runner --model /home/limonene/.ollama/models/blobs/sha256-3c168af1dea0a414299c7d9077e100ac763370e5a98b3c53801a958a47f0a5db --port 40103"
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:23:47.122+09:00 level=INFO source=sched.go:491 msg="system memory" total="62.7 GiB" free="58.1 GiB" free_swap="8.8 GiB"
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:23:47.122+09:00 level=INFO source=server.go:498 msg="loading model" "model layers"=33 requested=0
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:23:47.122+09:00 level=INFO source=device.go:245 msg="model weights" device=CPU size="2.3 GiB"
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:23:47.122+09:00 level=INFO source=device.go:256 msg="kv cache" device=CPU size="512.0 MiB"
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:23:47.122+09:00 level=INFO source=device.go:272 msg="total memory" size="2.8 GiB"
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:23:47.141+09:00 level=INFO source=runner.go:965 msg="starting go runner"
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: load_backend: loaded CPU backend from /usr/local/lib/ollama/libggml-cpu-haswell.so
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:23:47.148+09:00 level=INFO source=ggml.go:104 msg=system CPU.0.SSE3=1 CPU.0.SSSE3=1 CPU.0.AVX=1 CPU.0.AVX2=1 CPU.0.F16C=1 CPU.0.FMA=1 CPU.0.BMI2=1 CPU.0.LLAMAFILE=1 CPU.1.LLAMAFILE=1 compiler=cgo(gcc)
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:23:47.149+09:00 level=INFO source=runner.go:1001 msg="Server listening on 127.0.0.1:40103"
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:23:47.156+09:00 level=INFO source=runner.go:895 msg=load request="{Operation:commit LoraPath:[] Parallel:1 BatchSize:512 FlashAttention:Auto KvSize:4096 KvCacheType: NumThreads:16 GPULayers:[] MultiUserCache:false ProjectorPath: MainGPU:0 UseMmap:false}"
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:23:47.156+09:00 level=INFO source=server.go:1350 msg="waiting for llama runner to start responding"
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:23:47.156+09:00 level=INFO source=server.go:1384 msg="waiting for server to become available" status="llm server loading model"
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: loaded meta data with 36 key-value pairs and 196 tensors from /home/limonene/.ollama/models/blobs/sha256-3c168af1dea0a414299c7d9077e100ac763370e5a98b3c53801a958a47f0a5db (version GGUF V3 (latest))
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   0:                       general.architecture str              = phi3
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   1:              phi3.rope.scaling.attn_factor f32              = 1.190238
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   2:                               general.type str              = model
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   3:                               general.name str              = Phi 4 Mini Instruct
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   4:                           general.finetune str              = instruct
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   5:                           general.basename str              = Phi-4
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   6:                         general.size_label str              = mini
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   7:                            general.license str              = mit
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   8:                       general.license.link str              = https://huggingface.co/microsoft/Phi-...
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   9:                               general.tags arr[str,3]       = ["nlp", "code", "text-generation"]
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  10:                          general.languages arr[str,24]      = ["multilingual", "ar", "zh", "cs", "d...
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  11:                        phi3.context_length u32              = 131072
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  12:  phi3.rope.scaling.original_context_length u32              = 4096
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  13:                      phi3.embedding_length u32              = 3072
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  14:                   phi3.feed_forward_length u32              = 8192
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  15:                           phi3.block_count u32              = 32
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  16:                  phi3.attention.head_count u32              = 24
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  17:               phi3.attention.head_count_kv u32              = 8
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  18:      phi3.attention.layer_norm_rms_epsilon f32              = 0.000010
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  19:                  phi3.rope.dimension_count u32              = 96
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  20:                        phi3.rope.freq_base f32              = 10000.000000
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  21:              phi3.attention.sliding_window u32              = 262144
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  22:                       tokenizer.ggml.model str              = gpt2
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  23:                         tokenizer.ggml.pre str              = gpt-4o
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  24:                      tokenizer.ggml.tokens arr[str,200064]  = ["!", "\"", "#", "$", "%", "&", "'", ...
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  25:                  tokenizer.ggml.token_type arr[i32,200064]  = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  26:                      tokenizer.ggml.merges arr[str,199742]  = ["Ġ Ġ", "ĠĠ ĠĠ", "i n", "e r", ...
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  27:                tokenizer.ggml.bos_token_id u32              = 199999
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  28:                tokenizer.ggml.eos_token_id u32              = 199999
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  29:            tokenizer.ggml.unknown_token_id u32              = 199999
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  30:            tokenizer.ggml.padding_token_id u32              = 199999
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  31:               tokenizer.ggml.add_bos_token bool             = false
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  32:               tokenizer.ggml.add_eos_token bool             = false
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  33:                    tokenizer.chat_template str              = {% for message in messages %}{% if me...
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  34:               general.quantization_version u32              = 2
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  35:                          general.file_type u32              = 15
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - type  f32:   67 tensors
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - type q4_K:   80 tensors
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - type q5_K:   32 tensors
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - type q6_K:   17 tensors
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: file format = GGUF V3 (latest)
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: file type   = Q4_K - Medium
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: file size   = 2.31 GiB (5.18 BPW)
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: load_hparams: Phi SWA is currently disabled - results might be suboptimal for some models (see https://github.com/ggml-org/llama.cpp/pull/13676)
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: load: printing all EOG tokens:
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: load:   - 199999 ('<|endoftext|>')
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: load:   - 200020 ('<|end|>')
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: load: special tokens cache size = 12
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: load: token to piece cache size = 1.3333 MB
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: arch             = phi3
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: vocab_only       = 0
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: no_alloc         = 0
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_ctx_train      = 131072
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_embd           = 3072
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_embd_inp       = 3072
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_layer          = 32
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_head           = 24
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_head_kv        = 8
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_rot            = 96
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_swa            = 0
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: is_swa_any       = 0
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_embd_head_k    = 128
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_embd_head_v    = 128
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_gqa            = 3
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_embd_k_gqa     = 1024
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_embd_v_gqa     = 1024
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: f_norm_eps       = 0.0e+00
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: f_norm_rms_eps   = 1.0e-05
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: f_clamp_kqv      = 0.0e+00
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: f_max_alibi_bias = 0.0e+00
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: f_logit_scale    = 0.0e+00
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: f_attn_scale     = 0.0e+00
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_ff             = 8192
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_expert         = 0
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_expert_used    = 0
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_expert_groups  = 0
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_group_used     = 0
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: causal attn      = 1
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: pooling type     = 0
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: rope type        = 2
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: rope scaling     = linear
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: freq_base_train  = 10000.0
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: freq_scale_train = 1
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_ctx_orig_yarn  = 4096
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: rope_yarn_log_mul= 0.0000
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: rope_finetuned   = unknown
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: model type       = 3B
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: model params     = 3.84 B
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: general.name     = Phi 4 Mini Instruct
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: vocab type       = BPE
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_vocab          = 200064
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_merges         = 199742
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: BOS token        = 199999 '<|endoftext|>'
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: EOS token        = 199999 '<|endoftext|>'
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: EOT token        = 199999 '<|endoftext|>'
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: UNK token        = 199999 '<|endoftext|>'
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: PAD token        = 199999 '<|endoftext|>'
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: LF token         = 198 'Ċ'
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: EOG token        = 199999 '<|endoftext|>'
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: EOG token        = 200020 '<|end|>'
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: print_info: max token length = 256
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: load_tensors: loading model tensors, this can take a while... (mmap = false)
+ 3月 08 21:23:47 abyss-hbmx ollama-vega-vulkan[1416]: load_tensors:          CPU model buffer size =  2368.57 MiB
+ 3月 08 21:23:48 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: constructing llama_context
+ 3月 08 21:23:48 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: n_seq_max     = 1
+ 3月 08 21:23:48 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: n_ctx         = 4096
+ 3月 08 21:23:48 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: n_ctx_seq     = 4096
+ 3月 08 21:23:48 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: n_batch       = 512
+ 3月 08 21:23:48 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: n_ubatch      = 512
+ 3月 08 21:23:48 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: causal_attn   = 1
+ 3月 08 21:23:48 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: flash_attn    = auto
+ 3月 08 21:23:48 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: kv_unified    = false
+ 3月 08 21:23:48 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: freq_base     = 10000.0
+ 3月 08 21:23:48 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: freq_scale    = 1
+ 3月 08 21:23:48 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: n_ctx_seq (4096) < n_ctx_train (131072) -- the full capacity of the model will not be utilized
+ 3月 08 21:23:48 abyss-hbmx ollama-vega-vulkan[1416]: llama_context:        CPU  output buffer size =     0.77 MiB
+ 3月 08 21:23:48 abyss-hbmx ollama-vega-vulkan[1416]: llama_kv_cache:        CPU KV buffer size =   512.00 MiB
+ 3月 08 21:23:48 abyss-hbmx ollama-vega-vulkan[1416]: llama_kv_cache: size =  512.00 MiB (  4096 cells,  32 layers,  1/1 seqs), K (f16):  256.00 MiB, V (f16):  256.00 MiB
+ 3月 08 21:23:48 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: Flash Attention was auto, set to enabled
+ 3月 08 21:23:48 abyss-hbmx ollama-vega-vulkan[1416]: llama_context:        CPU compute buffer size =   396.75 MiB
+ 3月 08 21:23:48 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: graph nodes  = 935
+ 3月 08 21:23:48 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: graph splits = 1
+ 3月 08 21:23:48 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:23:48.411+09:00 level=INFO source=server.go:1388 msg="llama runner started in 1.29 seconds"
+ 3月 08 21:23:48 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:23:48.411+09:00 level=INFO source=sched.go:566 msg="loaded runners" count=2
+ 3月 08 21:23:48 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:23:48.411+09:00 level=INFO source=server.go:1350 msg="waiting for llama runner to start responding"
+ 3月 08 21:23:48 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:23:48.412+09:00 level=INFO source=server.go:1388 msg="llama runner started in 1.29 seconds"
+ 3月 08 21:24:05 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 21:24:05 | 200 | 18.821031506s |       127.0.0.1 | POST     "/api/generate"
+ 3月 08 21:24:05 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 21:24:05 | 200 |      25.308µs |       127.0.0.1 | HEAD     "/"
+ 3月 08 21:24:05 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 21:24:05 | 200 |      32.452µs |       127.0.0.1 | GET      "/api/ps"
+ 3月 08 21:24:05 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 21:24:05 | 200 |      33.534µs |       127.0.0.1 | HEAD     "/"
+ 3月 08 21:24:05 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 21:24:05 | 200 |      41.088µs |       127.0.0.1 | GET      "/api/ps"
+ 3月 08 21:24:05 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:24:05.899+09:00 level=INFO source=server.go:431 msg="starting runner" cmd="/usr/local/bin/ollama runner --ollama-engine --port 44099"
+ 3月 08 21:24:05 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:24:05.987+09:00 level=INFO source=sched.go:689 msg="updated VRAM based on existing loaded models" gpu=00000000-4400-0000-0000-000000000000 library=Vulkan total="8.0 GiB" available="7.5 GiB"
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: loaded meta data with 36 key-value pairs and 196 tensors from /home/limonene/.ollama/models/blobs/sha256-3c168af1dea0a414299c7d9077e100ac763370e5a98b3c53801a958a47f0a5db (version GGUF V3 (latest))
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   0:                       general.architecture str              = phi3
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   1:              phi3.rope.scaling.attn_factor f32              = 1.190238
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   2:                               general.type str              = model
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   3:                               general.name str              = Phi 4 Mini Instruct
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   4:                           general.finetune str              = instruct
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   5:                           general.basename str              = Phi-4
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   6:                         general.size_label str              = mini
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   7:                            general.license str              = mit
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   8:                       general.license.link str              = https://huggingface.co/microsoft/Phi-...
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   9:                               general.tags arr[str,3]       = ["nlp", "code", "text-generation"]
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  10:                          general.languages arr[str,24]      = ["multilingual", "ar", "zh", "cs", "d...
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  11:                        phi3.context_length u32              = 131072
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  12:  phi3.rope.scaling.original_context_length u32              = 4096
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  13:                      phi3.embedding_length u32              = 3072
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  14:                   phi3.feed_forward_length u32              = 8192
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  15:                           phi3.block_count u32              = 32
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  16:                  phi3.attention.head_count u32              = 24
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  17:               phi3.attention.head_count_kv u32              = 8
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  18:      phi3.attention.layer_norm_rms_epsilon f32              = 0.000010
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  19:                  phi3.rope.dimension_count u32              = 96
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  20:                        phi3.rope.freq_base f32              = 10000.000000
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  21:              phi3.attention.sliding_window u32              = 262144
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  22:                       tokenizer.ggml.model str              = gpt2
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  23:                         tokenizer.ggml.pre str              = gpt-4o
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  24:                      tokenizer.ggml.tokens arr[str,200064]  = ["!", "\"", "#", "$", "%", "&", "'", ...
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  25:                  tokenizer.ggml.token_type arr[i32,200064]  = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  26:                      tokenizer.ggml.merges arr[str,199742]  = ["Ġ Ġ", "ĠĠ ĠĠ", "i n", "e r", ...
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  27:                tokenizer.ggml.bos_token_id u32              = 199999
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  28:                tokenizer.ggml.eos_token_id u32              = 199999
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  29:            tokenizer.ggml.unknown_token_id u32              = 199999
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  30:            tokenizer.ggml.padding_token_id u32              = 199999
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  31:               tokenizer.ggml.add_bos_token bool             = false
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  32:               tokenizer.ggml.add_eos_token bool             = false
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  33:                    tokenizer.chat_template str              = {% for message in messages %}{% if me...
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  34:               general.quantization_version u32              = 2
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  35:                          general.file_type u32              = 15
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - type  f32:   67 tensors
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - type q4_K:   80 tensors
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - type q5_K:   32 tensors
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - type q6_K:   17 tensors
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: file format = GGUF V3 (latest)
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: file type   = Q4_K - Medium
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: file size   = 2.31 GiB (5.18 BPW)
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: load: printing all EOG tokens:
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: load:   - 199999 ('<|endoftext|>')
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: load:   - 200020 ('<|end|>')
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: load: special tokens cache size = 12
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: load: token to piece cache size = 1.3333 MB
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: arch             = phi3
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: vocab_only       = 1
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: no_alloc         = 0
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: model type       = ?B
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: model params     = 3.84 B
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: general.name     = Phi 4 Mini Instruct
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: vocab type       = BPE
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_vocab          = 200064
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_merges         = 199742
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: BOS token        = 199999 '<|endoftext|>'
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: EOS token        = 199999 '<|endoftext|>'
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: EOT token        = 199999 '<|endoftext|>'
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: UNK token        = 199999 '<|endoftext|>'
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: PAD token        = 199999 '<|endoftext|>'
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: LF token         = 198 'Ċ'
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: EOG token        = 199999 '<|endoftext|>'
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: EOG token        = 200020 '<|end|>'
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: max token length = 256
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_load: vocab only - skipping tensors
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:24:06.433+09:00 level=INFO source=server.go:431 msg="starting runner" cmd="/usr/local/bin/ollama runner --model /home/limonene/.ollama/models/blobs/sha256-3c168af1dea0a414299c7d9077e100ac763370e5a98b3c53801a958a47f0a5db --port 40145"
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:24:06.433+09:00 level=INFO source=sched.go:491 msg="system memory" total="62.7 GiB" free="58.0 GiB" free_swap="8.8 GiB"
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:24:06.433+09:00 level=INFO source=sched.go:498 msg="gpu memory" id=00000000-4400-0000-0000-000000000000 library=Vulkan available="7.0 GiB" free="7.5 GiB" minimum="457.0 MiB" overhead="0 B"
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:24:06.433+09:00 level=INFO source=server.go:498 msg="loading model" "model layers"=33 requested=1
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:24:06.433+09:00 level=INFO source=device.go:240 msg="model weights" device=Vulkan0 size="62.1 MiB"
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:24:06.433+09:00 level=INFO source=device.go:245 msg="model weights" device=CPU size="2.3 GiB"
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:24:06.433+09:00 level=INFO source=device.go:251 msg="kv cache" device=Vulkan0 size="16.0 MiB"
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:24:06.433+09:00 level=INFO source=device.go:256 msg="kv cache" device=CPU size="496.0 MiB"
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:24:06.433+09:00 level=INFO source=device.go:262 msg="compute graph" device=Vulkan0 size="256.0 MiB"
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:24:06.433+09:00 level=INFO source=device.go:272 msg="total memory" size="3.1 GiB"
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:24:06.453+09:00 level=INFO source=runner.go:965 msg="starting go runner"
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: load_backend: loaded CPU backend from /usr/local/lib/ollama/libggml-cpu-haswell.so
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: ggml_vulkan: Found 1 Vulkan devices:
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: ggml_vulkan: 0 = AMD Radeon RX Vega (RADV VEGA10) (radv) | uma: 0 | fp16: 1 | bf16: 0 | warp size: 64 | shared memory: 65536 | int dot: 0 | matrix cores: none
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: load_backend: loaded Vulkan backend from /usr/local/lib/ollama/vulkan/libggml-vulkan.so
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:24:06.475+09:00 level=INFO source=ggml.go:104 msg=system CPU.0.SSE3=1 CPU.0.SSSE3=1 CPU.0.AVX=1 CPU.0.AVX2=1 CPU.0.F16C=1 CPU.0.FMA=1 CPU.0.BMI2=1 CPU.0.LLAMAFILE=1 CPU.1.LLAMAFILE=1 compiler=cgo(gcc)
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:24:06.475+09:00 level=INFO source=runner.go:1001 msg="Server listening on 127.0.0.1:40145"
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:24:06.478+09:00 level=INFO source=runner.go:895 msg=load request="{Operation:commit LoraPath:[] Parallel:1 BatchSize:512 FlashAttention:Auto KvSize:4096 KvCacheType: NumThreads:16 GPULayers:1[ID:00000000-4400-0000-0000-000000000000 Layers:1(31..31)] MultiUserCache:false ProjectorPath: MainGPU:0 UseMmap:false}"
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: ggml_backend_vk_get_device_memory called: uuid 00000000-4400-0000-0000-000000000000
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: ggml_backend_vk_get_device_memory called: luid 0x0000000000000000
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: ggml_hip_get_device_memory searching for device 0000:44:00.0
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: ggml_backend_vk_get_device_memory device 0000:44:00.0 utilizing AMD specific memory reporting free: 8000086016 total: 8573157376
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:24:06.478+09:00 level=INFO source=server.go:1350 msg="waiting for llama runner to start responding"
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:24:06.479+09:00 level=INFO source=server.go:1384 msg="waiting for server to become available" status="llm server loading model"
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: ggml_backend_vk_get_device_memory called: uuid 00000000-4400-0000-0000-000000000000
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: ggml_backend_vk_get_device_memory called: luid 0x0000000000000000
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: ggml_hip_get_device_memory searching for device 0000:44:00.0
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: ggml_backend_vk_get_device_memory device 0000:44:00.0 utilizing AMD specific memory reporting free: 8000086016 total: 8573157376
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: ggml_backend_vk_get_device_memory called: uuid 00000000-4400-0000-0000-000000000000
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: ggml_backend_vk_get_device_memory called: luid 0x0000000000000000
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: ggml_hip_get_device_memory searching for device 0000:44:00.0
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: ggml_backend_vk_get_device_memory device 0000:44:00.0 utilizing AMD specific memory reporting free: 8000086016 total: 8573157376
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_load_from_file_impl: using device Vulkan0 (AMD Radeon RX Vega (RADV VEGA10)) (0000:44:00.0) - 7629 MiB free
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: loaded meta data with 36 key-value pairs and 196 tensors from /home/limonene/.ollama/models/blobs/sha256-3c168af1dea0a414299c7d9077e100ac763370e5a98b3c53801a958a47f0a5db (version GGUF V3 (latest))
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   0:                       general.architecture str              = phi3
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   1:              phi3.rope.scaling.attn_factor f32              = 1.190238
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   2:                               general.type str              = model
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   3:                               general.name str              = Phi 4 Mini Instruct
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   4:                           general.finetune str              = instruct
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   5:                           general.basename str              = Phi-4
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   6:                         general.size_label str              = mini
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   7:                            general.license str              = mit
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   8:                       general.license.link str              = https://huggingface.co/microsoft/Phi-...
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv   9:                               general.tags arr[str,3]       = ["nlp", "code", "text-generation"]
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  10:                          general.languages arr[str,24]      = ["multilingual", "ar", "zh", "cs", "d...
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  11:                        phi3.context_length u32              = 131072
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  12:  phi3.rope.scaling.original_context_length u32              = 4096
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  13:                      phi3.embedding_length u32              = 3072
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  14:                   phi3.feed_forward_length u32              = 8192
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  15:                           phi3.block_count u32              = 32
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  16:                  phi3.attention.head_count u32              = 24
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  17:               phi3.attention.head_count_kv u32              = 8
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  18:      phi3.attention.layer_norm_rms_epsilon f32              = 0.000010
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  19:                  phi3.rope.dimension_count u32              = 96
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  20:                        phi3.rope.freq_base f32              = 10000.000000
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  21:              phi3.attention.sliding_window u32              = 262144
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  22:                       tokenizer.ggml.model str              = gpt2
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  23:                         tokenizer.ggml.pre str              = gpt-4o
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  24:                      tokenizer.ggml.tokens arr[str,200064]  = ["!", "\"", "#", "$", "%", "&", "'", ...
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  25:                  tokenizer.ggml.token_type arr[i32,200064]  = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  26:                      tokenizer.ggml.merges arr[str,199742]  = ["Ġ Ġ", "ĠĠ ĠĠ", "i n", "e r", ...
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  27:                tokenizer.ggml.bos_token_id u32              = 199999
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  28:                tokenizer.ggml.eos_token_id u32              = 199999
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  29:            tokenizer.ggml.unknown_token_id u32              = 199999
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  30:            tokenizer.ggml.padding_token_id u32              = 199999
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  31:               tokenizer.ggml.add_bos_token bool             = false
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  32:               tokenizer.ggml.add_eos_token bool             = false
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  33:                    tokenizer.chat_template str              = {% for message in messages %}{% if me...
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  34:               general.quantization_version u32              = 2
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - kv  35:                          general.file_type u32              = 15
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - type  f32:   67 tensors
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - type q4_K:   80 tensors
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - type q5_K:   32 tensors
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: llama_model_loader: - type q6_K:   17 tensors
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: file format = GGUF V3 (latest)
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: file type   = Q4_K - Medium
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: file size   = 2.31 GiB (5.18 BPW)
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: load_hparams: Phi SWA is currently disabled - results might be suboptimal for some models (see https://github.com/ggml-org/llama.cpp/pull/13676)
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: load: printing all EOG tokens:
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: load:   - 199999 ('<|endoftext|>')
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: load:   - 200020 ('<|end|>')
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: load: special tokens cache size = 12
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: load: token to piece cache size = 1.3333 MB
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: arch             = phi3
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: vocab_only       = 0
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: no_alloc         = 0
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_ctx_train      = 131072
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_embd           = 3072
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_embd_inp       = 3072
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_layer          = 32
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_head           = 24
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_head_kv        = 8
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_rot            = 96
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_swa            = 0
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: is_swa_any       = 0
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_embd_head_k    = 128
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_embd_head_v    = 128
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_gqa            = 3
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_embd_k_gqa     = 1024
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_embd_v_gqa     = 1024
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: f_norm_eps       = 0.0e+00
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: f_norm_rms_eps   = 1.0e-05
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: f_clamp_kqv      = 0.0e+00
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: f_max_alibi_bias = 0.0e+00
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: f_logit_scale    = 0.0e+00
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: f_attn_scale     = 0.0e+00
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_ff             = 8192
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_expert         = 0
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_expert_used    = 0
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_expert_groups  = 0
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_group_used     = 0
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: causal attn      = 1
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: pooling type     = 0
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: rope type        = 2
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: rope scaling     = linear
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: freq_base_train  = 10000.0
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: freq_scale_train = 1
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_ctx_orig_yarn  = 4096
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: rope_yarn_log_mul= 0.0000
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: rope_finetuned   = unknown
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: model type       = 3B
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: model params     = 3.84 B
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: general.name     = Phi 4 Mini Instruct
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: vocab type       = BPE
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_vocab          = 200064
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: n_merges         = 199742
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: BOS token        = 199999 '<|endoftext|>'
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: EOS token        = 199999 '<|endoftext|>'
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: EOT token        = 199999 '<|endoftext|>'
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: UNK token        = 199999 '<|endoftext|>'
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: PAD token        = 199999 '<|endoftext|>'
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: LF token         = 198 'Ċ'
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: EOG token        = 199999 '<|endoftext|>'
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: EOG token        = 200020 '<|end|>'
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: print_info: max token length = 256
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: load_tensors: loading model tensors, this can take a while... (mmap = false)
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: ggml_backend_vk_get_device_memory called: uuid 00000000-4400-0000-0000-000000000000
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: ggml_backend_vk_get_device_memory called: luid 0x0000000000000000
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: ggml_hip_get_device_memory searching for device 0000:44:00.0
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: ggml_backend_vk_get_device_memory device 0000:44:00.0 utilizing AMD specific memory reporting free: 8000069632 total: 8573157376
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: ggml_backend_vk_get_device_memory called: uuid 00000000-4400-0000-0000-000000000000
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: ggml_backend_vk_get_device_memory called: luid 0x0000000000000000
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: ggml_hip_get_device_memory searching for device 0000:44:00.0
+ 3月 08 21:24:06 abyss-hbmx ollama-vega-vulkan[1416]: ggml_backend_vk_get_device_memory device 0000:44:00.0 utilizing AMD specific memory reporting free: 7934959616 total: 8573157376
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: load_tensors: offloading 1 repeating layers to GPU
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: load_tensors: offloaded 1/33 layers to GPU
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: load_tensors:      Vulkan0 model buffer size =    62.09 MiB
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: load_tensors:  Vulkan_Host model buffer size =  2306.49 MiB
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: ggml_backend_vk_get_device_memory called: uuid 00000000-4400-0000-0000-000000000000
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: ggml_backend_vk_get_device_memory called: luid 0x0000000000000000
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: ggml_hip_get_device_memory searching for device 0000:44:00.0
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: ggml_backend_vk_get_device_memory device 0000:44:00.0 utilizing AMD specific memory reporting free: 7934939136 total: 8573157376
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: constructing llama_context
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: n_seq_max     = 1
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: n_ctx         = 4096
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: n_ctx_seq     = 4096
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: n_batch       = 512
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: n_ubatch      = 512
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: causal_attn   = 1
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: flash_attn    = auto
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: kv_unified    = false
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: freq_base     = 10000.0
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: freq_scale    = 1
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: n_ctx_seq (4096) < n_ctx_train (131072) -- the full capacity of the model will not be utilized
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: llama_context:        CPU  output buffer size =     0.77 MiB
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: llama_kv_cache:        CPU KV buffer size =   496.00 MiB
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: llama_kv_cache:    Vulkan0 KV buffer size =    16.00 MiB
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: llama_kv_cache: size =  512.00 MiB (  4096 cells,  32 layers,  1/1 seqs), K (f16):  256.00 MiB, V (f16):  256.00 MiB
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: Flash Attention was auto, set to enabled
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: llama_context:    Vulkan0 compute buffer size =   877.57 MiB
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: Vulkan_Host compute buffer size =    20.00 MiB
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: graph nodes  = 935
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: llama_context: graph splits = 284 (with bs=512), 3 (with bs=1)
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:24:07.985+09:00 level=INFO source=server.go:1388 msg="llama runner started in 1.55 seconds"
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:24:07.985+09:00 level=INFO source=sched.go:566 msg="loaded runners" count=2
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:24:07.985+09:00 level=INFO source=server.go:1350 msg="waiting for llama runner to start responding"
+ 3月 08 21:24:07 abyss-hbmx ollama-vega-vulkan[1416]: time=2026-03-08T21:24:07.985+09:00 level=INFO source=server.go:1388 msg="llama runner started in 1.55 seconds"
+ 3月 08 21:24:37 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 21:24:37 | 200 | 31.550971988s |       127.0.0.1 | POST     "/api/generate"
+ 3月 08 21:24:37 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 21:24:37 | 200 |      39.776µs |       127.0.0.1 | HEAD     "/"
+ 3月 08 21:24:37 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 21:24:37 | 200 |      41.048µs |       127.0.0.1 | GET      "/api/ps"
+ 3月 08 21:24:37 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 21:24:37 | 200 |      28.194µs |       127.0.0.1 | HEAD     "/"
+ 3月 08 21:24:37 abyss-hbmx ollama-vega-vulkan[1416]: [GIN] 2026/03/08 - 21:24:37 | 200 |        31.3µs |       127.0.0.1 | GET      "/api/ps"

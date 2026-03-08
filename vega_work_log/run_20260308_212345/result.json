@@ -32,12 +32,36 @@
       "prompt_eval_duration": 362340224,
       "response_chars": 1913,
       "response_file": "epoch_001.txt"
+    },
+    {
+      "epoch": 2,
+      "case_epoch": 1,
+      "started_at": "2026-03-08T21:24:05.380520",
+      "num_gpu": 1,
+      "rocm_smi_before_file": "rocm_smi_epoch_002_before.txt",
+      "rocm_smi_after_file": "rocm_smi_epoch_002_after.txt",
+      "ollama_ps_before_file": "ollama_ps_epoch_002_before.txt",
+      "ollama_ps_after_file": "ollama_ps_epoch_002_after.txt",
+      "status": "ok",
+      "elapsed_sec": 31.553,
+      "done": true,
+      "eval_count": 512,
+      "eval_duration": 27659078744,
+      "prompt_eval_count": 25,
+      "prompt_eval_duration": 571987660,
+      "response_chars": 2751,
+      "response_file": "epoch_002.txt"
     }
   ],
   "summary_by_num_gpu": {
     "0": {
       "ok": 1,
       "error": 0
+    },
+    "1": {
+      "ok": 1,
+      "error": 0
     }
-  }
+  },
+  "finished_at": "2026-03-08T21:24:37.299041"
 }
