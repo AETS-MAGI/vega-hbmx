@@ -157,7 +157,7 @@ if(CMAKE_HIP_COMPILER)
       <ul>
         <li>gfx900 is not listed in the ROCm 7.2 official support matrix, yet residual build/runtime paths remain in this environment — distinguishing policy from capability requires layered analysis.</li>
         <li><code>num_gpu</code> is often misread as device count, causing wrong failure attribution when num_gpu&gt;=2 is tested.</li>
-        <li>Under matched conditions in these runs, the same Vega hardware shows different outcomes across backends — hardware alone does not determine the result.</li>
+        <li>Under matched qwen3.5:2b conditions in these runs, the same Vega hardware shows different outcomes across backends — hardware alone does not determine the result.</li>
         <li>ROCm results in this setup depend on <code>HSA_OVERRIDE_GFX_VERSION=9.0.0</code>; this is an override-assisted configuration, not a standard deployment.</li>
         <li>Diagnosis requires layered evidence (source, logs, run artifacts), not single-run anecdotes.</li>
       </ul>
@@ -205,8 +205,8 @@ if(CMAKE_HIP_COMPILER)
         <tr><td><strong>-1</strong></td><td class="green"><strong>OK</strong> (44.265s)</td><td class="red"><strong>HTTP 500 + SIGSEGV</strong> (9.816s)</td></tr>
       </table>
       <p style="font-size:17px; margin-top:10px;"><strong>Matched rerun on 2026-03-08:</strong> ROCm run_20260308_201305 (0.17.6, override-assisted) again passed all tested values; Vulkan run_20260308_201641 again failed for num_gpu=1/2/-1 with nearly identical crash times (2.70 / 7.64 / 9.81s).</p>
-      <p style="font-size:17px; margin-top:6px;"><strong>Observation (in these runs):</strong> Vulkan failure is conditional on num_gpu &gt;= 1, not universal. ROCm/HIP passed all tested values under override-assisted configuration on both days.</p>
-      <div class="takeaway">The ROCm/HIP vs Vulkan difference is no longer a one-off matched run; the same pattern was reproduced on 2026-03-07 and 2026-03-08.</div>
+      <p style="font-size:17px; margin-top:6px;"><strong>Observation (in these matched qwen3.5:2b runs):</strong> Vulkan failure is conditional on num_gpu &gt;= 1, not universal. ROCm/HIP passed all tested values under override-assisted configuration on both days.</p>
+      <div class="takeaway">The ROCm/HIP vs Vulkan difference for qwen3.5:2b is no longer a one-off matched run; the same pattern was reproduced on 2026-03-07 and 2026-03-08.</div>
     </div>
 
     <!-- 11: Run-Level Data -->
@@ -269,9 +269,22 @@ github.com/ollama/ollama/runner/ollamarunner.(*Server).run.gowrap1()
       <div class="takeaway">Stack trace is factual. Root cause within ggml_backend_sched_graph_compute_async (C/Vulkan side) remains unresolved — this is a stated limitation.</div>
     </div>
 
-    <!-- 14: Vulkan AMD_GCN -->
+    <!-- 14: Targeted follow-up tests -->
     <div class="slide">
-      <div class="slide-title"><div class="slide-num bg-orange">14</div><h2 class="slide-title-text orange">Vulkan: gfx900 AMD_GCN Classification & Feature Impact</h2></div>
+      <div class="slide-title"><div class="slide-num bg-green">14</div><h2 class="slide-title-text green">Targeted Follow-Up Tests: Model Dependence & Crash Timing</h2></div>
+      <table>
+        <tr><th class="bg-green">Test</th><th class="bg-green">Run / Condition</th><th class="bg-green">Observed result</th><th class="bg-green">Interpretation</th></tr>
+        <tr><td><strong>Model swap</strong></td><td>run_20260308_212345, Vulkan, <code>MODEL=phi4-mini:latest</code>, <code>NUM_GPU=0,1</code></td><td><code>num_gpu=0</code>: ok (18.82s, 318 tok); <code>num_gpu=1</code>: <span class="green"><strong>ok</strong></span> (31.55s, 512 tok)</td><td class="blue"><strong>Offload crash is not universal on gfx900 Vulkan; it is model/workload-dependent.</strong></td></tr>
+        <tr><td><strong>Token-count control</strong></td><td>run_20260308_212254, Vulkan, qwen3.5:2b, <code>NUM_PREDICT=128</code>, <code>NUM_GPU=1</code></td><td><span class="red"><strong>error</strong></span> at 2.858s (vs mean 2.653s at <code>NUM_PREDICT=512</code>)</td><td class="blue"><strong>Crash timing is largely independent of requested output length.</strong></td></tr>
+        <tr><td><strong>Timing statistics</strong></td><td>3 qwen3.5:2b Vulkan runs, <code>num_gpu&gt;=1</code></td><td><code>num_gpu=1</code>: 2.653s ±0.059s; <code>2</code>: 7.630s ±0.014s; <code>-1</code>: 9.819s ±0.016s</td><td class="blue"><strong>Failure timing is highly deterministic, not obviously a random race.</strong></td></tr>
+      </table>
+      <p class="dim" style="font-size:16px; margin-top:8px;">Source: run_20260308_212345, run_20260308_212254, and analysis_summary.md derived from vega_work_log/.</p>
+      <div class="takeaway">Refined claim: qwen3.5:2b Q8_0 reproducibly crashes on Vulkan offload in this setup, but phi4-mini does not. The failure is backend-sensitive and model-dependent.</div>
+    </div>
+
+    <!-- 15: Vulkan AMD_GCN -->
+    <div class="slide">
+      <div class="slide-title"><div class="slide-num bg-orange">15</div><h2 class="slide-title-text orange">Vulkan: gfx900 AMD_GCN Classification & Feature Impact</h2></div>
       <table style="margin-bottom:10px;">
         <tr><th class="bg-orange">Code location</th><th class="bg-orange">Content</th><th class="bg-orange">Impact on gfx900</th></tr>
         <tr><td><code>ggml-vulkan.cpp:250-252</code></td><td><code>enum vk_device_architecture { OTHER, AMD_GCN, AMD_RDNA1, AMD_RDNA2, AMD_RDNA3 }</code></td><td>gfx900 → AMD_GCN branch</td></tr>
@@ -288,9 +301,9 @@ github.com/ollama/ollama/runner/ollamarunner.(*Server).run.gowrap1()
       <div class="takeaway">Vulkan correctly identifies gfx900 as AMD_GCN and applies GCN-specific code paths. Whether those paths are crash-safe for this GPU is what these runs expose.</div>
     </div>
 
-    <!-- 15: Deep Code Tracking -->
+    <!-- 16: Deep Code Tracking -->
     <div class="slide">
-      <div class="slide-title"><div class="slide-num bg-blue">15</div><h2 class="slide-title-text blue">Deep Code Tracking Summary (11-Point Trace)</h2></div>
+      <div class="slide-title"><div class="slide-num bg-blue">16</div><h2 class="slide-title-text blue">Deep Code Tracking Summary (11-Point Trace)</h2></div>
       <table>
         <tr><th class="bg-blue">Point</th><th class="bg-blue">File / Line</th><th class="bg-blue">What it establishes</th></tr>
         <tr><td>1–2</td><td>ollama/_types.py:104-110, _client.py:281-305</td><td>num_gpu is a load-time option forwarded as-is to /api/generate; no GPU-count semantics in client</td></tr>
@@ -303,28 +316,28 @@ github.com/ollama/ollama/runner/ollamarunner.(*Server).run.gowrap1()
       <div class="takeaway">Nine independent source points converge on the same conclusion: num_gpu controls layer offload count, not GPU device selection.</div>
     </div>
 
-    <!-- 16: Failure Diagnosis -->
+    <!-- 17: Failure Diagnosis -->
     <div class="slide">
-      <div class="slide-title"><div class="slide-num bg-red">16</div><h2 class="slide-title-text red">Failure Diagnosis</h2></div>
+      <div class="slide-title"><div class="slide-num bg-red">17</div><h2 class="slide-title-text red">Failure Diagnosis</h2></div>
       <table style="margin-bottom: 14px;">
         <tr><th style="background-color: #7B241C;">Hypothesis</th><th style="background-color: #7B241C;">Expected evidence</th><th style="background-color: #7B241C;">Observed (in these runs)</th></tr>
         <tr><td>Vega is generally unusable</td><td>Both backends fail on same GPU</td><td class="green"><strong>Contradicted: ROCm/HIP succeeded in these runs</strong></td></tr>
         <tr><td>num_gpu means GPU count</td><td>Failure implies multi-GPU entry</td><td class="green"><strong>Contradicted: code trace establishes layer-count semantics</strong></td></tr>
-        <tr><td class="orange"><strong>Vulkan compute-path issue on AMD_GCN</strong></td><td>Load succeeds; crash at first compute batch via cgo</td><td class="red"><strong>Consistent with observed evidence</strong></td></tr>
+        <tr><td class="orange"><strong>Model-/workload-dependent Vulkan compute-path issue on AMD_GCN</strong></td><td>qwen3.5:2b fails at first compute batch via cgo, while phi4-mini completes at num_gpu=1</td><td class="red"><strong>Consistent with observed evidence</strong></td></tr>
       </table>
       <h3 class="blue" style="font-size:22px; margin-bottom:8px;">Three-Tier Verdict (Based on Collected Evidence)</h3>
       <table>
         <tr><th class="bg-blue">Tier</th><th class="bg-blue">Statement</th></tr>
         <tr><td class="red"><strong>1. Official support</strong></td><td>gfx900 is not officially supported in ROCm 7.2 or ollama's default build targets.</td></tr>
         <tr><td class="orange"><strong>2. Conditional executability</strong></td><td>In this environment, with HSA_OVERRIDE_GFX_VERSION=9.0.0 and pre-existing artifacts, ROCm/HIP ran successfully across all tested num_gpu values on two matched-run days.</td></tr>
-        <tr><td class="blue"><strong>3. Backend-dependent stability</strong></td><td>Under matched conditions across two days, Vulkan SIGSEGV'd for num_gpu&gt;=1 while ROCm/HIP did not; Vulkan remained stable at num_gpu=0, including a 5-epoch run.</td></tr>
+        <tr><td class="blue"><strong>3. Backend-dependent stability</strong></td><td>Under matched qwen3.5:2b conditions across two days, Vulkan SIGSEGV'd for num_gpu&gt;=1 while ROCm/HIP did not; Vulkan remained stable at num_gpu=0, including a 5-epoch run. A phi4-mini follow-up completed at num_gpu=1, indicating model dependence.</td></tr>
       </table>
-      <div class="takeaway">The three tiers are independent claims. Tier 2 does not contradict Tier 1; Tier 3 is now supported by two matched runs plus a 5-epoch Vulkan num_gpu=0 control.</div>
+      <div class="takeaway">The three tiers are independent claims. Tier 2 does not contradict Tier 1; Tier 3 is now supported by two matched qwen runs, a 5-epoch Vulkan num_gpu=0 control, and a phi4-mini counterexample to any universal-crash claim.</div>
     </div>
 
-    <!-- 17: Reproducibility Package -->
+    <!-- 18: Reproducibility Package -->
     <div class="slide">
-      <div class="slide-title"><div class="slide-num bg-orange">17</div><h2 class="slide-title-text orange">Reproducibility Package</h2></div>
+      <div class="slide-title"><div class="slide-num bg-orange">18</div><h2 class="slide-title-text orange">Reproducibility Package</h2></div>
       <table>
         <tr><th class="bg-orange">Artifact</th><th class="bg-orange">Path</th><th class="bg-orange">Role</th></tr>
         <tr><td>Primary metrics</td><td>vega_work_log/run_*/result.json</td><td>Status, latency, error_type per num_gpu case</td></tr>
@@ -335,31 +348,31 @@ github.com/ollama/ollama/runner/ollamarunner.(*Server).run.gowrap1()
       </table>
       <p style="font-size:17px; margin-top:10px;"><strong>Replay command:</strong> <code>OLLAMA_HOST=http://127.0.0.1:11435|11434 EPOCHS=1 NUM_PREDICT=512 NUM_GPU=0,1,2,-1 python vega-loop_qwen_rocm.py</code></p>
       <p style="font-size:16px; margin-top:6px;"><strong>Stability check:</strong> <code>OLLAMA_HOST=http://127.0.0.1:11434 EPOCHS=5 NUM_GPU=0 NUM_PREDICT=512 python vega-loop_qwen.py</code></p>
-      <div class="takeaway">Every claim in this deck is linked to a run_id + file path. The matched rerun and the Vulkan num_gpu=0 control can both be replayed from the current scripts.</div>
+      <div class="takeaway">Every claim in this deck is linked to a run_id + file path. The matched rerun, the Vulkan num_gpu=0 control, and the targeted phi4-mini / NUM_PREDICT follow-ups can all be replayed from the current scripts.</div>
     </div>
 
-    <!-- 18: Limitations -->
+    <!-- 19: Limitations -->
     <div class="slide">
-      <div class="slide-title"><div class="slide-num bg-red">18</div><h2 class="slide-title-text red">Limitations & Future Work</h2></div>
+      <div class="slide-title"><div class="slide-num bg-red">19</div><h2 class="slide-title-text red">Limitations & Future Work</h2></div>
       <p style="margin-bottom: 10px;">
         <strong class="red">Limitations:</strong>
       </p>
       <ul style="font-size:20px;">
-        <li>Matched comparison is still single-model (qwen3.5:2b). However, the one-epoch matched run was reproduced on two days, and Vulkan num_gpu=0 was additionally stable for 5 epochs.</li>
+        <li>Matched comparison is still centered on qwen3.5:2b. However, the one-epoch matched run was reproduced on two days, Vulkan num_gpu=0 was additionally stable for 5 epochs, and phi4-mini did not reproduce the num_gpu=1 crash.</li>
         <li>Ollama versions differ between endpoints (0.17.4 Vulkan vs 0.17.5/0.17.6 ROCm) — a potential confound remains.</li>
         <li>ROCm result depends on <code>HSA_OVERRIDE_GFX_VERSION=9.0.0</code>; outcome without the override is not tested here.</li>
         <li>Root cause within <code>ggml_backend_sched_graph_compute_async</code> (C/Vulkan side) is not resolved from the Go stack trace alone.</li>
-        <li>tinyllama showed different Vulkan behavior — gfx900 Vulkan stability may be model- or workload-dependent.</li>
+        <li>The new phi4-mini result indicates that gfx900 Vulkan stability is model- or workload-dependent; the exact trigger in qwen3.5:2b Q8_0 remains unresolved.</li>
       </ul>
       <p style="margin-top:10px;">
-        <strong class="blue">Future work:</strong> Additional models; matched Ollama version pair; same-version override-off vs override-on comparison; deeper Vulkan trace (RADV validation layers); broader multi-epoch stress under GPU-offload settings.
+        <strong class="blue">Future work:</strong> Additional models and quantization formats; matched Ollama version pair; same-version override-off vs override-on comparison; deeper Vulkan trace (RADV validation layers); broader multi-epoch stress under GPU-offload settings.
       </p>
-      <div class="takeaway">The new rerun removes the strongest one-off criticism, but model scope, version mismatch, and override dependence remain the main confounds.</div>
+      <div class="takeaway">The new rerun removes the strongest one-off criticism, but the center of gravity has shifted: the key unresolved variable is now model/workload specificity, alongside version mismatch and override dependence.</div>
     </div>
 
-    <!-- 19: Takeaway -->
+    <!-- 20: Takeaway -->
     <div class="slide">
-      <div class="slide-title"><div class="slide-num bg-green">19</div><h2 class="slide-title-text green">Takeaway & Key Messages</h2></div>
+      <div class="slide-title"><div class="slide-num bg-green">20</div><h2 class="slide-title-text green">Takeaway & Key Messages</h2></div>
       <div class="three-col">
         <div class="card" style="border-top: 8px solid #B71C1C;">
           <h3 class="red" style="font-size: 20px; margin-top: 0;">Not officially supported</h3>
@@ -371,10 +384,10 @@ github.com/ollama/ollama/runner/ollamarunner.(*Server).run.gowrap1()
         </div>
         <div class="card" style="border-top: 8px solid #0D47A1;">
           <h3 class="blue" style="font-size: 20px; margin-top: 0;">Backend-dependent stability</h3>
-          <p style="font-size: 17px;">On identical hardware and workload across two matched runs, Vulkan SIGSEGV'd for num_gpu&gt;=1 while ROCm/HIP did not; Vulkan stayed stable at num_gpu=0 for 5/5 epochs. Backend choice — not hardware alone — determined the observed outcome.</p>
+          <p style="font-size: 17px;">For qwen3.5:2b across two matched runs, Vulkan SIGSEGV'd for num_gpu&gt;=1 while ROCm/HIP did not; Vulkan stayed stable at num_gpu=0 for 5/5 epochs. A phi4-mini follow-up passed at num_gpu=1, so the failure is not universal to gfx900 Vulkan.</p>
         </div>
       </div>
-      <p class="dim" style="text-align: center; font-style: italic; margin-top: 18px; font-size: 20px;">Based on the collected evidence: "not officially supported" and "not executable in any configuration" are distinct statements. | The ROCm/Vulkan difference reproduced across two days, and Vulkan remained stable only in the non-offloaded control.</p>
+      <p class="dim" style="text-align: center; font-style: italic; margin-top: 18px; font-size: 20px;">Based on the collected evidence: "not officially supported" and "not executable in any configuration" are distinct statements. | The qwen3.5 ROCm/Vulkan difference reproduced across two days, but phi4-mini shows the Vulkan offload failure is model-specific rather than universal.</p>
     </div>
 
     <div class="footer">Slide <span id="current">1</span> / <span id="total">?</span> (Use Arrow Keys ← → to navigate)</div>
