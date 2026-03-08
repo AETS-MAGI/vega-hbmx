@@ -279,6 +279,15 @@ if(CMAKE_HIP_COMPILER)
         <tr><td>01:31:39</td><td>server.go: post predict … EOF</td><td>API side sees runner termination as EOF → HTTP 500</td></tr>
         <tr><td>01:31:47 / 01:31:57</td><td>Same sequence repeats for num_gpu=2 and -1</td><td>Consistent pattern within these runs for all GPU-offload cases</td></tr>
       </table>
+      <div class="plain-box">
+        <div class="plain-title">What each column tells us (simple words)</div>
+        <ul class="plain-list">
+          <li><strong>Timestamp</strong>: when each step happened.</li>
+          <li><strong>Event</strong>: what the system said or did at that moment.</li>
+          <li><strong>Meaning</strong>: why that step matters for our diagnosis.</li>
+          <li>The key story is: <strong>load finished first</strong>, then <strong>the crash happened when real calculation started</strong>.</li>
+        </ul>
+      </div>
       <p class="dim" style="font-size:16px; margin-top:8px;">Source: vega_work_log/run_20260307_013050/ollama_journal_since_start.txt</p>
       <div class="takeaway">Crash occurs at first compute, not at load — consistent with a compute-path issue, not an allocation or init issue.</div>
     </div>
@@ -302,6 +311,15 @@ github.com/ollama/ollama/runner/ollamarunner.(*Server).computeBatch(...)
     runner/ollamarunner/runner.go:716 +0x862
 github.com/ollama/ollama/runner/ollamarunner.(*Server).run.gowrap1()
     runner/ollamarunner/runner.go:459</pre>
+      <div class="plain-box">
+        <div class="plain-title">How to read this block (simple words)</div>
+        <ul class="plain-list">
+          <li><strong>SIGSEGV</strong> means the program touched memory in a bad way and crashed.</li>
+          <li><strong>cgo execution</strong> means the Go program was inside C/C++ backend code at the moment of failure.</li>
+          <li><strong>computeBatch</strong> means this happened during real model calculation, not while just loading files.</li>
+          <li>This block does <strong>not</strong> tell us the exact Vulkan API call yet; it tells us <strong>which part of the software stack</strong> was active when it crashed.</li>
+        </ul>
+      </div>
       <p style="font-size:17px; margin-top:8px;"><strong class="red">Crash point:</strong> C function <code>ggml_backend_sched_graph_compute_async</code> called via cgo. Go runtime receives SIGSEGV and terminates the runner. The exact Vulkan API call within that C function is not resolved from this trace alone.</p>
       <div class="takeaway">Stack trace is factual. Root cause within ggml_backend_sched_graph_compute_async (C/Vulkan side) remains unresolved — this is a stated limitation.</div>
     </div>
@@ -315,6 +333,16 @@ github.com/ollama/ollama/runner/ollamarunner.(*Server).run.gowrap1()
         <tr><td><strong>Token-count control</strong></td><td>run_20260308_212254, Vulkan, qwen3.5:2b, <code>NUM_PREDICT=128</code>, <code>NUM_GPU=1</code></td><td><span class="red"><strong>error</strong></span> at 2.858s (vs mean 2.653s at <code>NUM_PREDICT=512</code>)</td><td class="blue"><strong>Crash timing is largely independent of requested output length.</strong></td></tr>
         <tr><td><strong>Timing statistics</strong></td><td>3 qwen3.5:2b Vulkan runs, <code>num_gpu&gt;=1</code></td><td><code>num_gpu=1</code>: 2.653s ±0.059s; <code>2</code>: 7.630s ±0.014s; <code>-1</code>: 9.819s ±0.016s</td><td class="blue"><strong>Failure timing is highly deterministic, not obviously a random race.</strong></td></tr>
       </table>
+      <div class="plain-box">
+        <div class="plain-title">What each column tells us (simple words)</div>
+        <ul class="plain-list">
+          <li><strong>Test</strong>: what extra question we asked.</li>
+          <li><strong>Run / Condition</strong>: which model and settings we used.</li>
+          <li><strong>Observed result</strong>: what actually happened.</li>
+          <li><strong>Interpretation</strong>: the simplest lesson we can take from that result.</li>
+          <li>The big lesson here is: the crash is <strong>not universal</strong>, and it is <strong>not mainly caused by asking for more output tokens</strong>.</li>
+        </ul>
+      </div>
       <p class="dim" style="font-size:16px; margin-top:8px;">Source: run_20260308_212345, run_20260308_212254, and analysis_summary.md derived from 15 runs / 119 records in vega_work_log/.</p>
       <div class="takeaway">Refined claim: qwen3.5:2b Q8_0 reproducibly crashes on Vulkan offload in this setup, but phi4-mini does not, and the crash timing is largely token-count independent. The failure is backend-sensitive and model-dependent.</div>
     </div>
@@ -615,6 +643,15 @@ if(CMAKE_HIP_COMPILER)
         <tr><td>01:31:39</td><td>server.go: post predict … EOF</td><td>API 側には EOF として見え、HTTP 500 になる</td></tr>
         <tr><td>01:31:47 / 01:31:57</td><td>num_gpu=2, -1 でも同じ系列が再現</td><td>GPU offload 条件で一貫した failure pattern</td></tr>
       </table>
+      <div class="plain-box">
+        <div class="plain-title">列の意味（やさしい説明）</div>
+        <ul class="plain-list">
+          <li><strong>時刻</strong>：その出来事が起きた時間。</li>
+          <li><strong>イベント</strong>：その瞬間にシステムが何を言ったか、何をしたか。</li>
+          <li><strong>意味</strong>：その出来事が診断にどう役立つか。</li>
+          <li>一番大事な流れは、<strong>読み込みは先に終わっていて</strong>、その後に<strong>本当の計算が始まった時点で落ちた</strong>、という点。</li>
+        </ul>
+      </div>
       <p class="dim" style="font-size:16px; margin-top:8px;">出典: vega_work_log/run_20260307_013050/ollama_journal_since_start.txt</p>
       <div class="takeaway">クラッシュは load 時ではなく first compute 時点で発生しており、allocation や init よりも compute-path の問題と整合する。</div>`,
 `      <div class="slide-title"><div class="slide-num bg-red">13</div><h2 class="slide-title-text red">Vulkan Crash: 完全スタックトレース（Journal, 01:31:39 JST）</h2></div>
@@ -634,6 +671,15 @@ github.com/ollama/ollama/runner/ollamarunner.(*Server).computeBatch(...)
     runner/ollamarunner/runner.go:716 +0x862
 github.com/ollama/ollama/runner/ollamarunner.(*Server).run.gowrap1()
     runner/ollamarunner/runner.go:459</pre>
+      <div class="plain-box">
+        <div class="plain-title">このブロックの見方（やさしい説明）</div>
+        <ul class="plain-list">
+          <li><strong>SIGSEGV</strong> は、プログラムが不正なメモリアクセスをして落ちたことを意味する。</li>
+          <li><strong>cgo execution</strong> は、Go プログラムが落ちた瞬間に C/C++ 側 backend code の中にいたことを意味する。</li>
+          <li><strong>computeBatch</strong> は、ただファイルを読む段階ではなく、実際のモデル計算中だったことを示す。</li>
+          <li>このブロックだけでは<strong>どの Vulkan API で落ちたか</strong>までは分からないが、<strong>ソフトウェアのどの層で落ちたか</strong>は分かる。</li>
+        </ul>
+      </div>
       <p style="font-size:17px; margin-top:8px;"><strong class="red">Crash point:</strong> C 関数 <code>ggml_backend_sched_graph_compute_async</code> を cgo 経由で呼んだ位置で SIGSEGV。Go runtime は runner を終了させる。どの Vulkan API 呼び出しで落ちたかまではこの trace 単体では分からない。</p>
       <div class="takeaway">この stack trace 自体は事実記録である。根本原因は C/Vulkan 側に残っており、今回の limitation として明示する。</div>`,
 `      <div class="slide-title"><div class="slide-num bg-green">14</div><h2 class="slide-title-text green">追加追試：モデル依存性と crash timing</h2></div>
@@ -643,6 +689,16 @@ github.com/ollama/ollama/runner/ollamarunner.(*Server).run.gowrap1()
         <tr><td><strong>トークン数制御</strong></td><td>run_20260308_212254, Vulkan, qwen3.5:2b, <code>NUM_PREDICT=128</code>, <code>NUM_GPU=1</code></td><td><span class="red"><strong>error</strong></span> at 2.858s（<code>NUM_PREDICT=512</code> の mean 2.653s に近い）</td><td class="blue"><strong>crash timing は要求出力長にほぼ依存しない。</strong></td></tr>
         <tr><td><strong>Timing 統計</strong></td><td>qwen3.5:2b Vulkan run 3本, <code>num_gpu&gt;=1</code></td><td><code>num_gpu=1</code>: 2.653s ±0.059s; <code>2</code>: 7.630s ±0.014s; <code>-1</code>: 9.819s ±0.016s</td><td class="blue"><strong>失敗 timing は非常に決定論的で、単純なランダム race には見えない。</strong></td></tr>
       </table>
+      <div class="plain-box">
+        <div class="plain-title">列の意味（やさしい説明）</div>
+        <ul class="plain-list">
+          <li><strong>試験</strong>：追加で何を確かめたか。</li>
+          <li><strong>Run / 条件</strong>：どのモデルと設定で試したか。</li>
+          <li><strong>観測結果</strong>：実際に何が起きたか。</li>
+          <li><strong>解釈</strong>：その結果から言える一番やさしい結論。</li>
+          <li>ここでの大きな結論は、クラッシュが<strong>普遍的ではなく</strong>、しかも<strong>単に出力トークン数が多いから起きるわけではない</strong>、ということ。</li>
+        </ul>
+      </div>
       <p class="dim" style="font-size:16px; margin-top:8px;">出典: run_20260308_212345, run_20260308_212254, および vega_work_log/ 15 run / 119 record から集約した analysis_summary.md</p>
       <div class="takeaway">主張を更新：この環境では qwen3.5:2b Q8_0 は Vulkan offload で再現的に落ちるが、phi4-mini は落ちない。failure は backend-sensitive であり、同時に model-dependent でもある。</div>`,
 `      <div class="slide-title"><div class="slide-num bg-orange">15</div><h2 class="slide-title-text orange">Vulkan：gfx900 の AMD_GCN 分類と機能制約</h2></div>
