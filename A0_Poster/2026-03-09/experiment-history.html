@@ -595,6 +595,10 @@ github.com/ollama/ollama/runner/ollamarunner.(*Server).<span class="hi-yellow">c
 <span class="hi-blue">const bool</span> use_subgroups =
     device-&gt;subgroup_arithmetic &amp;&amp;
     device-&gt;architecture != vk_device_architecture::<span class="hi-red">AMD_GCN</span>;</div>
+			<div class="hbox orange">
+				<span data-lang="en"><strong>Detailed legend:</strong> <strong>SIGSEGV</strong> = the process touched invalid memory and crashed. <strong>cgo execution</strong> = the Go runner was inside native C/C++ backend code. <strong>computeBatch</strong> = actual inference compute had started. <strong>AMD_GCN</strong> = the backend classified this GPU as an older wave64-only AMD path. <strong>subgroup arithmetic disabled</strong> = one optimized parallel route is intentionally turned off for this class, so the backend uses a different compute path.</span>
+				<span data-lang="ja"><strong>詳細凡例:</strong> <strong>SIGSEGV</strong> = 不正なメモリアクセスでプロセスが落ちたこと。<strong>cgo execution</strong> = Go ランナーがネイティブの C/C++ backend code 内にいたこと。<strong>computeBatch</strong> = 実際の推論計算が始まっていた段階。<strong>AMD_GCN</strong> = この GPU が古い wave64 固定の AMD 系経路として分類されたこと。<strong>subgroup arithmetic disabled</strong> = この系統では最適化された並列経路の1つが意図的に無効化され、別の compute path が使われること。</span>
+			</div>
 		</article>
 
 		<!-- ── STEP 6 ── -->
@@ -665,6 +669,10 @@ github.com/ollama/ollama/runner/ollamarunner.(*Server).<span class="hi-yellow">c
 				<span data-lang="en"><strong>Interpretation:</strong> std values of 14–59 ms across 3 runs spanning two days indicate a <em>deterministic</em> failure — a fixed point in the compute path, not a resource race or timing fluke. ROCm version update (0.17.5 → 0.17.6) produced no behavioral change.</span>
 				<span data-lang="ja"><strong>解釈:</strong> 2 日間・3 run にわたって std が 14〜59 ms という極小値 → クラッシュは <em>deterministic</em>（compute path 上の固定点）であり、リソース競合や偶発的なタイミング問題ではない。ROCm バージョン更新（0.17.5 → 0.17.6）は挙動に影響しなかった。</span>
 			</div>
+			<div class="hbox orange">
+				<span data-lang="en"><strong>What “gfx900” and “DP4A emulation” mean:</strong> <strong>gfx900</strong> is AMD's architecture name for Vega 10 / Vega 56 generation GPUs. In this study, it means we are testing an older GPU target with limited modern acceleration features. <strong>DP4A</strong> is a fast integer dot-product instruction often useful for quantized inference. If hardware support is missing or weak, software may imitate the same math using slower substitute operations. That is what <strong>DP4A emulation</strong> means: keep the math result, but travel through a different code path with different speed and possibly different stability behavior.</span>
+				<span data-lang="ja"><strong>gfx900 と DP4A エミュレーションの意味:</strong> <strong>gfx900</strong> は Vega 10 / Vega 56 世代GPUに対する AMD のアーキテクチャ名。この研究では「比較的新しい高速化機能が限られた旧世代GPUを検証している」という意味になる。<strong>DP4A</strong> は量子化推論で有用な高速整数ドット積命令。もしハードウェア対応が無い、または弱い場合、ソフトウェアは別の演算を組み合わせて同じ計算結果をまねることがある。これが <strong>DP4A エミュレーション</strong> で、計算結果は保てても、通るコード経路・速度・安定性は変わりうる。</span>
+			</div>
 		</article>
 
 		<!-- ── STEP 7 ── -->
@@ -732,6 +740,10 @@ github.com/ollama/ollama/runner/ollamarunner.(*Server).<span class="hi-yellow">c
 			<div class="hbox">
 				<span data-lang="en"><strong>Key finding (B):</strong> Reducing <code>NUM_PREDICT</code> 4× (512 → 128) shifted crash time by only +0.2 s. The crash occurs at a fixed point in the compute initialization sequence — independent of how many tokens the model is asked to generate.</span>
 				<span data-lang="ja"><strong>主要知見 (B):</strong> <code>NUM_PREDICT</code> を 4 分の 1（512 → 128）に削減してもクラッシュ時間は +0.2 s しか変わらない。クラッシュは compute 初期化シーケンスの固定点で発生し、生成トークン数には非依存。</span>
+			</div>
+			<div class="hbox green">
+				<span data-lang="en"><strong>Easy explanation:</strong> Think of this as testing the same toy car on two roads. On one road, the car keeps running. On the other road, it crashes only when it reaches a special fast lane. That means the car itself is not simply broken; the trouble is in one specific route. Also, because another model passed that route, the problem is not “Vega always fails,” but “this backend + this model + this compute path” is the risky combination.</span>
+				<span data-lang="ja"><strong>やさしい解説:</strong> これは「同じおもちゃの車を2本の道で走らせた」ようなもの。片方の道ではずっと走れるのに、もう片方では特別な高速レーンに入った時だけ転ぶ。つまり、車そのものが全部だめなのではなく、特定の道筋に問題がある。しかも別のモデルはその道を通れたので、「Vega はいつも失敗する」ではなく、「このバックエンド + このモデル + この計算経路」の組み合わせが危ない、と分かった。</span>
 			</div>
 		</article>
 
