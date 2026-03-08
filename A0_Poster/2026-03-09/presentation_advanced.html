@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Backend-Dependent Stability on Legacy HBM GPUs (Advanced)</title>
+<title>Backend-Dependent Behavior on Legacy HBM GPUs (Advanced)</title>
 <style>
   body { margin: 0; padding: 0; font-family: 'Calibri', 'Arial', sans-serif; background-color: #FFFFFF; color: #212121; overflow: hidden; }
   .slide-container { position: relative; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; background-color: #FFFFFF; }
@@ -31,54 +31,65 @@
   .three-col { display: flex; justify-content: space-between; gap: 18px; margin-top: 10px; }
   .card { flex: 1; background: #EEEEEE; padding: 16px; border-radius: 8px; box-shadow: 1px 1px 5px rgba(0,0,0,0.05); }
 
+  .takeaway { background: #E3F2FD; border-left: 5px solid #0D47A1; padding: 8px 14px; margin-top: auto; font-size: 17px; font-style: italic; color: #0D47A1; }
+  .caution  { background: #FFF3E0; border-left: 5px solid #E65100; padding: 8px 14px; margin-top: 10px; font-size: 16px; }
+
   .footer { position: absolute; bottom: 20px; right: 30px; font-size: 18px; color: #616161; font-family: 'Arial', sans-serif; }
 </style>
 </head>
 <body>
   <div class="slide-container">
 
+    <!-- 0: Title -->
     <div class="slide active" style="background: #B71C1C; color: #FFFFFF; justify-content: center; align-items: center; text-align: center;">
-      <h1 style="font-family: 'Arial Black', sans-serif; font-size: 52px; margin-bottom: 10px;">Backend-Dependent Stability on Legacy HBM GPUs</h1>
-      <h2 style="font-family: 'Calibri', sans-serif; font-size: 27px; color: #FFCDD2; font-style: italic; font-weight: normal; margin-bottom: 45px;">Advanced Evidence Edition: ROCm/HIP vs Vulkan on Vega/gfx900</h2>
+      <h1 style="font-family: 'Arial Black', sans-serif; font-size: 52px; margin-bottom: 10px;">Backend-Dependent Behavior on Legacy HBM GPUs</h1>
+      <h2 style="font-family: 'Calibri', sans-serif; font-size: 27px; color: #FFCDD2; font-style: italic; font-weight: normal; margin-bottom: 45px;">Advanced Evidence Edition: ROCm/HIP vs Vulkan on Vega/gfx900 — Within a Single Tested Setup</h2>
       <p style="font-size: 25px; margin-bottom: 15px; margin-top: 0;">Akira Ito | AETS (Akatsuki Enterprise Technology Solutions) | aets-giken@hiroshima-aktk.com</p>
       <p style="font-size: 22px; color: #FFCDD2; margin: 0;">IEICE GNW-68 | Kyushu Sangyo University | March 9, 2026</p>
     </div>
 
+    <!-- 1: Background -->
     <div class="slide">
       <div class="slide-title"><div class="slide-num bg-red">1</div><h2 class="slide-title-text red">Background & Motivation</h2></div>
       <ul>
-        <li>In ROCm 7.2, gfx900 is not listed in the official support matrix; however, this local environment still showed executable residual paths and shipped artifacts.</li>
-        <li>For students and small labs, the key question is whether execution is possible, stable, and reproducible.</li>
+        <li>In ROCm 7.2, gfx900 is not listed in the official support matrix; however, this local environment retains residual build/runtime paths and shipped artifacts.</li>
+        <li>For students and small labs, the key question is whether execution is possible, stable, and reproducible under specific configurations.</li>
         <li>We built a matched dual-backend testbed on the same Vega device to separate support policy, backend choice, and runtime behavior.</li>
-        <li style="font-weight: bold;">Goal: explain why "unsupported" and "unusable" are not the same statement.</li>
+        <li style="font-weight: bold;">Goal: examine whether "not officially supported" and "not executable in any configuration" are the same statement — within this tested setup.</li>
       </ul>
+      <div class="takeaway">Scope is explicitly this environment + these runs. No general claim about Vega across all setups is made.</div>
     </div>
 
+    <!-- 2: Problem Statement -->
     <div class="slide">
       <div class="slide-title"><div class="slide-num bg-red">2</div><h2 class="slide-title-text red">Problem Statement</h2></div>
       <ul>
         <li>Legacy Vega GPUs are often treated as categorically unsuitable for modern ROCm workloads.</li>
         <li>Success or failure may be decided at different layers: distribution presets, build targets, init validation, backend macros, or runtime compute paths.</li>
-        <li style="font-weight: bold;">We ask: is instability caused by Vega itself, or by a specific backend path under matched conditions?</li>
+        <li style="font-weight: bold;">We ask: in these runs, is the observed failure caused by Vega hardware itself, or by a specific backend compute path under matched conditions?</li>
       </ul>
+      <div class="takeaway">Backend path isolation — not hardware condemnation — is the diagnostic question.</div>
     </div>
 
+    <!-- 3: Gate Matrix -->
     <div class="slide">
       <div class="slide-title"><div class="slide-num bg-blue">3</div><h2 class="slide-title-text blue">Evidence from Investigation: gfx900 Gate Matrix</h2></div>
       <table>
         <tr><th class="bg-blue">Layer</th><th class="bg-blue">Current handling of gfx900</th><th class="bg-blue">Blocks / Allows</th></tr>
         <tr><td><strong>Official matrix (ROCm 7.2)</strong></td><td>gfx900 not listed in GPU target list</td><td class="red"><strong>Blocks (official scope)</strong></td></tr>
-        <tr><td><strong>CMake filter (ollama)</strong></td><td>CMakeLists.txt:127 default regex <code>^gfx(94[012]|101[02]|1030|110[012]|120[01])$</code> — gfx900 excluded; manual <code>AMDGPU_TARGETS=gfx900</code> override is possible</td><td class="orange"><strong>Blocks default / Allows manual</strong></td></tr>
-        <tr><td><strong>rocBLAS artifacts</strong></td><td>Kernels.so-000-gfx900.hsaco found in /usr/lib/ollama/rocblas/library/</td><td class="green"><strong>Allows</strong></td></tr>
-        <tr><td><strong>Runner init validation</strong></td><td>GGML_CUDA_INIT=1: gfx900 recognized as valid agent; journal: "Device 0: AMD Radeon RX Vega, gfx900:xnack- (0x900), VMM: no, Wave Size: 64"</td><td class="green"><strong>Allows</strong></td></tr>
-        <tr><td><strong>Source macros</strong></td><td>common.cuh:65 <code>GGML_CUDA_CC_VEGA=0x1000900</code>; __gfx900__ dp4a path exists (software emulation via inline asm)</td><td class="green"><strong>Allows</strong></td></tr>
-        <tr><td><strong>Runtime execution</strong></td><td>In the matched runs, ROCm/HIP: all tested num_gpu values OK. Vulkan: SIGSEGV when num_gpu &gt;= 1</td><td class="orange"><strong>Backend-dependent (tested scope)</strong></td></tr>
+        <tr><td><strong>CMake filter (ollama)</strong></td><td>CMakeLists.txt:127 default regex <code>^gfx(94[012]|101[02]|1030|110[012]|120[01])$</code> — gfx900 excluded; manual <code>AMDGPU_TARGETS=gfx900</code> override possible</td><td class="orange"><strong>Blocks default / Allows manual</strong></td></tr>
+        <tr><td><strong>rocBLAS artifacts</strong></td><td>Kernels.so-000-gfx900.hsaco found in /usr/lib/ollama/rocblas/library/</td><td class="green"><strong>Allows (this env)</strong></td></tr>
+        <tr><td><strong>Runner init validation</strong></td><td>Journal: "Device 0: AMD Radeon RX Vega, gfx900:xnack- (0x900), VMM: no, Wave Size: 64" — recognized as valid agent</td><td class="green"><strong>Allows (this env)</strong></td></tr>
+        <tr><td><strong>Source macros</strong></td><td>common.cuh:65 <code>GGML_CUDA_CC_VEGA=0x1000900</code>; <code>__gfx900__</code> dp4a path retained (software emulation via inline asm)</td><td class="green"><strong>Allows</strong></td></tr>
+        <tr><td><strong>Runtime execution</strong></td><td>In the matched runs, ROCm/HIP (override-assisted): all tested num_gpu values OK. Vulkan: SIGSEGV for num_gpu &gt;= 1.</td><td class="orange"><strong>Backend-dependent (tested scope)</strong></td></tr>
       </table>
-      <p class="dim" style="font-size:17px; margin-top:10px;">Source: work_log/investigations/2026-03-07_gfx900_gate_matrix.md | ollama/CMakeLists.txt:127 | ggml-cuda/common.cuh:65</p>
+      <p class="dim" style="font-size:16px; margin-top:8px;">Source: work_log/investigations/2026-03-07_gfx900_gate_matrix.md | ollama/CMakeLists.txt:127 | ggml-cuda/common.cuh:65</p>
+      <div class="takeaway">Five of six examined layers retained paths allowing execution in this environment. Official non-listing ≠ immediate impossibility — but scope is restricted to this setup.</div>
     </div>
 
+    <!-- 4: CMake Filter -->
     <div class="slide">
-      <div class="slide-title"><div class="slide-num bg-blue">3a</div><h2 class="slide-title-text blue">CMake Default Filter: Exact Source Evidence</h2></div>
+      <div class="slide-title"><div class="slide-num bg-blue">4</div><h2 class="slide-title-text blue">CMake Default Filter: Exact Source Evidence</h2></div>
       <p style="font-size:18px; margin-bottom:8px;"><strong>Source:</strong> <code>ollama/CMakeLists.txt:121-128</code></p>
       <pre style="background:#1a1a2e; color:#e0e0e0; padding:16px; border-radius:8px; font-size:15px; line-height:1.6; overflow:auto;">check_language(HIP)
 if(CMAKE_HIP_COMPILER)
@@ -98,16 +109,17 @@ if(CMAKE_HIP_COMPILER)
         <tr><td><code>120[01]</code></td><td>gfx1200, gfx1201</td><td>RDNA4 (RX 9000)</td></tr>
         <tr><td class="red"><strong>(absent)</strong></td><td class="red"><strong>gfx900 — NOT included</strong></td><td class="red"><strong>GCN5 / Vega56/64</strong></td></tr>
       </table>
-      <p class="dim" style="font-size:16px; margin-top:8px;">gfx900 build requires explicit <code>AMDGPU_TARGETS=gfx900</code> override. The installed /usr/lib/ollama/libggml-hip.so was built with this override or pre-compiled artifacts.</p>
+      <div class="takeaway">gfx900 is excluded from ollama's default HIP build. The installed libggml-hip.so required an explicit AMDGPU_TARGETS override or pre-compiled artifact.</div>
     </div>
 
+    <!-- 5: num_gpu Semantics -->
     <div class="slide">
-      <div class="slide-title"><div class="slide-num bg-blue">3b</div><h2 class="slide-title-text blue">Code Trace: num_gpu Semantics (Exact Source Lines)</h2></div>
+      <div class="slide-title"><div class="slide-num bg-blue">5</div><h2 class="slide-title-text blue">Code Trace: num_gpu Semantics (Exact Source Lines)</h2></div>
       <table>
         <tr><th class="bg-blue">Stage</th><th class="bg-blue">Code location</th><th class="bg-blue">Exact content / Interpretation</th></tr>
         <tr><td><strong>Python Client</strong></td><td>ollama/_types.py:104-110</td><td><code>class Options: num_gpu: Optional[int] = None</code> — raw int, no semantic annotation</td></tr>
         <tr><td><strong>API call</strong></td><td>ollama/_client.py:281-305</td><td>Passed as <code>options=options</code> in <code>/api/generate</code> POST body</td></tr>
-        <tr><td><strong>Go type</strong></td><td>api/types.go:604</td><td><code>NumGPU int \`json:"num_gpu,omitempty"\`</code> in Runner struct</td></tr>
+        <tr><td><strong>Go type</strong></td><td>api/types.go:604</td><td><code>NumGPU int `json:"num_gpu,omitempty"`</code> in Runner struct</td></tr>
         <tr><td><strong>Default value</strong></td><td>api/types.go:1075</td><td><code>NumGPU: -1, // -1 here indicates that NumGPU should be set dynamically</code></td></tr>
         <tr><td><strong>CLI help text</strong></td><td>cmd/interactive.go:112</td><td><code>"/set parameter num_gpu &lt;int&gt;   The number of layers to send to the GPU"</code></td></tr>
         <tr><td><strong>Server</strong></td><td>llm/server.go:992, 1063-1076</td><td><code>assignLayers(..., s.options.NumGPU, ...)</code>; requestedLayers upper-bounded by len(layers)</td></tr>
@@ -115,16 +127,17 @@ if(CMAKE_HIP_COMPILER)
         <tr><td><strong>Bridge</strong></td><td>llama/llama.go:264-267</td><td><code>cparams.n_gpu_layers = C.int(params.NumGpuLayers)</code></td></tr>
         <tr><td><strong>llama.cpp API</strong></td><td>include/llama.h:289</td><td><code>int32_t n_gpu_layers; // number of layers to store in VRAM, a negative value means all layers</code></td></tr>
       </table>
-      <p><strong class="red">Conclusion:</strong> num_gpu = offloaded layer count. journal confirms: "offloading 2 repeating layers to GPU" / "offloaded 2/25 layers to GPU" when num_gpu=2.</p>
+      <div class="takeaway">num_gpu = offloaded layer count, not GPU device count. Journal confirms: "offloaded 2/25 layers to GPU" when num_gpu=2. Do not treat num_gpu&gt;=2 as multi-GPU evidence.</div>
     </div>
 
+    <!-- 6: HIP dp4a -->
     <div class="slide">
-      <div class="slide-title"><div class="slide-num bg-orange">3c</div><h2 class="slide-title-text orange">HIP Backend: gfx900 Architecture Constants & dp4a Emulation</h2></div>
+      <div class="slide-title"><div class="slide-num bg-orange">6</div><h2 class="slide-title-text orange">HIP Backend: gfx900 Architecture Constants & dp4a Emulation</h2></div>
       <table style="margin-bottom:10px;">
         <tr><th class="bg-orange">Constant / Macro</th><th class="bg-orange">Value</th><th class="bg-orange">Comment (ggml-cuda/common.cuh)</th></tr>
         <tr><td><code>GGML_CUDA_CC_GCN4</code></td><td>0x1000803</td><td>Tonga/Fiji/Polaris — minimum for fast fp16 (line 64)</td></tr>
         <tr><td><code><strong>GGML_CUDA_CC_VEGA</strong></code></td><td class="orange"><strong>0x1000900</strong></td><td><strong>Vega56/64 — minimum for fp16 dual issue (line 65)</strong></td></tr>
-        <tr><td><code>GGML_CUDA_CC_VEGA20</code></td><td>0x1000906</td><td>MI50/Radeon VII — minimum for dp4a (line 66)</td></tr>
+        <tr><td><code>GGML_CUDA_CC_VEGA20</code></td><td>0x1000906</td><td>MI50/Radeon VII — minimum for dp4a hardware (line 66)</td></tr>
         <tr><td><code>GGML_CUDA_CC_IS_GCN(cc)</code></td><td>OFFSET_AMD &lt; cc &lt; CDNA1</td><td>gfx900 falls in GCN range, NOT CDNA (line 86)</td></tr>
       </table>
       <p style="font-size:17px; margin-bottom:6px;"><strong>dp4a dispatch in <code>ggml_cuda_dp4a()</code> (common.cuh:666–704):</strong></p>
@@ -134,33 +147,40 @@ if(CMAKE_HIP_COMPILER)
         <tr><td>RDNA3 / RDNA4</td><td><code>__builtin_amdgcn_sudot4(...)</code></td><td class="green">1 instruction (hardware)</td></tr>
         <tr><td class="orange"><strong><code>RDNA1 || __gfx900__</code></strong></td><td class="orange"><strong>6-insn inline asm: v_mul_i32_i24 ×4 + v_add3_u32 ×2</strong></td><td class="red">Software emulation (line 672–685)</td></tr>
       </table>
-      <p class="dim" style="font-size:16px; margin-top:8px;">Also: <code>V_DOT2_F32_F16_AVAILABLE</code> macro (common.cuh:715) excludes gfx900 — no hardware fp16 dot product instruction.</p>
+      <p class="dim" style="font-size:16px; margin-top:8px;"><code>V_DOT2_F32_F16_AVAILABLE</code> (common.cuh:715) also excludes gfx900 — no hardware fp16 dot product instruction.</p>
+      <div class="takeaway">gfx900 executes in the HIP backend but uses software dp4a emulation — a documented architectural limitation, not a bug.</div>
     </div>
 
+    <!-- 7: Engineering Challenges -->
     <div class="slide">
-      <div class="slide-title"><div class="slide-num bg-orange">4</div><h2 class="slide-title-text orange">Engineering Challenges</h2></div>
+      <div class="slide-title"><div class="slide-num bg-orange">7</div><h2 class="slide-title-text orange">Engineering Challenges</h2></div>
       <ul>
-        <li>gfx900 is not listed in the ROCm 7.2 official support matrix, yet residual build/runtime paths remain in this environment.</li>
-        <li>`num_gpu` is often misread as device count, causing wrong failure attribution.</li>
-        <li>Under matched conditions, the same Vega hardware shows different outcomes across backends.</li>
+        <li>gfx900 is not listed in the ROCm 7.2 official support matrix, yet residual build/runtime paths remain in this environment — distinguishing policy from capability requires layered analysis.</li>
+        <li><code>num_gpu</code> is often misread as device count, causing wrong failure attribution when num_gpu&gt;=2 is tested.</li>
+        <li>Under matched conditions in these runs, the same Vega hardware shows different outcomes across backends — hardware alone does not determine the result.</li>
+        <li>ROCm results in this setup depend on <code>HSA_OVERRIDE_GFX_VERSION=9.0.0</code>; this is an override-assisted configuration, not a standard deployment.</li>
         <li>Diagnosis requires layered evidence (source, logs, run artifacts), not single-run anecdotes.</li>
       </ul>
+      <div class="takeaway">The three independent variables — support policy, backend choice, and override configuration — must be held separate in any causal claim.</div>
     </div>
 
+    <!-- 8: Evidence-First Strategy -->
     <div class="slide">
-      <div class="slide-title"><div class="slide-num bg-orange">5</div><h2 class="slide-title-text orange">Evidence-First Investigation Strategy</h2></div>
+      <div class="slide-title"><div class="slide-num bg-orange">8</div><h2 class="slide-title-text orange">Evidence-First Investigation Strategy</h2></div>
       <table>
         <tr><th class="bg-orange">Layer</th><th class="bg-orange">Intervention</th><th class="bg-orange">Effect</th></tr>
-        <tr><td class="red"><strong>L1: Distribution / Build</strong></td><td>Inspect support matrix, presets, target filters, installed artifacts</td><td>Locate where gfx900 is blocked/allowed</td></tr>
-        <tr><td class="orange"><strong>L2: API Semantics</strong></td><td>Trace num_gpu from client -&gt; server -&gt; runner -&gt; llama.cpp</td><td>Fix meaning: offloaded layers</td></tr>
-        <tr><td class="blue"><strong>L3: Runtime Comparison</strong></td><td>Matched ROCm (:11435) vs Vulkan (:11434)</td><td>Isolate backend-specific failures</td></tr>
-        <tr><td class="green"><strong>L4: Evidence Capture</strong></td><td>result.json, journal, backend_probe, rocm-smi, ollama ps</td><td>Reproducible claims with run_id linkage</td></tr>
+        <tr><td class="red"><strong>L1: Distribution / Build</strong></td><td>Inspect support matrix, presets, target filters, installed artifacts</td><td>Locate where gfx900 is blocked/allowed at the build layer</td></tr>
+        <tr><td class="orange"><strong>L2: API Semantics</strong></td><td>Trace num_gpu from client → server → runner → llama.cpp</td><td>Establish correct meaning: offloaded layers, not device count</td></tr>
+        <tr><td class="blue"><strong>L3: Runtime Comparison</strong></td><td>Matched ROCm (:11435) vs Vulkan (:11434) — same hardware, same model, same workload</td><td>Isolate backend-specific failure in these runs</td></tr>
+        <tr><td class="green"><strong>L4: Evidence Capture</strong></td><td>result.json, journal, backend_probe, rocm-smi, ollama ps</td><td>Reproducible claims with run_id and file-path linkage</td></tr>
       </table>
-      <p class="dim" style="font-style:italic;">Principle: falsifiable diagnosis over optimistic one-off success.</p>
+      <p class="dim" style="font-style:italic; margin-top:10px;">Principle: falsifiable diagnosis over optimistic one-off success.</p>
+      <div class="takeaway">Each layer answers a distinct question. Collapsing them leads to misattribution.</div>
     </div>
 
+    <!-- 9: Experimental Setup -->
     <div class="slide">
-      <div class="slide-title"><div class="slide-num bg-green">6</div><h2 class="slide-title-text green">Experimental Setup</h2></div>
+      <div class="slide-title"><div class="slide-num bg-green">9</div><h2 class="slide-title-text green">Experimental Setup</h2></div>
       <table>
         <tr><th class="bg-green">Component</th><th class="bg-green">Specification</th></tr>
         <tr><td><strong>GPU</strong></td><td>AMD Radeon RX Vega 56 (gfx900), 8 GB HBM2</td></tr>
@@ -168,53 +188,63 @@ if(CMAKE_HIP_COMPILER)
         <tr><td><strong>ROCm endpoint</strong></td><td>Ollama 0.17.5 via :11435, libggml-hip.so</td></tr>
         <tr><td><strong>Vulkan endpoint</strong></td><td>Ollama 0.17.4 via :11434, libggml-vulkan.so</td></tr>
         <tr><td><strong>Model / workload</strong></td><td>qwen3.5:2b, NUM_PREDICT=512, num_gpu=0,1,2,-1</td></tr>
-        <tr><td><strong>Override</strong></td><td class="orange"><strong>HSA_OVERRIDE_GFX_VERSION=9.0.0 (ROCm service only)</strong></td></tr>
+        <tr><td><strong>ROCm override</strong></td><td class="orange"><strong>HSA_OVERRIDE_GFX_VERSION=9.0.0 (ROCm service only; Vulkan service: no override applied)</strong></td></tr>
       </table>
+      <div class="caution"><strong>Override note:</strong> The ROCm result was obtained under an override-assisted service configuration (<code>HSA_OVERRIDE_GFX_VERSION=9.0.0</code>). This supports conditional executability in this setup — not official support restoration. The Vulkan service ran without any override.</div>
+      <div class="takeaway">Two services, same hardware, one-epoch run. ROCm result is override-dependent; Vulkan result is not.</div>
     </div>
 
+    <!-- 10: Matched Results -->
     <div class="slide">
-      <div class="slide-title"><div class="slide-num bg-green">6</div><h2 class="slide-title-text green">Matched Results (High-Level)</h2></div>
+      <div class="slide-title"><div class="slide-num bg-green">10</div><h2 class="slide-title-text green">Matched Results — In These Runs (High-Level)</h2></div>
       <table>
-        <tr><th class="bg-green">num_gpu</th><th class="bg-green">ROCm (:11435) run_20260307_012643</th><th class="bg-green">Vulkan (:11434) run_20260307_013050</th></tr>
+        <tr><th class="bg-green">num_gpu</th><th class="bg-green">ROCm (:11435) run_20260307_012643 <span style="font-weight:normal;font-size:14px;">[override-assisted]</span></th><th class="bg-green">Vulkan (:11434) run_20260307_013050 <span style="font-weight:normal;font-size:14px;">[no override]</span></th></tr>
         <tr><td><strong>0</strong></td><td class="green"><strong>OK</strong> (46.689s, eval_count=512)</td><td class="green"><strong>OK</strong> (45.002s, eval_count=512)</td></tr>
         <tr><td><strong>1</strong></td><td class="green"><strong>OK</strong> (48.742s)</td><td class="red"><strong>HTTP 500 + SIGSEGV</strong> (2.672s)</td></tr>
         <tr><td><strong>2</strong></td><td class="green"><strong>OK</strong> (47.748s)</td><td class="red"><strong>HTTP 500 + SIGSEGV</strong> (7.640s)</td></tr>
         <tr><td><strong>-1</strong></td><td class="green"><strong>OK</strong> (44.265s)</td><td class="red"><strong>HTTP 500 + SIGSEGV</strong> (9.816s)</td></tr>
       </table>
-      <p style="font-size:18px;"><strong>Key point:</strong> In these runs, Vulkan failure is conditional (`num_gpu &gt;= 1`), not universal.</p>
+      <p style="font-size:18px; margin-top:10px;"><strong>Observation (in these runs):</strong> Vulkan failure is conditional on num_gpu &gt;= 1, not universal. ROCm/HIP passed all tested values under override-assisted configuration.</p>
+      <div class="takeaway">Backend-dependent outcome confirmed within this single epoch, single model, matched run. Generalization beyond this scope requires additional runs.</div>
     </div>
 
+    <!-- 11: Run-Level Data -->
     <div class="slide">
-      <div class="slide-title"><div class="slide-num bg-green">6</div><h2 class="slide-title-text green">Run-Level Data Snapshot</h2></div>
+      <div class="slide-title"><div class="slide-num bg-green">11</div><h2 class="slide-title-text green">Run-Level Data Snapshot</h2></div>
       <table>
         <tr><th class="bg-green">Run</th><th class="bg-green">num_gpu</th><th class="bg-green">status</th><th class="bg-green">elapsed_sec</th><th class="bg-green">eval_duration(ns)</th><th class="bg-green">response_chars</th></tr>
-        <tr><td>run_20260307_012643</td><td>0</td><td class="green"><strong>ok</strong></td><td>46.689</td><td>42016540155</td><td>0</td></tr>
-        <tr><td>run_20260307_012643</td><td>1</td><td class="green"><strong>ok</strong></td><td>48.742</td><td>43853670072</td><td>1809</td></tr>
-        <tr><td>run_20260307_012643</td><td>2</td><td class="green"><strong>ok</strong></td><td>47.748</td><td>42307474936</td><td>1951</td></tr>
-        <tr><td>run_20260307_012643</td><td>-1</td><td class="green"><strong>ok</strong></td><td>44.265</td><td>42084598410</td><td>1849</td></tr>
-        <tr><td>run_20260307_013050</td><td>0</td><td class="green"><strong>ok</strong></td><td>45.002</td><td>41778665097</td><td>0</td></tr>
-        <tr><td>run_20260307_013050</td><td>1/2/-1</td><td class="red"><strong>error</strong></td><td>2.672 / 7.640 / 9.816</td><td>-</td><td>-</td></tr>
+        <tr><td>run_20260307_012643 (ROCm)</td><td>0</td><td class="green"><strong>ok</strong></td><td>46.689</td><td>42016540155</td><td>0</td></tr>
+        <tr><td>run_20260307_012643 (ROCm)</td><td>1</td><td class="green"><strong>ok</strong></td><td>48.742</td><td>43853670072</td><td>1809</td></tr>
+        <tr><td>run_20260307_012643 (ROCm)</td><td>2</td><td class="green"><strong>ok</strong></td><td>47.748</td><td>42307474936</td><td>1951</td></tr>
+        <tr><td>run_20260307_012643 (ROCm)</td><td>-1</td><td class="green"><strong>ok</strong></td><td>44.265</td><td>42084598410</td><td>1849</td></tr>
+        <tr><td>run_20260307_013050 (Vulkan)</td><td>0</td><td class="green"><strong>ok</strong></td><td>45.002</td><td>41778665097</td><td>0</td></tr>
+        <tr><td>run_20260307_013050 (Vulkan)</td><td>1/2/-1</td><td class="red"><strong>error</strong></td><td>2.672 / 7.640 / 9.816</td><td>—</td><td>—</td></tr>
       </table>
-      <p class="dim" style="font-size:17px;">Data source: vega_work_log/*/result.json</p>
+      <p class="dim" style="font-size:17px; margin-top:8px;">Data source: vega_work_log/*/result.json</p>
+      <div class="takeaway">Raw numbers per run_id. One epoch each. Error elapsed time reflects time-to-crash, not inference time.</div>
     </div>
 
+    <!-- 12: Vulkan Failure Timeline -->
     <div class="slide">
-      <div class="slide-title"><div class="slide-num bg-green">6</div><h2 class="slide-title-text green">Vulkan Failure Timeline (Journal Evidence)</h2></div>
+      <div class="slide-title"><div class="slide-num bg-green">12</div><h2 class="slide-title-text green">Vulkan Failure Timeline (Journal Evidence)</h2></div>
       <table>
         <tr><th class="bg-green">Timestamp (JST)</th><th class="bg-green">Event</th><th class="bg-green">Meaning</th></tr>
-        <tr><td>01:31:37</td><td>load_backend: libggml-vulkan.so loaded</td><td>Backend init completed</td></tr>
-        <tr><td>01:31:39</td><td>SIGSEGV: segmentation violation</td><td>Runner process crash observed</td></tr>
-        <tr><td>01:31:39</td><td>ggml_backend_sched_graph_compute_async</td><td>Crash in compute graph scheduling path</td></tr>
-        <tr><td>01:31:39</td><td>ollamarunner.(*Server).computeBatch</td><td>Failure occurs during compute batch execution</td></tr>
-        <tr><td>01:31:39</td><td>server.go:1610 post predict ... EOF</td><td>API side sees runner termination as EOF</td></tr>
-        <tr><td>01:31:47 / 01:31:57</td><td>Same sequence repeats</td><td>The same failure pattern appears for num_gpu=2 and -1 in this run log</td></tr>
+        <tr><td>01:31:37</td><td>load_backend: libggml-vulkan.so loaded; "int dot: 0 | matrix cores: none"</td><td>Backend init completed; hardware feature caps confirmed</td></tr>
+        <tr><td>01:31:38</td><td>offloaded 1/25 layers to GPU (Vulkan0); compute graph Vulkan0: 257.1 MiB</td><td>Model load and GPU allocation completed normally</td></tr>
+        <tr><td>01:31:39</td><td>llama runner started in 1.72 seconds</td><td>Runner startup succeeded</td></tr>
+        <tr><td>01:31:39</td><td>SIGSEGV: segmentation violation (PC=0x7efbc5b801b5, addr=0x3a8000)</td><td>Runner process crash — first inference batch, not during load</td></tr>
+        <tr><td>01:31:39</td><td>ggml_backend_sched_graph_compute_async → computeBatch(runner.go:716)</td><td>Crash in compute graph scheduling path, via cgo</td></tr>
+        <tr><td>01:31:39</td><td>server.go: post predict … EOF</td><td>API side sees runner termination as EOF → HTTP 500</td></tr>
+        <tr><td>01:31:47 / 01:31:57</td><td>Same sequence repeats for num_gpu=2 and -1</td><td>Consistent pattern within these runs for all GPU-offload cases</td></tr>
       </table>
-      <p class="dim" style="font-size:17px;">Source: vega_work_log/run_20260307_013050/ollama_journal_since_start.txt</p>
+      <p class="dim" style="font-size:16px; margin-top:8px;">Source: vega_work_log/run_20260307_013050/ollama_journal_since_start.txt</p>
+      <div class="takeaway">Crash occurs at first compute, not at load — consistent with a compute-path issue, not an allocation or init issue.</div>
     </div>
 
+    <!-- 13: Full Stack Trace -->
     <div class="slide">
-      <div class="slide-title"><div class="slide-num bg-red">6b</div><h2 class="slide-title-text red">Vulkan Crash: Full Stack Trace Evidence</h2></div>
-      <p style="font-size:17px; margin-bottom:8px;"><strong>From:</strong> <code>ollama_journal_since_start.txt</code> (run_20260307_013050), 01:31:39 JST — immediately after runner started</p>
+      <div class="slide-title"><div class="slide-num bg-red">13</div><h2 class="slide-title-text red">Vulkan Crash: Full Stack Trace (Journal, 01:31:39 JST)</h2></div>
+      <p style="font-size:17px; margin-bottom:8px;"><strong>From:</strong> <code>vega_work_log/run_20260307_013050/ollama_journal_since_start.txt</code> — immediately after runner reported ready</p>
       <pre style="background:#1a1a2e; color:#e0e0e0; padding:14px; border-radius:8px; font-size:13.5px; line-height:1.55; overflow:auto;">SIGSEGV: segmentation violation
 PC=0x7efbc5b801b5 m=41 sigcode=1 addr=0x3a8000
 signal arrived during cgo execution
@@ -224,100 +254,121 @@ runtime.cgocall(0x55e54a0e2710, 0xc0000bdaa0)
     runtime/cgocall.go:167
 github.com/ollama/ollama/ml/backend/ggml._Cfunc_ggml_backend_sched_graph_compute_async(...)
     _cgo_gotypes.go:979
-github.com/ollama/ollama/ml/backend/ggml.(*Context).ComputeWithNotify.func2(...)
-    ml/backend/ggml/ggml.go:825
 github.com/ollama/ollama/ml/backend/ggml.(*Context).ComputeWithNotify(...)
     ml/backend/ggml/ggml.go:825 +0x1b2
 github.com/ollama/ollama/runner/ollamarunner.(*Server).computeBatch(...)
     runner/ollamarunner/runner.go:716 +0x862
 github.com/ollama/ollama/runner/ollamarunner.(*Server).run.gowrap1()
     runner/ollamarunner/runner.go:459</pre>
-      <p style="font-size:17px;"><strong class="red">Crash point:</strong> C function <code>ggml_backend_sched_graph_compute_async</code> called via cgo from <code>ComputeWithNotify(ggml.go:825)</code> → <code>computeBatch(runner.go:716)</code>. The runner process terminates; server.go sees EOF at 01:31:39.</p>
+      <p style="font-size:17px; margin-top:8px;"><strong class="red">Crash point:</strong> C function <code>ggml_backend_sched_graph_compute_async</code> called via cgo. Go runtime receives SIGSEGV and terminates the runner. The exact Vulkan API call within that C function is not resolved from this trace alone.</p>
+      <div class="takeaway">Stack trace is factual. Root cause within ggml_backend_sched_graph_compute_async (C/Vulkan side) remains unresolved — this is a stated limitation.</div>
     </div>
 
+    <!-- 14: Vulkan AMD_GCN -->
     <div class="slide">
-      <div class="slide-title"><div class="slide-num bg-orange">6c</div><h2 class="slide-title-text orange">Vulkan: gfx900 AMD_GCN Detection & Feature Impact</h2></div>
+      <div class="slide-title"><div class="slide-num bg-orange">14</div><h2 class="slide-title-text orange">Vulkan: gfx900 AMD_GCN Classification & Feature Impact</h2></div>
       <table style="margin-bottom:10px;">
         <tr><th class="bg-orange">Code location</th><th class="bg-orange">Content</th><th class="bg-orange">Impact on gfx900</th></tr>
         <tr><td><code>ggml-vulkan.cpp:250-252</code></td><td><code>enum vk_device_architecture { OTHER, AMD_GCN, AMD_RDNA1, AMD_RDNA2, AMD_RDNA3 }</code></td><td>gfx900 → AMD_GCN branch</td></tr>
         <tr><td><code>ggml-vulkan.cpp:296-297</code></td><td><code>if (maxSubgroupSize==64 &amp;&amp; minSubgroupSize==64) return AMD_GCN;</code></td><td>GCN wave64-only → classified AMD_GCN</td></tr>
         <tr><td><code>ggml-vulkan.cpp:3964</code></td><td><code>use_subgroups = subgroup_arithmetic &amp;&amp; arch != AMD_GCN</code></td><td class="red">Subgroup arithmetic <strong>disabled</strong> for gfx900</td></tr>
-        <tr><td><code>ggml-vulkan.cpp:3241-3243</code></td><td>AMD_GCN + open-source driver → altered warptile: <code>m_warptile_mmq = {256,64,64,32,16,16,2,2,2,1,16}</code></td><td>Different matrix multiply tile parameters</td></tr>
+        <tr><td><code>ggml-vulkan.cpp:3241-3243</code></td><td>AMD_GCN + open-source driver → altered warptile: <code>{256,64,64,32,16,16,2,2,2,1,16}</code></td><td>Different matrix multiply tile parameters from RDNA</td></tr>
         <tr><td><code>ggml-vulkan.cpp:3953-3957</code></td><td>AMD_GCN: <code>rm_stdq=2, rm_kq=4, rm_stdq_int=4</code></td><td>Different row-reduce parameters</td></tr>
       </table>
       <p style="font-size:17px; margin-bottom:6px;"><strong>Journal evidence (01:31:37):</strong></p>
       <pre style="background:#1a1a2e; color:#e0e0e0; padding:10px; border-radius:6px; font-size:14px;">ggml_vulkan: 0 = AMD Radeon RX Vega (RADV VEGA10) (radv) |
   uma: 0 | fp16: 1 | bf16: 0 | warp size: 64 |
-  shared memory: 65536 | <span style="color:#ff6b6b">int dot: 0</span> | matrix cores: none</pre>
-      <p class="dim" style="font-size:16px;"><code>int dot: 0</code> = VK_KHR_shader_integer_dot_product not hardware-accelerated on RADV/Vega10. <code>matrix cores: none</code> = no cooperative matrix support. Vulkan RADV driver identifies gfx900 as VEGA10.</p>
+  shared memory: 65536 | int dot: 0 | matrix cores: none</pre>
+      <p class="dim" style="font-size:15px;"><code>int dot: 0</code> = VK_KHR_shader_integer_dot_product not hardware-accelerated. <code>matrix cores: none</code> = no cooperative matrix. Both are consistent with source-level AMD_GCN code paths.</p>
+      <div class="takeaway">Vulkan correctly identifies gfx900 as AMD_GCN and applies GCN-specific code paths. Whether those paths are crash-safe for this GPU is what these runs expose.</div>
     </div>
 
+    <!-- 15: Deep Code Tracking -->
     <div class="slide">
-      <div class="slide-title"><div class="slide-num bg-blue">7</div><h2 class="slide-title-text blue">Deep Code Tracking Details (11-Point Trace)</h2></div>
+      <div class="slide-title"><div class="slide-num bg-blue">15</div><h2 class="slide-title-text blue">Deep Code Tracking Summary (11-Point Trace)</h2></div>
       <table>
-        <tr><th class="bg-blue">Point</th><th class="bg-blue">File / Line</th><th class="bg-blue">What it proves</th></tr>
-        <tr><td>1-2</td><td>ollama/_types.py:104-110, _client.py:281-305</td><td>num_gpu is load-time option forwarded as-is to /api/generate</td></tr>
-        <tr><td>3-4</td><td>ollama/api/types.go:600-608, 1071-1076</td><td>NumGPU belongs to model-load options; default -1 is dynamic policy</td></tr>
-        <tr><td>5</td><td>ollama/cmd/interactive.go:112</td><td>CLI explicitly defines num_gpu as "number of layers"</td></tr>
-        <tr><td>6-7</td><td>ollama/llm/server.go:992, 1063-1076</td><td>NumGPU passed and processed as requestedLayers</td></tr>
-        <tr><td>8</td><td>runner/llamarunner/runner.go:906-925</td><td>NumGpuLayers computed from layer counts</td></tr>
-        <tr><td>9-11</td><td>llama/llama.go + include/llama.h:289 + common.h:382</td><td>Mapped to n_gpu_layers (layers in VRAM); -1/<=-2 semantics documented</td></tr>
+        <tr><th class="bg-blue">Point</th><th class="bg-blue">File / Line</th><th class="bg-blue">What it establishes</th></tr>
+        <tr><td>1–2</td><td>ollama/_types.py:104-110, _client.py:281-305</td><td>num_gpu is a load-time option forwarded as-is to /api/generate; no GPU-count semantics in client</td></tr>
+        <tr><td>3–4</td><td>ollama/api/types.go:600-608, 1071-1076</td><td>NumGPU belongs to model-load options; default -1 means dynamic policy, not "use all GPUs"</td></tr>
+        <tr><td>5</td><td>ollama/cmd/interactive.go:112</td><td>CLI defines num_gpu explicitly as "the number of layers to send to the GPU"</td></tr>
+        <tr><td>6–7</td><td>ollama/llm/server.go:992, 1063-1076</td><td>NumGPU is passed as requestedLayers; capped at len(layers) — confirms layer semantics</td></tr>
+        <tr><td>8</td><td>runner/llamarunner/runner.go:906-924</td><td>NumGpuLayers accumulated from layer counts per device — not device count</td></tr>
+        <tr><td>9–11</td><td>llama/llama.go:264-267, include/llama.h:289</td><td>n_gpu_layers: "number of layers to store in VRAM; negative value means all layers"</td></tr>
       </table>
-      <p><strong class="red">Inference control:</strong> do not treat num_gpu>=2 as evidence of multi-GPU.</p>
+      <div class="takeaway">Nine independent source points converge on the same conclusion: num_gpu controls layer offload count, not GPU device selection.</div>
     </div>
 
+    <!-- 16: Failure Diagnosis -->
     <div class="slide">
-      <div class="slide-title"><div class="slide-num bg-red">8</div><h2 class="slide-title-text red">Failure Diagnosis</h2></div>
-      <table style="margin-bottom: 18px;">
-        <tr><th style="background-color: #7B241C;">Hypothesis</th><th style="background-color: #7B241C;">Expected Evidence</th><th style="background-color: #7B241C;">Observed</th></tr>
-        <tr><td>Vega is generally unusable</td><td>Both backends fail on same GPU</td><td class="green"><strong>Contradicted: ROCm/HIP succeeded</strong></td></tr>
-        <tr><td>num_gpu means GPU count</td><td>Failure implies multi-GPU entry</td><td class="green"><strong>Contradicted: code trace = offloaded layers</strong></td></tr>
-        <tr><td class="orange"><strong>Vulkan compute-path instability</strong></td><td>Load OK; crash after runner start in compute stack</td><td class="red"><strong>MATCH</strong></td></tr>
+      <div class="slide-title"><div class="slide-num bg-red">16</div><h2 class="slide-title-text red">Failure Diagnosis</h2></div>
+      <table style="margin-bottom: 14px;">
+        <tr><th style="background-color: #7B241C;">Hypothesis</th><th style="background-color: #7B241C;">Expected evidence</th><th style="background-color: #7B241C;">Observed (in these runs)</th></tr>
+        <tr><td>Vega is generally unusable</td><td>Both backends fail on same GPU</td><td class="green"><strong>Contradicted: ROCm/HIP succeeded in these runs</strong></td></tr>
+        <tr><td>num_gpu means GPU count</td><td>Failure implies multi-GPU entry</td><td class="green"><strong>Contradicted: code trace establishes layer-count semantics</strong></td></tr>
+        <tr><td class="orange"><strong>Vulkan compute-path issue on AMD_GCN</strong></td><td>Load succeeds; crash at first compute batch via cgo</td><td class="red"><strong>Consistent with observed evidence</strong></td></tr>
       </table>
-      <h3 class="blue" style="font-size:24px; margin-bottom:8px;">Why gfx900 Still Works Sometimes</h3>
-      <p>ROCm changelog wording is closer to "no longer built by default" than "forbidden." This local install includes gfx900 hsaco artifacts and libggml-hip.so references. Within this evidence scope, official non-listing indicates unguaranteed/untested status, not immediate impossibility.</p>
+      <h3 class="blue" style="font-size:22px; margin-bottom:8px;">Three-Tier Verdict (Based on Collected Evidence)</h3>
+      <table>
+        <tr><th class="bg-blue">Tier</th><th class="bg-blue">Statement</th></tr>
+        <tr><td class="red"><strong>1. Official support</strong></td><td>gfx900 is not officially supported in ROCm 7.2 or ollama's default build targets.</td></tr>
+        <tr><td class="orange"><strong>2. Conditional executability</strong></td><td>In this environment, with HSA_OVERRIDE_GFX_VERSION=9.0.0 and pre-existing artifacts, ROCm/HIP ran successfully across all tested num_gpu values in these runs.</td></tr>
+        <tr><td class="blue"><strong>3. Backend-dependent stability</strong></td><td>Under matched conditions in these runs, Vulkan SIGSEGV'd for num_gpu&gt;=1 while ROCm/HIP did not — the same hardware showed different compute-path outcomes.</td></tr>
+      </table>
+      <div class="takeaway">The three tiers are independent claims. Tier 2 does not contradict Tier 1; Tier 3 does not generalize beyond the tested runs.</div>
     </div>
 
+    <!-- 17: Reproducibility Package -->
     <div class="slide">
-      <div class="slide-title"><div class="slide-num bg-orange">9</div><h2 class="slide-title-text orange">Reproducibility Package</h2></div>
+      <div class="slide-title"><div class="slide-num bg-orange">17</div><h2 class="slide-title-text orange">Reproducibility Package</h2></div>
       <table>
         <tr><th class="bg-orange">Artifact</th><th class="bg-orange">Path</th><th class="bg-orange">Role</th></tr>
         <tr><td>Primary metrics</td><td>vega_work_log/run_*/result.json</td><td>Status, latency, error_type per num_gpu case</td></tr>
-        <tr><td>Crash phase logs</td><td>vega_work_log/run_*/ollama_journal_since_start.txt</td><td>Stack trace and EOF timing</td></tr>
-        <tr><td>Backend identity</td><td>vega_work_log/run_*/backend_probe.txt</td><td>Confirms ROCm vs Vulkan service path</td></tr>
+        <tr><td>Crash phase logs</td><td>vega_work_log/run_*/ollama_journal_since_start.txt</td><td>Full stack trace and EOF timing</td></tr>
+        <tr><td>Backend identity</td><td>vega_work_log/run_*/backend_probe.txt</td><td>Confirms ROCm vs Vulkan service path, device recognition</td></tr>
         <tr><td>Code semantics trace</td><td>work_log/investigations/2026-03-07_numgpu_semantics_trace.md</td><td>Line-level evidence for num_gpu semantics</td></tr>
         <tr><td>Gate analysis</td><td>work_log/investigations/2026-03-07_gfx900_gate_matrix.md</td><td>Layered block/allow model for gfx900</td></tr>
       </table>
-      <p style="font-size:18px;"><strong>Replay command:</strong> `OLLAMA_HOST=http://127.0.0.1:11435|11434 EPOCHS=1 NUM_PREDICT=512 NUM_GPU=0,1,2,-1 python vega-loop_qwen_rocm.py`</p>
+      <p style="font-size:17px; margin-top:10px;"><strong>Replay command:</strong> <code>OLLAMA_HOST=http://127.0.0.1:11435|11434 EPOCHS=1 NUM_PREDICT=512 NUM_GPU=0,1,2,-1 python vega-loop_qwen_rocm.py</code></p>
+      <div class="takeaway">Every claim in this deck is linked to a run_id + file path. Replaying with the same service configuration should reproduce the observed behavior.</div>
     </div>
 
+    <!-- 18: Limitations -->
     <div class="slide">
-      <h2 class="slide-title-text dim" style="margin-bottom: 16px;">Limitations & Future Work</h2>
-      <p style="margin-bottom: 14px;">
-        <strong class="red">Limitations:</strong> Current matched comparison is one-epoch and single-model (qwen3.5:2b). Vulkan/ROCm versions differ (0.17.4 vs 0.17.5). tinyllama behaved differently from qwen3.5 on Vulkan.
+      <div class="slide-title"><div class="slide-num bg-red">18</div><h2 class="slide-title-text red">Limitations & Future Work</h2></div>
+      <p style="margin-bottom: 10px;">
+        <strong class="red">Limitations:</strong>
       </p>
-      <p>
-        <strong class="blue">Future work:</strong> Multi-epoch stress runs, more models (llm-jp, phi-3), ROCm 6.x vs 7.x comparison, and GGML_CUDA_NO_PEER_COPY experiments to isolate compute-path failure conditions.
+      <ul style="font-size:20px;">
+        <li>One epoch, single model (qwen3.5:2b). Behavior under multi-epoch stress or other models is unknown.</li>
+        <li>Ollama versions differ between endpoints (0.17.4 Vulkan vs 0.17.5 ROCm) — a potential confound.</li>
+        <li>ROCm result depends on <code>HSA_OVERRIDE_GFX_VERSION=9.0.0</code>; outcome without the override is not tested here.</li>
+        <li>Root cause within <code>ggml_backend_sched_graph_compute_async</code> (C/Vulkan side) is not resolved from the Go stack trace alone.</li>
+        <li>tinyllama showed different Vulkan behavior — gfx900 Vulkan stability may be model- or workload-dependent.</li>
+      </ul>
+      <p style="margin-top:10px;">
+        <strong class="blue">Future work:</strong> Multi-epoch stress runs; matched Ollama version pair; same-version override-off vs override-on comparison; deeper Vulkan trace (RADV validation layers); additional models (llm-jp, phi-3).
       </p>
+      <div class="takeaway">Claims are scoped to the tested setup. The listed confounds are the next variables to control.</div>
     </div>
 
+    <!-- 19: Takeaway -->
     <div class="slide">
-      <div class="slide-title"><div class="slide-num bg-green">10</div><h2 class="slide-title-text green">Takeaway & Key Messages</h2></div>
+      <div class="slide-title"><div class="slide-num bg-green">19</div><h2 class="slide-title-text green">Takeaway & Key Messages</h2></div>
       <div class="three-col">
-        <div class="card" style="border-top: 8px solid #1B5E20;">
-          <h3 class="green" style="font-size: 22px; margin-top: 0;">Support Status vs Execution Reality</h3>
-          <p style="font-size: 18px;">Official non-listing does not automatically imply non-execution. In our gate analysis, five of six examined layers retained paths that may allow gfx900 execution in this environment.</p>
-        </div>
-        <div class="card" style="border-top: 8px solid #0D47A1;">
-          <h3 class="blue" style="font-size: 22px; margin-top: 0;">Backend Choice Matters Under Matched Conditions</h3>
-          <p style="font-size: 18px;">On identical hardware and workload, ROCm/HIP passed all tested num_gpu cases, while Vulkan failed for num_gpu>=1 in the tested runs.</p>
+        <div class="card" style="border-top: 8px solid #B71C1C;">
+          <h3 class="red" style="font-size: 20px; margin-top: 0;">Not officially supported</h3>
+          <p style="font-size: 17px;">gfx900 is absent from the ROCm 7.2 support matrix and ollama's default HIP build targets. This is a factual statement about vendor policy, not execution capability.</p>
         </div>
         <div class="card" style="border-top: 8px solid #E65100;">
-          <h3 class="orange" style="font-size: 22px; margin-top: 0;">Evidence Before Claims</h3>
-          <p style="font-size: 18px;">Every claim is linked to run_id + file path + line-level code trace for reproducibility.</p>
+          <h3 class="orange" style="font-size: 20px; margin-top: 0;">Conditionally executable</h3>
+          <p style="font-size: 17px;">In this environment, under override-assisted configuration, ROCm/HIP ran across all tested num_gpu values in these runs. Five of six examined gate layers retained executable paths.</p>
+        </div>
+        <div class="card" style="border-top: 8px solid #0D47A1;">
+          <h3 class="blue" style="font-size: 20px; margin-top: 0;">Backend-dependent stability</h3>
+          <p style="font-size: 17px;">On identical hardware and workload in these runs, Vulkan SIGSEGV'd for num_gpu&gt;=1 while ROCm/HIP did not. Backend choice — not hardware — determined the observed outcome.</p>
         </div>
       </div>
-      <p class="dim" style="text-align: center; font-style: italic; margin-top: 20px; font-size: 23px;">Within this tested scope: non-listed does not always mean unusable. | Backend-dependent behavior matters.</p>
+      <p class="dim" style="text-align: center; font-style: italic; margin-top: 18px; font-size: 20px;">Based on the collected evidence: "not officially supported" and "not executable in any configuration" are distinct statements. | Backend path matters under matched conditions.</p>
     </div>
 
     <div class="footer">Slide <span id="current">1</span> / <span id="total">?</span> (Use Arrow Keys ← → to navigate)</div>
