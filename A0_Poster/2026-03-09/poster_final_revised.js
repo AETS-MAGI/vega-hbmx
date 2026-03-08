@@ -1,0 +1,316 @@
+const pptxgen = require("pptxgenjs");
+const pres = new pptxgen();
+
+// A0 portrait
+pres.defineLayout({ name: "A0", width: 33.11, height: 46.81 });
+pres.layout = "A0";
+pres.author = "Akira Ito";
+pres.title = "Backend-Dependent Stability on Legacy HBM GPUs";
+
+const s = pres.addSlide();
+s.background = { color: "FFFFFF" };
+
+const RED="B71C1C", BLUE="0D47A1", GREEN="1B5E20", ORANGE="E65100";
+const CARD="F5F5F5", CARD2="EEEEEE", BDR="BDBDBD", TXT="212121", DIM="616161";
+const W=33.11, H=46.81, M=0.5, G=0.4;
+const CW=(W-2*M-G)/2, LX=M, RX=M+CW+G;
+
+const mkSh=()=>({type:"outer",blur:2,offset:1,angle:135,color:"000000",opacity:0.08});
+
+function hdr(x,y,w,num,title,col){
+  s.addShape(pres.shapes.OVAL,{x,y,w:0.9,h:0.9,fill:{color:col}});
+  s.addText(num,{x,y,w:0.9,h:0.9,fontSize:32,fontFace:"Arial",color:"FFFFFF",bold:true,align:"center",valign:"middle"});
+  s.addText(title,{x:x+1.05,y,w:w-1.05,h:0.9,fontSize:38,fontFace:"Arial Black",color:col,bold:true,valign:"middle",margin:0});
+}
+function card(x,y,w,h){s.addShape(pres.shapes.RECTANGLE,{x,y,w,h,fill:{color:CARD},shadow:mkSh()});}
+function bullets(x,y,w,h,items,sz){
+  const t=items.map((it,i)=>{
+    if(typeof it==="string")return{text:it,options:{bullet:true,breakLine:i<items.length-1,fontSize:sz||22,color:TXT}};
+    return{text:it.text,options:{bullet:true,breakLine:i<items.length-1,fontSize:sz||22,color:it.color||TXT,bold:it.bold||false}};
+  });
+  s.addText(t,{x,y,w,h,fontFace:"Calibri",valign:"top",margin:[0.1,0.2,0.1,0.4]});
+}
+
+// ===== TITLE =====
+s.addShape(pres.shapes.RECTANGLE,{x:0,y:0,w:W,h:4.5,fill:{color:RED}});
+s.addShape(pres.shapes.RECTANGLE,{x:0,y:4.1,w:W,h:0.4,fill:{color:"7F1D1D"}});
+s.addText("Backend-Dependent Stability on Legacy HBM GPUs",{x:M,y:0.3,w:W-2*M,h:1.8,fontSize:72,fontFace:"Arial Black",color:"FFFFFF",bold:true,align:"center",valign:"middle"});
+s.addText("ROCm/HIP vs Vulkan on Vega/gfx900: residual paths, offload-layer semantics, and reproducible diagnosis",{x:M,y:2.1,w:W-2*M,h:0.8,fontSize:32,fontFace:"Calibri",color:"FFCDD2",italic:true,align:"center",valign:"middle"});
+s.addText("Akira Ito  |  AETS (Akatsuki Enterprise Technology Solutions)  |  aets-giken@hiroshima-aktk.com",{x:M,y:2.9,w:W-2*M,h:0.6,fontSize:26,fontFace:"Calibri",color:"FFFFFF",align:"center",valign:"middle"});
+s.addText("IEICE GNW-68  |  Kyushu Sangyo University  |  March 9, 2026",{x:M,y:3.5,w:W-2*M,h:0.5,fontSize:22,fontFace:"Calibri",color:"FFCDD2",align:"center",valign:"middle"});
+
+// ===== LEFT COLUMN =====
+let ly=5.0;
+
+// 1. Background
+hdr(LX,ly,CW,"1","Background & Motivation",RED); ly+=1.1;
+card(LX,ly,CW,3.6);
+bullets(LX,ly,CW,3.6,[
+  "Official support matrices exclude gfx900 in ROCm 7.2, but real systems can still execute through residual code and artifact paths.",
+  "For students and small labs, the key question is whether execution is possible, stable, and reproducible.",
+  "We built a matched dual-backend testbed on the same Vega device to separate support policy, backend choice, and runtime behavior.",
+  {text:'Goal: explain why "unsupported" and "unusable" are not the same statement.',bold:true},
+]); ly+=3.8;
+
+// 2. Problem Statement
+hdr(LX,ly,CW,"2","Problem Statement",RED); ly+=1.1;
+card(LX,ly,CW,3.0);
+bullets(LX,ly,CW,3.0,[
+  "Legacy Vega GPUs are often treated as categorically unsuitable for modern ROCm workloads.",
+  "Success or failure may be decided at different layers: distribution presets, build targets, init validation, backend macros, or runtime compute paths.",
+  {text:"We ask: is instability caused by Vega itself, or by a specific backend path under matched conditions?",bold:true},
+]); ly+=3.2;
+
+// 3. Confirmed Facts (AUDIT: replaced external charts with repo-backed gate analysis)
+hdr(LX,ly,CW,"3","Confirmed Facts from Investigation",BLUE); ly+=1.1;
+
+// 3A: gfx900 Gate Matrix
+card(LX,ly,CW,6.5);
+s.addText("A. gfx900 Gate Matrix (repo: work_log/investigations/gfx900_gate_matrix.md)",{
+  x:LX+0.2,y:ly+0.15,w:CW-0.4,h:0.6,fontSize:24,fontFace:"Arial",color:BLUE,bold:true
+});
+
+const gateH=[
+  {text:"Layer",options:{fill:{color:BLUE},color:"FFFFFF",bold:true,fontSize:20}},
+  {text:"Current handling of gfx900",options:{fill:{color:BLUE},color:"FFFFFF",bold:true,fontSize:20}},
+  {text:"Blocks / Allows",options:{fill:{color:BLUE},color:"FFFFFF",bold:true,fontSize:20}},
+];
+const gateB=[
+  [{text:"Official matrix\n(ROCm 7.2)",options:{fontSize:18,color:TXT,bold:true}},
+   {text:"gfx900 not listed in GPU target list",options:{fontSize:18,color:TXT}},
+   {text:"Blocks\n(official scope)",options:{fontSize:18,color:RED,bold:true}}],
+  [{text:"CMake filter\n(ollama)",options:{fontSize:18,color:TXT,bold:true}},
+   {text:"Default regex excludes gfx900; manual override possible via AMDGPU_TARGETS",options:{fontSize:18,color:TXT}},
+   {text:"Blocks default\n/ Allows manual",options:{fontSize:18,color:ORANGE,bold:true}}],
+  [{text:"rocBLAS\nartifacts",options:{fontSize:18,color:TXT,bold:true}},
+   {text:"Kernels.so-000-gfx900.hsaco found in /usr/lib/ollama/rocblas/library/",options:{fontSize:18,color:TXT}},
+   {text:"Allows",options:{fontSize:18,color:GREEN,bold:true}}],
+  [{text:"Runner init\nvalidation",options:{fontSize:18,color:TXT,bold:true}},
+   {text:"Deep init probe (GGML_CUDA_INIT=1): gfx900 recognized as valid agent",options:{fontSize:18,color:TXT}},
+   {text:"Allows",options:{fontSize:18,color:GREEN,bold:true}}],
+  [{text:"Source macros\n(hip.h, common.cuh)",options:{fontSize:18,color:TXT,bold:true}},
+   {text:"__gfx900__ → GCN5 classification retained; dp4a path exists",options:{fontSize:18,color:TXT}},
+   {text:"Allows",options:{fontSize:18,color:GREEN,bold:true}}],
+  [{text:"Runtime\nexecution",options:{fontSize:18,color:TXT,bold:true}},
+   {text:"ROCm/HIP: all num_gpu values OK. Vulkan: SIGSEGV when num_gpu>=1",options:{fontSize:18,color:TXT}},
+   {text:"Backend-\ndependent",options:{fontSize:18,color:ORANGE,bold:true}}],
+];
+s.addTable([gateH,...gateB],{
+  x:LX+0.2,y:ly+0.8,w:CW-0.4,border:{pt:1,color:BDR},
+  colW:[(CW-0.4)*0.2,(CW-0.4)*0.52,(CW-0.4)*0.28],
+  rowH:[0.45,0.75,0.85,0.75,0.75,0.75,0.85],
+}); ly+=6.7;
+
+// 3B: num_gpu semantics
+card(LX,ly,CW,4.5);
+s.addText("B. num_gpu Semantics Trace (repo: work_log/investigations/numgpu_semantics_trace.md)",{
+  x:LX+0.2,y:ly+0.15,w:CW-0.4,h:0.6,fontSize:24,fontFace:"Arial",color:BLUE,bold:true
+});
+const ngH=[
+  {text:"Stage",options:{fill:{color:BLUE},color:"FFFFFF",bold:true,fontSize:18}},
+  {text:"Code location",options:{fill:{color:BLUE},color:"FFFFFF",bold:true,fontSize:18}},
+  {text:"Meaning",options:{fill:{color:BLUE},color:"FFFFFF",bold:true,fontSize:18}},
+];
+const ngB=[
+  [{text:"Python client",options:{fontSize:18,color:TXT,bold:true}},{text:"ollama-python/_types.py:109",options:{fontSize:18,color:TXT}},{text:"Load-time option",options:{fontSize:18,color:TXT}}],
+  [{text:"Ollama CLI",options:{fontSize:18,color:TXT,bold:true}},{text:"cmd/interactive.go:112",options:{fontSize:18,color:TXT}},{text:'"number of layers sent to GPU"',options:{fontSize:18,color:ORANGE,bold:true}}],
+  [{text:"Server assign",options:{fontSize:18,color:TXT,bold:true}},{text:"llm/server.go:992,1063",options:{fontSize:18,color:TXT}},{text:"requestedLayers = NumGPU",options:{fontSize:18,color:TXT}}],
+  [{text:"Runner bridge",options:{fontSize:18,color:TXT,bold:true}},{text:"llama/llama.go:266",options:{fontSize:18,color:TXT}},{text:"cparams.n_gpu_layers",options:{fontSize:18,color:TXT}}],
+  [{text:"llama.cpp",options:{fontSize:18,color:TXT,bold:true}},{text:"include/llama.h:289",options:{fontSize:18,color:TXT}},{text:'"layers stored in VRAM"',options:{fontSize:18,color:ORANGE,bold:true}}],
+];
+s.addTable([ngH,...ngB],{
+  x:LX+0.2,y:ly+0.8,w:CW-0.4,border:{pt:1,color:BDR},
+  colW:[(CW-0.4)*0.2,(CW-0.4)*0.42,(CW-0.4)*0.38],
+  rowH:[0.4,0.55,0.6,0.55,0.55,0.55],
+});
+s.addText([
+  {text:"Conclusion: ",options:{bold:true,color:RED,fontSize:22}},
+  {text:"num_gpu is offloaded layer count, NOT GPU device count. num_gpu>=2 does not imply multi-GPU.",options:{fontSize:22,color:TXT}},
+],{x:LX+0.2,y:ly+3.7,w:CW-0.4,h:0.6,fontFace:"Calibri",valign:"top"});
+ly+=4.7;
+
+// 3C: Related Literature (text only, no external charts — AUDIT compliant)
+card(LX,ly,CW,4.2);
+s.addText("C. Related Literature (cited, not reproduced in this repo)",{
+  x:LX+0.2,y:ly+0.15,w:CW-0.4,h:0.5,fontSize:24,fontFace:"Arial",color:BLUE,bold:true
+});
+bullets(LX+0.1,ly+0.7,CW-0.3,3.4,[
+  "LLNL differential testing (arXiv:2410.09172): 600K+ auto-generated kernels showed FP32 divergence ~9% between NVIDIA V100 and AMD MI250. Root causes: vendor-specific math libraries, compiler flags, HIPIFY artifacts. Motivates our backend-aware validation approach.",
+  "gem5 Vega modeling (Univ. Wisconsin-Madison): GPUFS mode runs real Linux kernel + unmodified amdkfd driver. Validated against physical Vega 56 with avg 6% error. Establishes Vega as academically credible.",
+  "ROCm SDMA workarounds (AMD docs + LUMI reports): HSA_ENABLE_SDMA=0 bypasses faulty DMA with Blit kernel fallback (~80% bandwidth). HSA_OVERRIDE_GFX_VERSION enables unsupported GPU execution — the override used in our experiments.",
+  {text:"These are external references. All claims in this poster are based solely on repo-internal evidence (Sections 3A, 3B, 6).",bold:true,color:DIM},
+],18); ly+=4.4;
+
+// ===== RIGHT COLUMN =====
+const R_TOP=5.0, R_BOTTOM=40.2, R_SRC_BOTTOM=46.1;
+const RS=(R_BOTTOM-R_TOP)/(R_SRC_BOTTOM-R_TOP);
+const rs=(v)=>Number((v*RS).toFixed(3));
+let ry=R_TOP;
+
+// 4. Challenges
+hdr(RX,ry,CW,"4","Engineering Challenges",ORANGE); ry+=rs(1.1);
+card(RX,ry,CW,rs(3.6));
+bullets(RX,ry,CW,rs(3.6),[
+  "gfx900 excluded by official matrices and default build filters, yet residual code and artifacts still retain gfx900 handling.",
+  {text:"`num_gpu` is easily misread as GPU count; our code trace confirms it means offloaded layers.",bold:true},
+  "The same Vega GPU can succeed on ROCm/HIP and fail on Vulkan under the same model and prompt.",
+  "Diagnosis must be layer-by-layer and evidence-driven, not reduced to \"legacy GPU bad\".",
+]); ry+=rs(3.8);
+
+// 5. Investigation Strategy
+hdr(RX,ry,CW,"5","Evidence-First Investigation Strategy",ORANGE); ry+=rs(1.1);
+card(RX,ry,CW,rs(5.6));
+s.addText("Investigation Layers",{x:RX+0.2,y:ry+rs(0.1),w:CW-0.4,h:rs(0.5),fontSize:26,fontFace:"Arial",color:ORANGE,bold:true});
+const invH=[
+  {text:"Layer",options:{fill:{color:ORANGE},color:"FFFFFF",bold:true,fontSize:20}},
+  {text:"Intervention",options:{fill:{color:ORANGE},color:"FFFFFF",bold:true,fontSize:20}},
+  {text:"Effect",options:{fill:{color:ORANGE},color:"FFFFFF",bold:true,fontSize:20}},
+];
+const invB=[
+  [{text:"L1: Distribution\n/ Build",options:{fontSize:20,color:RED,bold:true}},{text:"Inspect support matrix, presets, target filters, installed artifacts",options:{fontSize:20,color:TXT}},{text:"Locate where gfx900 is blocked, allowed, or only partially retained",options:{fontSize:20,color:TXT}}],
+  [{text:"L2: API\nSemantics",options:{fontSize:20,color:ORANGE,bold:true}},{text:"Trace num_gpu through client → server → runner → llama.cpp",options:{fontSize:20,color:TXT}},{text:"Fix interpretation: offloaded layers, not GPU count",options:{fontSize:20,color:TXT}}],
+  [{text:"L3: Runtime\nComparison",options:{fontSize:20,color:BLUE,bold:true}},{text:"Run matched ROCm (:11435) and Vulkan (:11434) tests",options:{fontSize:20,color:TXT}},{text:"Isolate backend-specific failure modes on identical hardware",options:{fontSize:20,color:TXT}}],
+  [{text:"L4: Evidence\nCapture",options:{fontSize:20,color:GREEN,bold:true}},{text:"Structured work logs, journal traces, backend probes, rocm-smi, ollama ps",options:{fontSize:20,color:TXT}},{text:"Localize crashes and make claims reproducible",options:{fontSize:20,color:TXT}}],
+];
+s.addTable([invH,...invB],{
+  x:RX+0.2,y:ry+rs(0.7),w:CW-0.4,border:{pt:1,color:BDR},
+  colW:[(CW-0.4)*0.18,(CW-0.4)*0.45,(CW-0.4)*0.37],
+  rowH:[rs(0.45),rs(1.0),rs(1.0),rs(1.0),rs(1.0)],
+});
+s.addText("Approach prioritizes falsifiable diagnosis and reproducibility over optimistic one-off success.",{
+  x:RX+0.2,y:ry+rs(4.8),w:CW-0.4,h:rs(0.6),fontSize:22,fontFace:"Calibri",color:DIM,italic:true
+}); ry+=rs(5.8);
+
+// 6. Experimental Results (AUDIT: run_ids added, Vulkan condition explicit)
+hdr(RX,ry,CW,"6","Experimental Results",GREEN); ry+=rs(1.1);
+
+// Environment
+card(RX,ry,CW,rs(2.8));
+s.addText("Test Environment",{x:RX+0.2,y:ry+rs(0.1),w:CW-0.4,h:rs(0.5),fontSize:24,fontFace:"Arial",color:GREEN,bold:true});
+const envH=[
+  {text:"Component",options:{fill:{color:GREEN},color:"FFFFFF",bold:true,fontSize:20}},
+  {text:"Specification",options:{fill:{color:GREEN},color:"FFFFFF",bold:true,fontSize:20}},
+];
+const envB=[
+  [{text:"GPU",options:{fontSize:20,color:TXT,bold:true}},{text:"AMD Radeon RX Vega 56 (gfx900), 8 GB HBM2",options:{fontSize:20,color:TXT}}],
+  [{text:"OS / Kernel",options:{fontSize:20,color:TXT,bold:true}},{text:"EndeavourOS, Kernel 6.12.74-1-lts",options:{fontSize:20,color:TXT}}],
+  [{text:"ROCm path",options:{fontSize:20,color:TXT,bold:true}},{text:"Ollama 0.17.5 via :11435, library=ROCm, libggml-hip.so",options:{fontSize:20,color:TXT}}],
+  [{text:"Vulkan path",options:{fontSize:20,color:TXT,bold:true}},{text:"Ollama 0.17.4 via :11434, library=Vulkan, same model/prompt",options:{fontSize:20,color:TXT}}],
+  [{text:"Override",options:{fontSize:20,color:TXT,bold:true}},{text:"HSA_OVERRIDE_GFX_VERSION=9.0.0 (ROCm service only)",options:{fontSize:20,color:ORANGE,bold:true}}],
+  [{text:"Note",options:{fontSize:20,color:DIM,bold:true}},{text:"Vulkan=0.17.4 vs ROCm=0.17.5: version difference is inherent to the dual-install; both tested as-shipped",options:{fontSize:18,color:DIM}}],
+];
+s.addTable([envH,...envB],{
+  x:RX+0.2,y:ry+rs(0.65),w:CW-0.4,border:{pt:1,color:BDR},
+  colW:[(CW-0.4)*0.22,(CW-0.4)*0.78],rowH:[rs(0.4),rs(0.4),rs(0.4),rs(0.4),rs(0.4),rs(0.4),rs(0.35)],
+}); ry+=rs(3.6);
+
+// Matched results with run_ids
+card(RX,ry,CW,rs(5.5));
+s.addText("Matched-Condition Results (qwen3.5:2b, NUM_PREDICT=512)",{x:RX+0.2,y:ry+rs(0.1),w:CW-0.4,h:rs(0.5),fontSize:24,fontFace:"Arial",color:GREEN,bold:true});
+const vrH=[
+  {text:"num_gpu",options:{fill:{color:GREEN},color:"FFFFFF",bold:true,fontSize:20}},
+  {text:"ROCm (:11435)\nrun_20260307_012643",options:{fill:{color:GREEN},color:"FFFFFF",bold:true,fontSize:18}},
+  {text:"Vulkan (:11434)\nrun_20260307_013050",options:{fill:{color:GREEN},color:"FFFFFF",bold:true,fontSize:18}},
+];
+const vrB=[
+  [{text:"0 (CPU only)",options:{fontSize:20,color:TXT,bold:true}},
+   {text:"OK  (46.7s, eval_count=512)",options:{fontSize:20,color:GREEN,bold:true}},
+   {text:"OK",options:{fontSize:20,color:GREEN,bold:true}}],
+  [{text:"1",options:{fontSize:20,color:TXT,bold:true}},
+   {text:"OK  (48.7s, eval_count=512)",options:{fontSize:20,color:GREEN,bold:true}},
+   {text:"FAIL  (HTTP 500, SIGSEGV)",options:{fontSize:20,color:RED,bold:true}}],
+  [{text:"2",options:{fontSize:20,color:TXT,bold:true}},
+   {text:"OK  (47.7s, eval_count=512)",options:{fontSize:20,color:GREEN,bold:true}},
+   {text:"FAIL  (HTTP 500, SIGSEGV)",options:{fontSize:20,color:RED,bold:true}}],
+  [{text:"-1 (all layers)",options:{fontSize:20,color:TXT,bold:true}},
+   {text:"OK  (44.3s, eval_count=512)",options:{fontSize:20,color:GREEN,bold:true}},
+   {text:"FAIL  (HTTP 500, SIGSEGV)",options:{fontSize:20,color:RED,bold:true}}],
+];
+s.addTable([vrH,...vrB],{
+  x:RX+0.2,y:ry+rs(0.65),w:CW-0.4,border:{pt:1,color:BDR},
+  colW:[(CW-0.4)*0.2,(CW-0.4)*0.4,(CW-0.4)*0.4],
+  rowH:[rs(0.6),rs(0.55),rs(0.55),rs(0.55),rs(0.55)],
+});
+// AUDIT: explicit condition statement + P1 additions
+s.addText([
+  {text:"Note: ",options:{bold:true,color:DIM,fontSize:18}},
+  {text:"Vulkan succeeded with num_gpu=0 (no GPU offload). Failures occurred only when num_gpu>=1 (GPU compute path active). ",options:{fontSize:18,color:TXT}},
+  {text:"ROCm results are within this tested scope (single model, short fixed runs); broader workloads may differ. ",options:{fontSize:18,color:DIM}},
+  {text:"Model dependency observed: tinyllama succeeded on Vulkan in earlier tests (run_20260307_003423, 20/20 OK); qwen3.5:2b triggers the SIGSEGV. ",options:{fontSize:18,color:TXT}},
+  {text:"Also: num_gpu=0 runs may produce eval_count=512 with response_chars=0 — this is a model output quirk, not a crash.",options:{fontSize:18,color:DIM}},
+],{x:RX+0.2,y:ry+rs(3.5),w:CW-0.4,h:rs(1.5),fontFace:"Calibri",valign:"top"});
+
+s.addText([
+  {text:"Crash localization: ",options:{bold:true,color:RED,fontSize:18}},
+  {text:"Vulkan SIGSEGV occurred in ggml_backend_sched_graph_compute_async → computeBatch, after model load completed and runner started. This is a compute-phase failure, not an initialization failure.",options:{fontSize:18,color:TXT}},
+],{x:RX+0.2,y:ry+rs(5.0),w:CW-0.4,h:rs(0.8),fontFace:"Calibri",valign:"top"});
+ry+=rs(6.0);
+
+// Failure Diagnosis
+card(RX,ry,CW,rs(3.6));
+s.addText("Failure Diagnosis",{x:RX+0.2,y:ry+rs(0.1),w:CW-0.4,h:rs(0.5),fontSize:24,fontFace:"Arial",color:RED,bold:true});
+const fdH=[
+  {text:"Hypothesis",options:{fill:{color:"7B241C"},color:"FFFFFF",bold:true,fontSize:20}},
+  {text:"Expected Evidence",options:{fill:{color:"7B241C"},color:"FFFFFF",bold:true,fontSize:20}},
+  {text:"Observed",options:{fill:{color:"7B241C"},color:"FFFFFF",bold:true,fontSize:20}},
+];
+const fdB=[
+  [{text:"Vega is generally\nunusable",options:{fontSize:20,color:TXT}},{text:"Both backends fail on same GPU",options:{fontSize:20,color:TXT}},{text:"Contradicted:\nROCm/HIP succeeded",options:{fontSize:20,color:GREEN,bold:true}}],
+  [{text:"num_gpu means\nGPU count",options:{fontSize:20,color:TXT}},{text:"Failure implies multi-GPU entry",options:{fontSize:20,color:TXT}},{text:"Contradicted:\ncode trace = offloaded layers",options:{fontSize:20,color:GREEN,bold:true}}],
+  [{text:"Vulkan compute-path\ninstability",options:{fontSize:20,color:ORANGE,bold:true}},{text:"Load OK; crash after runner\nstart in compute stack",options:{fontSize:20,color:TXT}},{text:"MATCH",options:{fontSize:22,color:RED,bold:true}}],
+];
+s.addTable([fdH,...fdB],{
+  x:RX+0.2,y:ry+rs(0.65),w:CW-0.4,border:{pt:1,color:BDR},
+  colW:[(CW-0.4)*0.22,(CW-0.4)*0.4,(CW-0.4)*0.38],
+  rowH:[rs(0.4),rs(0.65),rs(0.65),rs(0.65)],
+}); ry+=rs(3.8);
+
+// Why gfx900 works
+card(RX,ry,CW,rs(2.6));
+s.addText("Why gfx900 Still Works Sometimes",{x:RX+0.2,y:ry+rs(0.1),w:CW-0.4,h:rs(0.5),fontSize:24,fontFace:"Arial",color:BLUE,bold:true});
+s.addText([
+  {text:'ROCm changelog says "no longer built by default" rather than "forbidden." ',options:{fontSize:20,color:TXT}},
+  {text:"In the local install, gfx900 hsaco artifacts and libggml-hip.so strings were verified present. ",options:{fontSize:20,color:TXT}},
+  {text:"\nInterpretation: ",options:{fontSize:20,color:TXT,breakLine:true}},
+  {text:"unsupported = unguaranteed and untested, not necessarily impossible.",options:{fontSize:20,color:GREEN,bold:true}},
+],{x:RX+0.2,y:ry+rs(0.65),w:CW-0.4,h:rs(1.8),fontFace:"Calibri",valign:"top",margin:[0.05,0.15,0.05,0.15]});
+ry+=rs(2.8);
+
+// Limitations & Future Work (P0-2 + P2-8)
+card(RX,ry,CW,rs(2.6));
+s.addText("Limitations & Future Work",{x:RX+0.2,y:ry+rs(0.1),w:CW-0.4,h:rs(0.45),fontSize:24,fontFace:"Arial",color:DIM,bold:true});
+s.addText([
+  {text:"Limitations: ",options:{bold:true,color:RED,fontSize:18}},
+  {text:"Matched comparison used short fixed runs (1 epoch, 512 tokens) with a single model (qwen3.5:2b). Vulkan and ROCm Ollama versions differ (0.17.4 vs 0.17.5). tinyllama behaved differently from qwen3.5 on Vulkan, indicating model-dependent failure conditions. Results should not be generalized beyond this tested scope without further verification.",options:{fontSize:18,color:TXT}},
+  {text:"\n\nFuture work: ",options:{bold:true,color:BLUE,fontSize:18,breakLine:true}},
+  {text:"Multi-epoch stress tests, additional models (llm-jp, phi-3), ROCm version comparison (6.x vs 7.x), and GGML_CUDA_NO_PEER_COPY experiments to isolate offload-path failure mechanisms. Reproducibility infrastructure (workaround matrix with 15 documented cases) is available in the repo for community use.",options:{fontSize:18,color:TXT}},
+],{x:RX+0.2,y:ry+rs(0.55),w:CW-0.4,h:rs(1.9),fontFace:"Calibri",valign:"top",margin:[0.05,0.15,0.05,0.15]});
+ry+=rs(2.8);
+
+// ===== TAKEAWAY =====
+const TK_H=5.0, FOOT_Y=H-0.7, TK_GAP=0.45;
+const tkY=FOOT_Y-TK_GAP-TK_H;
+s.addShape(pres.shapes.RECTANGLE,{x:M,y:tkY,w:W-2*M,h:5.0,fill:{color:CARD},shadow:mkSh()});
+hdr(M+0.3,tkY+0.2,W-2*M-0.6,"7","Takeaway & Key Messages",GREEN);
+
+const mW=(W-2*M-1.2)/3, mY=tkY+1.4, mH=3.2;
+const msgs=[
+  {icon:"✅",title:"Support Status ≠ Execution Reality",body:"Official exclusion does not imply impossibility. Gate matrix shows 5 of 6 layers allow gfx900 execution. Residual code paths and shipped artifacts make partial execution possible.",col:GREEN},
+  {icon:"💡",title:"Backend Choice Dominates",body:"On the same Vega device with qwen3.5:2b, ROCm/HIP passed all num_gpu conditions within tested scope. Vulkan failed when num_gpu>=1 (GPU offload active). Failure is backend-specific, not architecture-wide. Model dependency (tinyllama vs qwen) exists.",col:BLUE},
+  {icon:"🔬",title:"Reproducibility Before Claims",body:"All claims backed by specific run_ids and code traces. Key runs: run_20260307_012643 (ROCm qwen), run_20260307_013050 (Vulkan qwen), run_20260307_003423 (tinyllama 20/20 OK). Gate matrix and workaround matrix (15 cases) in repo.",col:ORANGE},
+];
+msgs.forEach((m,i)=>{
+  const mx=M+0.3+i*(mW+0.3);
+  s.addShape(pres.shapes.RECTANGLE,{x:mx,y:mY,w:mW,h:mH,fill:{color:CARD2},shadow:mkSh()});
+  s.addShape(pres.shapes.RECTANGLE,{x:mx,y:mY,w:mW,h:0.08,fill:{color:m.col}});
+  s.addText(m.icon,{x:mx+0.2,y:mY+0.2,w:0.5,h:0.5,fontSize:28});
+  s.addText(m.title,{x:mx+0.8,y:mY+0.2,w:mW-1.0,h:0.6,fontSize:26,fontFace:"Arial",color:m.col,bold:true,valign:"middle"});
+  s.addText(m.body,{x:mx+0.3,y:mY+0.9,w:mW-0.6,h:mH-1.1,fontSize:22,fontFace:"Calibri",color:TXT,valign:"top"});
+});
+
+s.addText("Unsupported ≠ Impossible.  |  Legacy ≠ Poor.  |  Backend choice matters.  |  Audit: audit-log.md",{
+  x:M,y:H-0.7,w:W-2*M,h:0.5,fontSize:24,fontFace:"Calibri",color:DIM,italic:true,align:"center",valign:"middle"
+});
+
+const OUT=process.env.POSTER_OUT || "/home/claude/A0_Final_Poster_revised.pptx";
+pres.writeFile({fileName:OUT}).then(()=>console.log("DONE: "+OUT)).catch(e=>console.error(e));

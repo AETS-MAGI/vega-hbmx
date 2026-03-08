@@ -1,0 +1,24 @@
+{
+  "name": "vega-hbmx",
+  "version": "1.0.0",
+  "description": "更新日: 2026-03-08 (JST)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AETS-ORLAPI-GIKEN/vega-hbmx.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/AETS-ORLAPI-GIKEN/vega-hbmx/issues"
+  },
+  "homepage": "https://github.com/AETS-ORLAPI-GIKEN/vega-hbmx#readme",
+  "dependencies": {
+    "pptxgenjs": "^4.0.1"
+  }
+}
