@@ -320,13 +320,15 @@ github.com/ollama/ollama/runner/ollamarunner.(*Server).run.gowrap1()
       <p class="dim" style="text-align: center; font-style: italic; margin-top: 20px; font-size: 23px;">Within this tested scope: non-listed does not always mean unusable. | Backend-dependent behavior matters.</p>
     </div>
 
-    <div class="footer">Slide <span id="current">1</span> / 16 (Use Arrow Keys ← → to navigate)</div>
+    <div class="footer">Slide <span id="current">1</span> / <span id="total">?</span> (Use Arrow Keys ← → to navigate)</div>
   </div>
 
   <script>
     let currentSlide = 0;
     const slides = document.querySelectorAll('.slide');
     const numDisplay = document.getElementById('current');
+    const totalDisplay = document.getElementById('total');
+    if (totalDisplay) totalDisplay.textContent = slides.length;
 
     function updateSlide() {
       slides.forEach((s, i) => {
