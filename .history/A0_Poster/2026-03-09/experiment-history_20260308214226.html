@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Experiment History | Backend-Dependent Stability</title>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			font-family: 'Calibri', 'Arial', sans-serif;
+			background-color: #FFFFFF;
+			color: #212121;
+		}
+
+		.page {
+			max-width: 1400px;
+			margin: 0 auto;
+			padding: 36px 40px 48px;
+			box-sizing: border-box;
+		}
+
+		.header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			gap: 16px;
+			margin-bottom: 18px;
+		}
+
+		.title-wrap h1 {
+			margin: 0;
+			font-family: 'Arial Black', sans-serif;
+			font-size: 42px;
+			color: #B71C1C;
+			line-height: 1.1;
+		}
+
+		.title-wrap p {
+			margin: 10px 0 0;
+			font-size: 21px;
+			color: #616161;
+		}
+
+		.lang-toggle {
+			display: inline-flex;
+			border: 1px solid #BDBDBD;
+			border-radius: 999px;
+			overflow: hidden;
+			background: #F5F5F5;
+			flex-shrink: 0;
+		}
+
+		.lang-btn {
+			border: none;
+			background: transparent;
+			color: #424242;
+			font-size: 16px;
+			font-weight: bold;
+			padding: 10px 16px;
+			cursor: pointer;
+		}
+
+		.lang-btn.active {
+			background: #0D47A1;
+			color: #FFFFFF;
+		}
+
+		.summary {
+			background: #F5F5F5;
+			border-left: 6px solid #0D47A1;
+			border-radius: 8px;
+			padding: 16px 20px;
+			margin-bottom: 24px;
+			font-size: 22px;
+			line-height: 1.45;
+		}
+
+		.timeline {
+			position: relative;
+			margin-top: 4px;
+			padding-left: 32px;
+		}
+
+		.timeline::before {
+			content: '';
+			position: absolute;
+			left: 10px;
+			top: 8px;
+			bottom: 8px;
+			width: 4px;
+			background: #B71C1C;
+			border-radius: 999px;
+		}
+
+		.step {
+			position: relative;
+			background: #F5F5F5;
+			border-radius: 10px;
+			box-shadow: 1px 1px 8px rgba(0,0,0,0.08);
+			padding: 20px 22px;
+			margin-bottom: 16px;
+		}
+
+		.step::before {
+			content: '';
+			position: absolute;
+			left: -28px;
+			top: 25px;
+			width: 14px;
+			height: 14px;
+			border-radius: 50%;
+			background: #B71C1C;
+			box-shadow: 0 0 0 4px #FFFFFF;
+		}
+
+		.step h2 {
+			margin: 0 0 10px;
+			font-family: 'Arial Black', sans-serif;
+			font-size: 28px;
+			color: #B71C1C;
+			line-height: 1.2;
+		}
+
+		.step ul {
+			margin: 0;
+			padding-left: 24px;
+			font-size: 21px;
+			line-height: 1.5;
+		}
+
+		.step li { margin-bottom: 8px; }
+
+		.do { color: #0D47A1; font-weight: bold; }
+		.result { color: #1B5E20; font-weight: bold; }
+		.next { color: #E65100; font-weight: bold; }
+
+		.footer-note {
+			margin-top: 18px;
+			padding: 12px 16px;
+			border-radius: 8px;
+			background: #EEEEEE;
+			font-size: 18px;
+			color: #616161;
+		}
+
+		[data-lang] { display: none; }
+		html[data-language="en"] [data-lang="en"] { display: initial; }
+		html[data-language="ja"] [data-lang="ja"] { display: initial; }
+
+		@media (max-width: 980px) {
+			.page { padding: 24px 20px 30px; }
+			.header { align-items: flex-start; flex-direction: column; }
+			.title-wrap h1 { font-size: 34px; }
+			.title-wrap p { font-size: 18px; }
+			.summary { font-size: 18px; }
+			.step h2 { font-size: 24px; }
+			.step ul { font-size: 18px; }
+		}
+	</style>
+</head>
+<body>
+	<div class="page">
+		<div class="header">
+			<div class="title-wrap">
+				<h1>
+					<span data-lang="en">Experiment History</span>
+					<span data-lang="ja">実験の流れ</span>
+				</h1>
+				<p>
+					<span data-lang="en">What we tried, what happened, and how the investigation advanced</span>
+					<span data-lang="ja">何を行い、どういう結果が出て、どう進めたかを時系列で整理</span>
+				</p>
+			</div>
+			<div class="lang-toggle" aria-label="Language switch">
+				<button id="btn-en" class="lang-btn active" type="button">EN</button>
+				<button id="btn-ja" class="lang-btn" type="button">JP</button>
+			</div>
+		</div>
+
+		<div class="summary">
+			<span data-lang="en">Starting from uncertainty around legacy Vega support, the workflow moved step-by-step from environment control, to semantic validation, to matched backend tests, and finally to reproducible failure localization.</span>
+			<span data-lang="ja">旧世代Vegaの実行可否が不明な状態から、環境統制→意味解釈の検証→バックエンド比較実験→再現可能な故障局在化へと段階的に進めた。</span>
+		</div>
+
+		<section class="timeline">
+			<article class="step">
+				<h2>
+					<span data-lang="en">1) Problem framing and baseline setup</span>
+					<span data-lang="ja">1) 問題設定と基盤整備</span>
+				</h2>
+				<ul>
+					<li><span class="do" data-lang="en">Did:</span><span class="do" data-lang="ja">実施:</span> <span data-lang="en">Defined the question as “support policy vs actual executability,” and fixed hardware/model/workload conditions.</span><span data-lang="ja">「公式サポート状況」と「実行可能性」を分離して問いを定義し、ハードウェア・モデル・負荷条件を固定した。</span></li>
+					<li><span class="result" data-lang="en">Result:</span><span class="result" data-lang="ja">結果:</span> <span data-lang="en">A consistent testbed was prepared so that backend differences could be observed without confounding factors.</span><span data-lang="ja">交絡要因を抑えた比較基盤ができ、バックエンド差を観測できる状態になった。</span></li>
+					<li><span class="next" data-lang="en">Next:</span><span class="next" data-lang="ja">次:</span> <span data-lang="en">Checked each execution gate from build filters to runtime initialization.</span><span data-lang="ja">ビルドフィルタから実行時初期化まで、各レイヤの通過条件を点検した。</span></li>
+				</ul>
+			</article>
+
+			<article class="step">
+				<h2>
+					<span data-lang="en">2) Gate analysis across build and runtime layers</span>
+					<span data-lang="ja">2) ビルド〜実行時レイヤのゲート解析</span>
+				</h2>
+				<ul>
+					<li><span class="do" data-lang="en">Did:</span><span class="do" data-lang="ja">実施:</span> <span data-lang="en">Inspected support matrix, CMake target filters, shipped ROCm artifacts, and initialization logs for gfx900.</span><span data-lang="ja">gfx900について、サポート表・CMakeターゲット制約・配布アーティファクト・初期化ログを横断確認した。</span></li>
+					<li><span class="result" data-lang="en">Result:</span><span class="result" data-lang="ja">結果:</span> <span data-lang="en">Default build policy excluded gfx900, but residual artifacts and runtime recognition still allowed execution paths in this environment.</span><span data-lang="ja">デフォルトビルドではgfx900が外れていた一方、この環境では残存アーティファクトとランタイム認識により実行経路が残っていた。</span></li>
+					<li><span class="next" data-lang="en">Next:</span><span class="next" data-lang="ja">次:</span> <span data-lang="en">Validated API semantics to avoid misinterpreting test parameters.</span><span data-lang="ja">実験パラメータ誤読を防ぐため、API意味解釈を検証した。</span></li>
+				</ul>
+			</article>
+
+			<article class="step">
+				<h2>
+					<span data-lang="en">3) Semantic trace of num_gpu</span>
+					<span data-lang="ja">3) num_gpu の意味トレース</span>
+				</h2>
+				<ul>
+					<li><span class="do" data-lang="en">Did:</span><span class="do" data-lang="ja">実施:</span> <span data-lang="en">Traced num_gpu end-to-end: Python client → server assignment → runner bridge → llama.cpp parameter.</span><span data-lang="ja">num_gpuを Pythonクライアント→サーバ割当→ランナーブリッジ→llama.cpp パラメータまで追跡した。</span></li>
+					<li><span class="result" data-lang="en">Result:</span><span class="result" data-lang="ja">結果:</span> <span data-lang="en">num_gpu was confirmed as “number of offloaded layers,” not number of GPU devices.</span><span data-lang="ja">num_gpuは「GPU台数」ではなく「GPUへオフロードする層数」であることを確認した。</span></li>
+					<li><span class="next" data-lang="en">Next:</span><span class="next" data-lang="ja">次:</span> <span data-lang="en">Ran matched ROCm and Vulkan experiments under the same model/prompt settings.</span><span data-lang="ja">同一モデル・同一プロンプト条件でROCmとVulkanの比較実験に進んだ。</span></li>
+				</ul>
+			</article>
+
+			<article class="step">
+				<h2>
+					<span data-lang="en">4) Matched backend comparison experiments</span>
+					<span data-lang="ja">4) バックエンド一致条件での比較実験</span>
+				</h2>
+				<ul>
+					<li><span class="do" data-lang="en">Did:</span><span class="do" data-lang="ja">実施:</span> <span data-lang="en">Executed the same workload with num_gpu = 0, 1, 2, -1 on both backends.</span><span data-lang="ja">両バックエンドで num_gpu = 0, 1, 2, -1 を同一ワークロード条件で実行した。</span></li>
+					<li><span class="result" data-lang="en">Result:</span><span class="result" data-lang="ja">結果:</span> <span data-lang="en">ROCm/HIP completed all tested settings, while Vulkan succeeded only at num_gpu=0 and failed with SIGSEGV when GPU offload was active.</span><span data-lang="ja">ROCm/HIPは全設定で完走した一方、Vulkanはnum_gpu=0のみ成功し、GPUオフロード有効時にSIGSEGVで失敗した。</span></li>
+					<li><span class="next" data-lang="en">Next:</span><span class="next" data-lang="ja">次:</span> <span data-lang="en">Repeated runs and aggregated logs to verify reproducibility and timing patterns.</span><span data-lang="ja">再現性とタイミング特性を確認するため、反復実行とログ集計を行った。</span></li>
+				</ul>
+			</article>
+
+			<article class="step">
+				<h2>
+					<span data-lang="en">5) Reproduction and quantitative trend extraction</span>
+					<span data-lang="ja">5) 再現確認と定量傾向の抽出</span>
+				</h2>
+				<ul>
+					<li><span class="do" data-lang="en">Did:</span><span class="do" data-lang="ja">実施:</span> <span data-lang="en">Repeated runs, then summarized by backend × num_gpu, including crash-time statistics.</span><span data-lang="ja">反復実行後に backend × num_gpu で集計し、クラッシュまでの時間統計も算出した。</span></li>
+					<li><span class="result" data-lang="en">Result:</span><span class="result" data-lang="ja">結果:</span> <span data-lang="en">A stable split emerged: ROCm remained successful in tested settings; Vulkan failures for num_gpu≥1 showed consistent time-to-crash bands.</span><span data-lang="ja">ROCm成功・Vulkan失敗（num_gpu≥1）という分離が安定して現れ、クラッシュ時間帯にも一貫性が見られた。</span></li>
+					<li><span class="next" data-lang="en">Next:</span><span class="next" data-lang="ja">次:</span> <span data-lang="en">Localized the failure stage in runtime stack traces.</span><span data-lang="ja">ランタイムスタックトレース上で故障段階の局在化を行った。</span></li>
+				</ul>
+			</article>
+
+			<article class="step">
+				<h2>
+					<span data-lang="en">6) Failure localization and final interpretation</span>
+					<span data-lang="ja">6) 故障局在化と最終解釈</span>
+				</h2>
+				<ul>
+					<li><span class="do" data-lang="en">Did:</span><span class="do" data-lang="ja">実施:</span> <span data-lang="en">Analyzed journal/stack traces around runner startup and compute execution.</span><span data-lang="ja">ランナー起動前後と計算実行部の journal・スタックトレースを解析した。</span></li>
+					<li><span class="result" data-lang="en">Result:</span><span class="result" data-lang="ja">結果:</span> <span data-lang="en">The crash occurred in Vulkan compute scheduling after successful loading, indicating a backend compute-path issue rather than universal Vega unusability.</span><span data-lang="ja">クラッシュはロード成功後のVulkan計算スケジューリング段で発生し、Vega全面不可ではなくバックエンド計算経路の問題と判断できた。</span></li>
+					<li><span class="next" data-lang="en">Next:</span><span class="next" data-lang="ja">次:</span> <span data-lang="en">Expand model/workload coverage and stress length while preserving the same evidence-first logging pipeline.</span><span data-lang="ja">同じエビデンス重視ログ基盤を維持しつつ、モデル種類・負荷長の拡張検証へ進む。</span></li>
+				</ul>
+			</article>
+		</section>
+
+		<div class="footer-note">
+			<span data-lang="en"><strong>Key takeaway:</strong> The investigation progressed from assumptions to reproducible evidence, and the final claim is bounded to tested conditions.</span>
+			<span data-lang="ja"><strong>要点:</strong> 仮説ベースではなく再現可能な証拠へ段階的に進め、最終主張は検証条件内に限定している。</span>
+		</div>
+	</div>
+
+	<script>
+		const html = document.documentElement;
+		const btnEn = document.getElementById('btn-en');
+		const btnJa = document.getElementById('btn-ja');
+
+		function setLanguage(lang) {
+			html.setAttribute('data-language', lang);
+			html.setAttribute('lang', lang);
+			btnEn.classList.toggle('active', lang === 'en');
+			btnJa.classList.toggle('active', lang === 'ja');
+		}
+
+		btnEn.addEventListener('click', () => setLanguage('en'));
+		btnJa.addEventListener('click', () => setLanguage('ja'));
+
+		setLanguage('en');
+	</script>
+</body>
+</html>
