@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ja" data-language="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code Trace: num_gpu Semantics</title>
+<style>
+	body {
+		margin: 0;
+		padding: 0;
+		font-family: 'Calibri', 'Arial', sans-serif;
+		background: #FFFFFF;
+		color: #212121;
+		overflow: hidden;
+	}
+
+	.slide-container {
+		position: relative;
+		width: 100vw;
+		height: 100vh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: #FFFFFF;
+	}
+
+	.slide {
+		display: none;
+		width: 92%;
+		max-width: 1440px;
+		height: 88%;
+		background: #F7F9FC;
+		border-radius: 14px;
+		box-shadow: 2px 2px 16px rgba(0,0,0,0.10);
+		padding: 42px 46px 52px;
+		box-sizing: border-box;
+		flex-direction: column;
+		overflow: hidden;
+	}
+
+	.slide.active { display: flex; }
+
+	.title-slide {
+		background: linear-gradient(135deg, #0D47A1 0%, #1565C0 60%, #1E88E5 100%);
+		color: #FFFFFF;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+	}
+
+	.title-slide h1 {
+		margin: 0 0 14px;
+		font-family: 'Arial Black', sans-serif;
+		font-size: 50px;
+		line-height: 1.15;
+	}
+
+	.title-slide h2 {
+		margin: 0 0 28px;
+		font-weight: normal;
+		font-size: 28px;
+		color: #DDEBFF;
+	}
+
+	.title-slide p {
+		margin: 10px 0;
+		font-size: 24px;
+	}
+
+	.slide-title {
+		display: flex;
+		align-items: center;
+		gap: 14px;
+		margin-bottom: 18px;
+	}
+
+	.slide-num {
+		width: 54px;
+		height: 54px;
+		border-radius: 50%;
+		color: #FFFFFF;
+		font-weight: bold;
+		font-size: 25px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+		font-family: 'Arial', sans-serif;
+	}
+
+	.bg-blue { background: #0D47A1; }
+	.bg-green { background: #1B5E20; }
+	.bg-orange { background: #E65100; }
+	.blue { color: #0D47A1; }
+	.green { color: #1B5E20; }
+	.orange { color: #E65100; }
+	.dim { color: #616161; }
+
+	.slide-title-text {
+		margin: 0;
+		font-family: 'Arial Black', sans-serif;
+		font-size: 34px;
+		line-height: 1.15;
+	}
+
+	p, li { font-size: 20px; line-height: 1.45; }
+	ul { margin: 0; padding-left: 26px; }
+	li { margin-bottom: 8px; }
+
+	.grid-two {
+		display: grid;
+		grid-template-columns: 1.05fr 1fr;
+		gap: 18px;
+		min-height: 0;
+		flex: 1;
+	}
+
+	.grid-single {
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+		min-height: 0;
+		flex: 1;
+	}
+
+	.card {
+		background: #FFFFFF;
+		border: 1px solid #D7DEE8;
+		border-radius: 10px;
+		padding: 14px 16px;
+		box-shadow: 1px 1px 6px rgba(0,0,0,0.05);
+		min-height: 0;
+	}
+
+	.card-title {
+		font-size: 18px;
+		font-weight: bold;
+		margin-bottom: 8px;
+		color: #0D47A1;
+	}
+
+	.meta {
+		font-size: 16px;
+		color: #546E7A;
+		margin-bottom: 10px;
+	}
+
+	pre {
+		margin: 0;
+		background: #111827;
+		color: #E5E7EB;
+		border-radius: 10px;
+		padding: 14px 16px;
+		font-size: 15px;
+		line-height: 1.48;
+		overflow: auto;
+		font-family: 'Consolas', 'Menlo', 'Monaco', monospace;
+		white-space: pre-wrap;
+	}
+
+	.explain-box {
+		background: #E3F2FD;
+		border-left: 5px solid #1565C0;
+		border-radius: 8px;
+		padding: 10px 14px;
+		font-size: 17px;
+		line-height: 1.45;
+	}
+
+	.plain-box {
+		background: #EEF7EE;
+		border-left: 5px solid #2E7D32;
+		border-radius: 8px;
+		padding: 10px 14px;
+	}
+
+	.plain-title {
+		font-size: 17px;
+		font-weight: bold;
+		color: #1B5E20;
+		margin-bottom: 4px;
+	}
+
+	.plain-box ul {
+		margin: 0;
+		padding-left: 20px;
+	}
+
+	.plain-box li {
+		font-size: 16px;
+		margin-bottom: 4px;
+		line-height: 1.4;
+	}
+
+	.takeaway {
+		margin-top: 14px;
+		background: #FFF3E0;
+		border-left: 5px solid #E65100;
+		border-radius: 8px;
+		padding: 10px 14px;
+		font-size: 17px;
+		line-height: 1.45;
+	}
+
+	.trace-table {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: 18px;
+		background: #FFFFFF;
+	}
+
+	.trace-table th,
+	.trace-table td {
+		border: 1px solid #C9D3E0;
+		padding: 9px 10px;
+		text-align: left;
+		vertical-align: top;
+	}
+
+	.trace-table th {
+		background: #0D47A1;
+		color: #FFFFFF;
+	}
+
+	.path {
+		font-family: 'Consolas', monospace;
+		font-size: 15px;
+		color: #455A64;
+	}
+
+	.toolbar {
+		position: absolute;
+		top: 18px;
+		right: 22px;
+		z-index: 20;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		background: rgba(255,255,255,0.94);
+		border: 1px solid #D0D7DE;
+		border-radius: 999px;
+		padding: 8px 12px;
+		box-shadow: 1px 1px 8px rgba(0,0,0,0.08);
+	}
+
+	.toolbar-label,
+	.footer,
+	.nav-btn {
+		font-family: 'Arial', sans-serif;
+	}
+
+	.toolbar-label {
+		font-size: 14px;
+		color: #424242;
+	}
+
+	.lang-btn,
+	.nav-btn {
+		border: 1px solid #B0BEC5;
+		background: #FAFAFA;
+		color: #37474F;
+		border-radius: 999px;
+		padding: 6px 12px;
+		font-size: 14px;
+		cursor: pointer;
+	}
+
+	.lang-btn.active {
+		background: #0D47A1;
+		border-color: #0D47A1;
+		color: #FFFFFF;
+	}
+
+	.footer {
+		position: absolute;
+		bottom: 18px;
+		right: 26px;
+		font-size: 17px;
+		color: #616161;
+	}
+
+	[data-lang] { display: none; }
+	html[data-language="en"] [data-lang="en"] { display: initial; }
+	html[data-language="ja"] [data-lang="ja"] { display: initial; }
+	html[data-language="en"] div[data-lang="en"],
+	html[data-language="ja"] div[data-lang="ja"] { display: block; }
+	html[data-language="en"] span[data-lang="en"],
+	html[data-language="ja"] span[data-lang="ja"] { display: inline; }
+
+	@media (max-width: 1100px) {
+		.slide { padding: 28px 24px 40px; }
+		.slide-title-text { font-size: 26px; }
+		.grid-two { grid-template-columns: 1fr; }
+		p, li { font-size: 17px; }
+		pre { font-size: 13px; }
+	}
+</style>
+</head>
+<body>
+	<div class="slide-container">
+		<div class="toolbar">
+			<button class="nav-btn" id="prev-btn" type="button">◀</button>
+			<button class="nav-btn" id="next-btn" type="button">▶</button>
+			<span class="toolbar-label" id="lang-label">Language</span>
+			<button class="lang-btn" id="lang-en" type="button">English</button>
+			<button class="lang-btn active" id="lang-ja" type="button">日本語</button>
+		</div>
+
+		<div class="slide title-slide active">
+			<h1>
+				<span data-lang="en">Code Trace: What `num_gpu` Really Means</span>
+				<span data-lang="ja">Code Trace: `num_gpu` の本当の意味</span>
+			</h1>
+			<h2>
+				<span data-lang="en">Standalone supplementary deck with exact line references</span>
+				<span data-lang="ja">厳密な行番号付きの単体補助資料</span>
+			</h2>
+			<p>
+				<span data-lang="en">11 pages total: 1 overview + 9 source points + 1 conclusion</span>
+				<span data-lang="ja">全11ページ: 概要1 + ソース根拠9 + まとめ1</span>
+			</p>
+			<p>
+				<span data-lang="en">Question: does `num_gpu` mean GPU count, or layer-offload count?</span>
+				<span data-lang="ja">問い: `num_gpu` は GPU 枚数なのか、それとも offload 層数なのか？</span>
+			</p>
+		</div>
+
+		<div class="slide">
+			<div class="slide-title"><div class="slide-num bg-blue">1</div><h2 class="slide-title-text blue"><span data-lang="en">Trace Map and Final Answer</span><span data-lang="ja">トレース全体図と最終結論</span></h2></div>
+			<div class="grid-single">
+				<div class="card">
+					<div class="card-title">
+						<span data-lang="en">Trace chain</span>
+						<span data-lang="ja">追跡チェーン</span>
+					</div>
+					<table class="trace-table">
+						<tr>
+							<th><span data-lang="en">Point</span><span data-lang="ja">ポイント</span></th>
+							<th><span data-lang="en">File / lines</span><span data-lang="ja">ファイル / 行</span></th>
+							<th><span data-lang="en">What it says</span><span data-lang="ja">何を言っているか</span></th>
+						</tr>
+						<tr><td>1</td><td>_types.py:104-110</td><td><span data-lang="en">`num_gpu` exists as a load-time option</span><span data-lang="ja">`num_gpu` は load-time option として存在</span></td></tr>
+						<tr><td>2</td><td>_client.py:281-305</td><td><span data-lang="en">client forwards `options` unchanged</span><span data-lang="ja">client は `options` を意味変換せず転送</span></td></tr>
+						<tr><td>3</td><td>api/types.go:600-608, 1071-1076</td><td><span data-lang="en">Go side stores `NumGPU`; default `-1` means dynamic</span><span data-lang="ja">Go 側で `NumGPU` を保持; 既定 `-1` は動的決定</span></td></tr>
+						<tr><td>4</td><td>cmd/interactive.go:108-114</td><td><span data-lang="en">CLI literally says “number of layers”</span><span data-lang="ja">CLI が文字通り「layers」と説明</span></td></tr>
+						<tr><td>5</td><td>llm/server.go:992, 1063-1078</td><td><span data-lang="en">server treats it as `requestedLayers`</span><span data-lang="ja">server は `requestedLayers` として扱う</span></td></tr>
+						<tr><td>6</td><td>runner.go:906-925</td><td><span data-lang="en">runner sums layer counts</span><span data-lang="ja">runner は層数を合計する</span></td></tr>
+						<tr><td>7</td><td>llama.go:260-267</td><td><span data-lang="en">bridge writes it into `n_gpu_layers`</span><span data-lang="ja">bridge が `n_gpu_layers` に書き込む</span></td></tr>
+						<tr><td>8</td><td>llama.h:286-291</td><td><span data-lang="en">public API defines it as layers in VRAM</span><span data-lang="ja">公開 API が VRAM に置く層数と定義</span></td></tr>
+						<tr><td>9</td><td>common.h:378-384</td><td><span data-lang="en">supplemental semantics: `-1 auto`, `<= -2 all`</span><span data-lang="ja">補足意味: `-1 auto`, `<= -2 all`</span></td></tr>
+					</table>
+				</div>
+				<div class="explain-box">
+					<span data-lang="en"><strong>Final answer:</strong> `num_gpu` is not the number of GPUs. It is the number of model layers to offload to GPU/VRAM. Therefore, `num_gpu=2` does <strong>not</strong> mean “two GPUs were used.”</span>
+					<span data-lang="ja"><strong>最終結論:</strong> `num_gpu` は GPU 枚数ではない。GPU/VRAM に offload するモデル層数である。したがって、`num_gpu=2` は<strong>「GPUを2枚使った」ことを意味しない</strong>。</span>
+				</div>
+				<div class="plain-box">
+					<div class="plain-title"><span data-lang="en">Easy reading</span><span data-lang="ja">やさしい読み方</span></div>
+					<ul>
+						<li><span data-lang="en">Think of `num_gpu` as “how many thinking blocks move to GPU.”</span><span data-lang="ja">`num_gpu` は「何個の考えるブロックを GPU に移すか」と考える。</span></li>
+						<li><span data-lang="en">This deck proves the meaning by reading the code from client to llama.cpp.</span><span data-lang="ja">この資料は client から llama.cpp までコードを順に読んで意味を証明する。</span></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="slide">
+			<div class="slide-title"><div class="slide-num bg-blue">2</div><h2 class="slide-title-text blue"><span data-lang="en">Point 1 — Python type definition</span><span data-lang="ja">ポイント1 — Python 型定義</span></h2></div>
+			<div class="grid-two">
+				<div class="card">
+					<div class="meta path">tank/docs-ref/llama/ollama-python/ollama/_types.py:104-110</div>
+					<pre>104 | class Options(SubscriptableBaseModel):
+105 |   # load time options
+106 |   numa: Optional[bool] = None
+107 |   num_ctx: Optional[int] = None
+108 |   num_batch: Optional[int] = None
+109 |   num_gpu: Optional[int] = None
+110 |   main_gpu: Optional[int] = None</pre>
+				</div>
+				<div class="grid-single">
+					<div class="explain-box">
+						<span data-lang="en"><strong>Strict reading:</strong> `num_gpu` appears inside `Options`, under the comment `# load time options`. At this point it is just an integer field. No text here says “GPU count.”</span>
+						<span data-lang="ja"><strong>厳密な読み:</strong> `num_gpu` は `Options` 内、`# load time options` の下に置かれている。この時点では単なる整数フィールドであり、「GPU枚数」とは書かれていない。</span>
+					</div>
+					<div class="plain-box">
+						<div class="plain-title"><span data-lang="en">Simple words</span><span data-lang="ja">やさしい言い方</span></div>
+						<ul>
+							<li><span data-lang="en">The Python client has a box named `num_gpu`.</span><span data-lang="ja">Python クライアントには `num_gpu` という箱がある。</span></li>
+							<li><span data-lang="en">But the box label does not yet tell us what the number means.</span><span data-lang="ja">ただし、その数字の意味はまだここだけでは分からない。</span></li>
+						</ul>
+					</div>
+					<div class="takeaway">
+						<span data-lang="en">This page only proves existence and category: `num_gpu` is a load-time option.</span>
+						<span data-lang="ja">このページで証明できるのは存在と分類だけ: `num_gpu` は load-time option である。</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="slide">
+			<div class="slide-title"><div class="slide-num bg-blue">3</div><h2 class="slide-title-text blue"><span data-lang="en">Point 2 — Python client sends it unchanged</span><span data-lang="ja">ポイント2 — Python クライアントは意味変換せず送る</span></h2></div>
+			<div class="grid-two">
+				<div class="card">
+					<div class="meta path">tank/docs-ref/llama/ollama-python/ollama/_client.py:281-305</div>
+					<pre>281 | return self._request(
+282 |   GenerateResponse,
+283 |   'POST',
+284 |   '/api/generate',
+285 |   json=GenerateRequest(
+... |
+296 |     images=list(_copy_images(images)) if images else None,
+297 |     options=options,
+298 |     keep_alive=keep_alive,
+299 |     width=width,
+300 |     height=height,
+301 |     steps=steps,
+302 |   ).model_dump(exclude_none=True),</pre>
+				</div>
+				<div class="grid-single">
+					<div class="explain-box">
+						<span data-lang="en"><strong>Strict reading:</strong> the client inserts `options=options` into the JSON request body for `/api/generate`. No remapping like `num_gpu -> gpu_count` happens here.</span>
+						<span data-lang="ja"><strong>厳密な読み:</strong> client は `/api/generate` の JSON 本文に `options=options` をそのまま入れている。ここで `num_gpu -> gpu_count` のような意味変換は起きていない。</span>
+					</div>
+					<div class="plain-box">
+						<div class="plain-title"><span data-lang="en">Simple words</span><span data-lang="ja">やさしい言い方</span></div>
+						<ul>
+							<li><span data-lang="en">The client is just a messenger.</span><span data-lang="ja">client はただの配達人。</span></li>
+							<li><span data-lang="en">So if we want the true meaning, we must keep reading the server side.</span><span data-lang="ja">だから本当の意味を知るには server 側を読み続ける必要がある。</span></li>
+						</ul>
+					</div>
+					<div class="takeaway">
+						<span data-lang="en">Client code does not define semantics; it only forwards the field.</span>
+						<span data-lang="ja">client code は意味を定義しない。フィールドを転送するだけである。</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="slide">
+			<div class="slide-title"><div class="slide-num bg-blue">4</div><h2 class="slide-title-text blue"><span data-lang="en">Point 3 — Go API type and default value</span><span data-lang="ja">ポイント3 — Go API の型と既定値</span></h2></div>
+			<div class="grid-two">
+				<div class="card">
+					<div class="meta path">tank/docs-ref/llama/ollama/api/types.go:600-608, 1071-1076</div>
+					<pre>600 | // Runner options which must be set when the model is loaded into memory
+601 | type Runner struct {
+602 |     NumCtx    int   `json:"num_ctx,omitempty"`
+603 |     NumBatch  int   `json:"num_batch,omitempty"`
+604 |     NumGPU    int   `json:"num_gpu,omitempty"`
+605 |     MainGPU   int   `json:"main_gpu,omitempty"`
+...
+1071 | Runner: Runner{
+1072 |   // options set when the model is loaded
+1073 |   NumCtx:    int(envconfig.ContextLength()),
+1074 |   NumBatch:  512,
+1075 |   NumGPU:    -1, // -1 here indicates that NumGPU should be set dynamically</pre>
+				</div>
+				<div class="grid-single">
+					<div class="explain-box">
+						<span data-lang="en"><strong>Strict reading:</strong> `NumGPU` belongs to `Runner` options used when the model is loaded into memory. Its default is `-1`, and the comment explicitly says this means dynamic setting, not a fixed GPU-device count.</span>
+						<span data-lang="ja"><strong>厳密な読み:</strong> `NumGPU` はモデルをメモリにロードするときの `Runner` option に属する。既定値は `-1` で、コメントはこれを「動的に設定する」意味だと明示している。固定GPU台数ではない。</span>
+					</div>
+					<div class="plain-box">
+						<div class="plain-title"><span data-lang="en">Simple words</span><span data-lang="ja">やさしい言い方</span></div>
+						<ul>
+							<li><span data-lang="en">The server keeps the field as `NumGPU`.</span><span data-lang="ja">server 側でも名前は `NumGPU` のまま残る。</span></li>
+							<li><span data-lang="en">`-1` means “decide automatically,” so the number behaves like a policy/control value.</span><span data-lang="ja">`-1` は「自動で決める」なので、この値は方針や配分を決めるための値として振る舞う。</span></li>
+						</ul>
+					</div>
+					<div class="takeaway">
+						<span data-lang="en">The default already points toward offload policy semantics, not GPU-count semantics.</span>
+						<span data-lang="ja">既定値の意味だけでも、GPU枚数より offload 方針の意味に近いことが分かる。</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="slide">
+			<div class="slide-title"><div class="slide-num bg-blue">5</div><h2 class="slide-title-text blue"><span data-lang="en">Point 4 — CLI help gives the clearest wording</span><span data-lang="ja">ポイント4 — CLI ヘルプが最も明確に言い切る</span></h2></div>
+			<div class="grid-two">
+				<div class="card">
+					<div class="meta path">tank/docs-ref/llama/ollama/cmd/interactive.go:108-114</div>
+					<pre>108 | fmt.Fprintln(os.Stderr, "  /set parameter num_ctx <int>          Set the context size")
+109 | fmt.Fprintln(os.Stderr, "  /set parameter temperature <float>    Set creativity level")
+110 | fmt.Fprintln(os.Stderr, "  /set parameter repeat_penalty <float> How strongly to penalize repetitions")
+111 | fmt.Fprintln(os.Stderr, "  /set parameter repeat_last_n <int>    Set how far back to look for repetitions")
+112 | fmt.Fprintln(os.Stderr, "  /set parameter num_gpu <int>          The number of layers to send to the GPU")
+113 | fmt.Fprintln(os.Stderr, "  /set parameter stop <string> <string> ...   Set the stop parameters")</pre>
+				</div>
+				<div class="grid-single">
+					<div class="explain-box">
+						<span data-lang="en"><strong>Strict reading:</strong> the product's own CLI help text explicitly defines `num_gpu` as <strong>“The number of layers to send to the GPU.”</strong> This is direct semantic evidence.</span>
+						<span data-lang="ja"><strong>厳密な読み:</strong> 製品自身の CLI ヘルプ文言が `num_gpu` を<strong>「GPUへ送る層数」</strong>と明示している。これは直接的な意味証拠である。</span>
+					</div>
+					<div class="plain-box">
+						<div class="plain-title"><span data-lang="en">Simple words</span><span data-lang="ja">やさしい言い方</span></div>
+						<ul>
+							<li><span data-lang="en">This is the strongest plain-English clue.</span><span data-lang="ja">これは一番分かりやすい直接証拠。</span></li>
+							<li><span data-lang="en">If the program authors say “layers,” we should not reinterpret it as “GPUs.”</span><span data-lang="ja">作者が「layers」と言っているなら、「GPUs」と読み替えてはいけない。</span></li>
+						</ul>
+					</div>
+					<div class="takeaway">
+						<span data-lang="en">This page alone almost settles the question.</span>
+						<span data-lang="ja">このページだけでも問いはほぼ決着する。</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="slide">
+			<div class="slide-title"><div class="slide-num bg-blue">6</div><h2 class="slide-title-text blue"><span data-lang="en">Point 5 — Server code uses `requestedLayers`</span><span data-lang="ja">ポイント5 — Server code は `requestedLayers` として使う</span></h2></div>
+			<div class="grid-two">
+				<div class="card">
+					<div class="meta path">tank/docs-ref/llama/ollama/llm/server.go:992, 1063-1078</div>
+					<pre>992  | libraryGpuLayers := assignLayers(layers, gl, requireFull, s.options.NumGPU, lastUsedGPU)
+...
+1063 | func assignLayers(layers []uint64, gpus []ml.DeviceInfo, requireFull bool, requestedLayers int, lastUsedGPU int) (gpuLayers ml.GPULayersList) {
+1064 |   // If the user is manually overriding parameters, treat all GPUs equally so they split according to VRAM
+1065 |   if requestedLayers >= 0 || envconfig.SchedSpread() {
+...
+1073 |   // requestedLayers may be -1 if nothing was requested
+1074 |   requestedLayers = min(len(layers), requestedLayers)</pre>
+				</div>
+				<div class="grid-single">
+					<div class="explain-box">
+						<span data-lang="en"><strong>Strict reading:</strong> `s.options.NumGPU` is passed into `assignLayers()` and immediately named `requestedLayers`. Then it is capped by `min(len(layers), requestedLayers)`. This is unmistakably layer-count logic.</span>
+						<span data-lang="ja"><strong>厳密な読み:</strong> `s.options.NumGPU` は `assignLayers()` に渡され、直ちに `requestedLayers` と名付けられる。その後 `min(len(layers), requestedLayers)` で上限が掛けられる。これは明らかに層数ロジックである。</span>
+					</div>
+					<div class="plain-box">
+						<div class="plain-title"><span data-lang="en">Simple words</span><span data-lang="ja">やさしい言い方</span></div>
+						<ul>
+							<li><span data-lang="en">The server treats the number as “how many layers are requested.”</span><span data-lang="ja">server はこの数を「何層ほしいか」として扱っている。</span></li>
+							<li><span data-lang="en">If the model has only so many layers, the number is clipped to that limit.</span><span data-lang="ja">モデルの層数を超える場合は、その最大値までに切り詰める。</span></li>
+						</ul>
+					</div>
+					<div class="takeaway">
+						<span data-lang="en">This is implementation-level proof, not just help text.</span>
+						<span data-lang="ja">これはヘルプ文言ではなく、実装レベルの証拠である。</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="slide">
+			<div class="slide-title"><div class="slide-num bg-blue">7</div><h2 class="slide-title-text blue"><span data-lang="en">Point 6 — Runner sums layer counts</span><span data-lang="ja">ポイント6 — Runner は層数を合計する</span></h2></div>
+			<div class="grid-two">
+				<div class="card">
+					<div class="meta path">tank/docs-ref/llama/ollama/runner/llamarunner/runner.go:906-925</div>
+					<pre>906 | numGPU := 0
+907 | var tensorSplit []float32
+908 | var llamaIDs []uint64
+...
+912 | for _, layers := range req.GPULayers {
+913 |   for i := range gpuIDs {
+914 |     if gpuIDs[i].DeviceID == layers.DeviceID {
+915 |       numGPU += len(layers.Layers)
+916 |       tensorSplit = append(tensorSplit, float32(len(layers.Layers)))
+917 |       llamaIDs = append(llamaIDs, gpuIDs[i].LlamaID)
+...
+922 | params := llama.ModelParams{
+923 |   Devices:      llamaIDs,
+924 |   NumGpuLayers: numGPU,</pre>
+				</div>
+				<div class="grid-single">
+					<div class="explain-box">
+						<span data-lang="en"><strong>Strict reading:</strong> `numGPU` is calculated by `numGPU += len(layers.Layers)`. That means the variable is an accumulated layer count. It is then written into `NumGpuLayers`.</span>
+						<span data-lang="ja"><strong>厳密な読み:</strong> `numGPU` は `numGPU += len(layers.Layers)` で計算されている。つまりこの変数は累積層数である。その値が `NumGpuLayers` に書かれる。</span>
+					</div>
+					<div class="plain-box">
+						<div class="plain-title"><span data-lang="en">Simple words</span><span data-lang="ja">やさしい言い方</span></div>
+						<ul>
+							<li><span data-lang="en">Here the program literally counts layers, not cards.</span><span data-lang="ja">ここでは文字通り、GPUカード枚数ではなく層を数えている。</span></li>
+							<li><span data-lang="en">The variable name `numGPU` is a bit misleading, but the math shows the real meaning.</span><span data-lang="ja">変数名 `numGPU` は少し紛らわしいが、計算内容が本当の意味を示している。</span></li>
+						</ul>
+					</div>
+					<div class="takeaway">
+						<span data-lang="en">Behavior matters more than the variable name: the behavior is layer counting.</span>
+						<span data-lang="ja">変数名より実際の振る舞いが重要であり、その振る舞いは層数カウントである。</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="slide">
+			<div class="slide-title"><div class="slide-num bg-blue">8</div><h2 class="slide-title-text blue"><span data-lang="en">Point 7 — Go/C bridge writes to `n_gpu_layers`</span><span data-lang="ja">ポイント7 — Go/C ブリッジは `n_gpu_layers` に書き込む</span></h2></div>
+			<div class="grid-two">
+				<div class="card">
+					<div class="meta path">tank/docs-ref/llama/ollama/llama/llama.go:260-267</div>
+					<pre>260 | callback(float32(progress))
+261 | return true
+262 | }
+263 |
+264 | func LoadModelFromFile(modelPath string, params ModelParams) (*Model, error) {
+265 |   cparams := C.llama_model_default_params()
+266 |   cparams.n_gpu_layers = C.int(params.NumGpuLayers)
+267 |   cparams.main_gpu = C.int32_t(params.MainGpu)</pre>
+				</div>
+				<div class="grid-single">
+					<div class="explain-box">
+						<span data-lang="en"><strong>Strict reading:</strong> the runner-side value `params.NumGpuLayers` is copied directly into the C struct field `n_gpu_layers`. No reinterpretation happens at the bridge.</span>
+						<span data-lang="ja"><strong>厳密な読み:</strong> runner 側の `params.NumGpuLayers` は C 構造体の `n_gpu_layers` に直接コピーされる。ブリッジ地点で意味の読み替えは起きない。</span>
+					</div>
+					<div class="plain-box">
+						<div class="plain-title"><span data-lang="en">Simple words</span><span data-lang="ja">やさしい言い方</span></div>
+						<ul>
+							<li><span data-lang="en">The baton is passed without changing the label.</span><span data-lang="ja">バトンは名前も意味も変えずに次へ渡される。</span></li>
+							<li><span data-lang="en">So the final meaning must be checked in llama.cpp itself.</span><span data-lang="ja">だから最後の意味は llama.cpp 本体で確認すればよい。</span></li>
+						</ul>
+					</div>
+					<div class="takeaway">
+						<span data-lang="en">Bridge code preserves the layer-count semantics.</span>
+						<span data-lang="ja">ブリッジコードは層数の意味を保ったまま渡している。</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="slide">
+			<div class="slide-title"><div class="slide-num bg-blue">9</div><h2 class="slide-title-text blue"><span data-lang="en">Point 8 — llama.cpp public header is explicit</span><span data-lang="ja">ポイント8 — llama.cpp 公開ヘッダが明示する</span></h2></div>
+			<div class="grid-two">
+				<div class="card">
+					<div class="meta path">tank/docs-ref/llama/llama.cpp/include/llama.h:286-291</div>
+					<pre>286 | // NULL-terminated list of buffer types to use for tensors that match a pattern
+287 | const struct llama_model_tensor_buft_override * tensor_buft_overrides;
+288 |
+289 | int32_t n_gpu_layers; // number of layers to store in VRAM, a negative value means all layers
+290 | enum llama_split_mode split_mode; // how to split the model across multiple GPUs</pre>
+				</div>
+				<div class="grid-single">
+					<div class="explain-box">
+						<span data-lang="en"><strong>Strict reading:</strong> the official llama.cpp header defines `n_gpu_layers` as <strong>“number of layers to store in VRAM.”</strong> The next field, `split_mode`, is the one that talks about multiple GPUs.</span>
+						<span data-lang="ja"><strong>厳密な読み:</strong> llama.cpp の公式ヘッダは `n_gpu_layers` を<strong>「VRAMに置く層数」</strong>と定義している。複数GPUについて語るのは、その次の `split_mode` フィールドである。</span>
+					</div>
+					<div class="plain-box">
+						<div class="plain-title"><span data-lang="en">Simple words</span><span data-lang="ja">やさしい言い方</span></div>
+						<ul>
+							<li><span data-lang="en">This is the clearest contract in the whole chain.</span><span data-lang="ja">これはチェーン全体で最も強い定義文。</span></li>
+							<li><span data-lang="en">Layers and multi-GPU are written as different things in different fields.</span><span data-lang="ja">層数と multi-GPU は、別のフィールドに別の概念として書かれている。</span></li>
+						</ul>
+					</div>
+					<div class="takeaway">
+						<span data-lang="en">Public API documentation closes the argument: `num_gpu` maps to layer count.</span>
+						<span data-lang="ja">公開API文書が議論を閉じる: `num_gpu` は層数に対応する。</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="slide">
+			<div class="slide-title"><div class="slide-num bg-blue">10</div><h2 class="slide-title-text blue"><span data-lang="en">Point 9 — Supplemental semantics for negative values</span><span data-lang="ja">ポイント9 — 負値の意味を補足する実装コメント</span></h2></div>
+			<div class="grid-two">
+				<div class="card">
+					<div class="meta path">tank/docs-ref/llama/llama.cpp/common/common.h:378-384</div>
+					<pre>378 | // offload params
+379 | std::vector&lt;ggml_backend_dev_t&gt; devices; // devices to use for offloading
+380 |
+381 | int32_t n_gpu_layers       = -1;   // number of layers to store in VRAM, -1 is auto, &lt;= -2 is all
+382 | int32_t main_gpu           = 0;    // the GPU that is used for scratch and small tensors
+383 | float   tensor_split[128]  = {0};  // how split tensors should be distributed across GPUs</pre>
+				</div>
+				<div class="grid-single">
+					<div class="explain-box">
+						<span data-lang="en"><strong>Strict reading:</strong> this common parameter struct repeats the same meaning and adds the policy for negative values: `-1` means auto, `<= -2` means all layers. Again, this is layer-offload policy, not device count.</span>
+						<span data-lang="ja"><strong>厳密な読み:</strong> この共通パラメータ構造体は同じ意味を繰り返し、さらに負値の方針を補う: `-1` は auto、`<= -2` は全層。これも GPU 枚数ではなく、層 offload 方針の意味である。</span>
+					</div>
+					<div class="plain-box">
+						<div class="plain-title"><span data-lang="en">Simple words</span><span data-lang="ja">やさしい言い方</span></div>
+						<ul>
+							<li><span data-lang="en">Negative values are special commands, not “minus GPUs.”</span><span data-lang="ja">負の値は特別な指示であって、「マイナス枚のGPU」ではない。</span></li>
+							<li><span data-lang="en">`-1` says “decide automatically,” and stronger negative values can mean “put all layers there.”</span><span data-lang="ja">`-1` は「自動で決める」、さらに小さい負値は「全層を載せる」を意味しうる。</span></li>
+						</ul>
+					</div>
+					<div class="takeaway">
+						<span data-lang="en">The negative-value behavior only makes sense if the parameter means layer count.</span>
+						<span data-lang="ja">負値の振る舞いは、このパラメータが層数を意味すると考えたときにだけ自然に理解できる。</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="slide">
+			<div class="slide-title"><div class="slide-num bg-green">11</div><h2 class="slide-title-text green"><span data-lang="en">Conclusion — Why this matters for the experiment</span><span data-lang="ja">まとめ — これが実験解釈で重要な理由</span></h2></div>
+			<div class="grid-single">
+				<div class="card">
+					<table class="trace-table">
+						<tr>
+							<th><span data-lang="en">Misreading</span><span data-lang="ja">誤読</span></th>
+							<th><span data-lang="en">Why it is wrong</span><span data-lang="ja">なぜ誤りか</span></th>
+							<th><span data-lang="en">Correct reading</span><span data-lang="ja">正しい読み</span></th>
+						</tr>
+						<tr>
+							<td><span data-lang="en">`num_gpu=2` means two GPUs</span><span data-lang="ja">`num_gpu=2` は GPU 2枚</span></td>
+							<td><span data-lang="en">all traced code points speak about layers / VRAM, not GPU count</span><span data-lang="ja">追跡した全コード点が layers / VRAM を語っており、GPU枚数ではない</span></td>
+							<td><span data-lang="en">offload two layers to GPU</span><span data-lang="ja">2層をGPUへ offload</span></td>
+						</tr>
+						<tr>
+							<td><span data-lang="en">`num_gpu=-1` means use all GPUs</span><span data-lang="ja">`num_gpu=-1` は全GPU使用</span></td>
+							<td><span data-lang="en">comments define `-1` as dynamic / auto</span><span data-lang="ja">コメントが `-1` を dynamic / auto と定義</span></td>
+							<td><span data-lang="en">automatic offload decision</span><span data-lang="ja">offload 方針を自動決定</span></td>
+						</tr>
+					</table>
+				</div>
+				<div class="explain-box">
+					<span data-lang="en"><strong>Experimental consequence:</strong> when Vulkan crashes at `num_gpu>=1`, the careful claim is not “multi-GPU failed.” The careful claim is: “Vulkan failed when one or more model layers were offloaded to GPU in this tested setup.”</span>
+					<span data-lang="ja"><strong>実験上の帰結:</strong> Vulkan が `num_gpu>=1` で落ちたとき、慎重な主張は「multi-GPU が失敗した」ではない。正しくは「この実験条件では、1層以上をGPUへ offload したときに Vulkan が失敗した」である。</span>
+				</div>
+				<div class="plain-box">
+					<div class="plain-title"><span data-lang="en">Easy explanation</span><span data-lang="ja">やさしい解説</span></div>
+					<ul>
+						<li><span data-lang="en">If you misread the knob, you will misread the crash.</span><span data-lang="ja">つまみの意味を読み違えると、クラッシュの意味も読み違える。</span></li>
+						<li><span data-lang="en">This trace protects the poster claim from that mistake.</span><span data-lang="ja">このトレースは、その誤解からポスターの主張を守るための補助資料である。</span></li>
+					</ul>
+				</div>
+				<div class="takeaway">
+					<span data-lang="en">Nine independent source points converge on one conclusion: `num_gpu` controls layer offload count, not GPU device count.</span>
+					<span data-lang="ja">9つの独立したソース根拠は1つの結論に収束する: `num_gpu` は GPU 枚数ではなく、offload 層数を制御する。</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="footer"><span id="slide-indicator">1 / 11</span> · <span data-lang="en">Arrow keys to navigate</span><span data-lang="ja">← → キーで移動</span></div>
+	</div>
+
+	<script>
+		const slides = Array.from(document.querySelectorAll('.slide'));
+		const html = document.documentElement;
+		const slideIndicator = document.getElementById('slide-indicator');
+		const langEnBtn = document.getElementById('lang-en');
+		const langJaBtn = document.getElementById('lang-ja');
+		const langLabel = document.getElementById('lang-label');
+		const prevBtn = document.getElementById('prev-btn');
+		const nextBtn = document.getElementById('next-btn');
+		let currentSlide = 0;
+
+		function updateSlide() {
+			slides.forEach((slide, index) => {
+				slide.classList.toggle('active', index === currentSlide);
+			});
+			slideIndicator.textContent = `${currentSlide + 1} / ${slides.length}`;
+		}
+
+		function setLanguage(lang) {
+			html.setAttribute('data-language', lang);
+			html.setAttribute('lang', lang);
+			langEnBtn.classList.toggle('active', lang === 'en');
+			langJaBtn.classList.toggle('active', lang === 'ja');
+			langLabel.textContent = lang === 'ja' ? '表示言語' : 'Language';
+			localStorage.setItem('code-trace-lang', lang);
+		}
+
+		function nextSlide() {
+			currentSlide = (currentSlide + 1) % slides.length;
+			updateSlide();
+		}
+
+		function prevSlide() {
+			currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+			updateSlide();
+		}
+
+		prevBtn.addEventListener('click', prevSlide);
+		nextBtn.addEventListener('click', nextSlide);
+		langEnBtn.addEventListener('click', () => setLanguage('en'));
+		langJaBtn.addEventListener('click', () => setLanguage('ja'));
+
+		document.addEventListener('keydown', (event) => {
+			if (event.key === 'ArrowRight' || event.key === 'ArrowDown' || event.key === 'PageDown' || event.key === ' ') {
+				nextSlide();
+				event.preventDefault();
+			} else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp' || event.key === 'PageUp') {
+				prevSlide();
+				event.preventDefault();
+			}
+		});
+
+		setLanguage(localStorage.getItem('code-trace-lang') === 'en' ? 'en' : 'ja');
+		updateSlide();
+	</script>
+</body>
+</html>
