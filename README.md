@@ -55,14 +55,14 @@
 - ROCm 側 journal では同条件で `load_backend: ... libggml-hip.so`、`summary_by_num_gpu` 全 `ok`。
 
 ## 5. 技術的に確定したこと
-### 4.1 `num_gpu` の意味
+### 5.1 `num_gpu` の意味
 - `ollama-python -> ollama server -> runner -> llama.cpp` を追跡し、`num_gpu` は **offload層数**と確定。
 - multi-GPU 枚数指定とは別概念。
 
-### 4.2 crash の位相
+### 5.2 crash の位相
 - Vulkan crash は初期化失敗ではなく、**load完了後の compute 実行段階**（`computeBatch` 系）で発生。
 
-### 4.3 gfx900 の位置づけ
+### 5.3 gfx900 の位置づけ
 - ROCm公式互換表では gfx900 非掲載（7.x 既定対象外）。
 - 一方で、changelog/ソース/周辺実装には gfx900 残存経路がある。
 - よって「公式保証外だが、条件次第で動く」は整合する。
